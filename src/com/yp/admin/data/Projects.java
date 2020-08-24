@@ -5,11 +5,11 @@ import java.math.BigDecimal;
 import java.util.Date;
 import com.yp.core.entity.DataEntity;
 import com.yp.core.tools.DateTime;
-import java.lang.String;
 
 
 public class Projects extends DataEntity {
 
+	private static final long serialVersionUID = 7953203547827878233L;
 	private static String schemaName = "COMMON";
 	private static String tableName = "PROJECTS";
 
@@ -20,9 +20,9 @@ public class Projects extends DataEntity {
 		setPrimaryKeys(ID);
 	}
 
-	public Projects(String pid){
+	public Projects(String pId){
 		this();
-		set(ID, pid);
+		set(ID, pId);
 	}
 
 	protected static final String ID = "id";
@@ -201,6 +201,12 @@ public class Projects extends DataEntity {
 	@Override
 	public String getTableName() {
 		return tableName;
+	}
+
+	@Override
+	public void checkValues(){
+		super.checkValues();
+		checkBigDecimal(VERSION_UPDATE_DATE);
 	}
 
 }

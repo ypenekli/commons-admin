@@ -1,6 +1,6 @@
 drop table common.projects;
 create table common.projects(
-	id varchar(50) not null,
+	id char(5) not null,
 	name varchar(150) not null,
 	description varchar(150) default '',
 	url varchar(50) default '',
@@ -12,21 +12,21 @@ create table common.projects(
 	version varchar(50) default '1.0.0',
 	version_update_date numeric(8, 0),	
 	
-	owner varchar(50),
-	remaddress varchar(50),
-	datetime numeric(17,0),
-	last_owner varchar(50),
-	last_remaddress varchar(50),
-	last_datetime numeric(17,0),
+	client_name varchar(50),
+	client_ip varchar(50),
+	client_datetime numeric(17,0),
+	last_client_name varchar(50),
+	last_client_ip varchar(50),
+	last_client_datetime numeric(17,0),
 	constraint pk_common_projects primary key  
 	(
 		id 
 	)
 );
-drop table common.project_subfuncs;
-create table common.project_subfuncs(
-	id varchar(50) not null,	
-	project_id varchar(50) not null,		
+drop table common.project_funcs;
+create table common.project_funcs(
+	project_id char(5) not null,
+	id varchar(50) not null,
 	name varchar(150) not null,
 	description varchar(150) default '',
 	url varchar(50) default '',
@@ -40,68 +40,94 @@ create table common.project_subfuncs(
 	icon_url varchar(30) default '',
 	status char not null default 'A',
 	
-	owner varchar(50),
-	remaddress varchar(50),
-	datetime numeric(17,0),
-	last_owner varchar(50),
-	last_remaddress varchar(50),
-	last_datetime numeric(17,0),
-	constraint pk_common_project_subfuncs primary key  
+	client_name varchar(50),
+	client_ip varchar(50),
+	client_datetime numeric(17,0),
+	last_client_name varchar(50),
+	last_client_ip varchar(50),
+	last_client_datetime numeric(17,0),
+	constraint pk_common_project_funcs primary key  
 	(
-		id 
+		project_id, id 
 	)
 );
+
+drop table common.project_versions;
+create table common.project_versions(
+	project_id char(5) not null,
+	version int not null default 100,
+	idx int not null default 1,
+	label varchar(45) default '',
+	project_funcs_id varchar(50) not null,
+	description varchar(150) default '',
+	publish_date numeric(8,0) DEFAULT 0,   
+		
+	client_name varchar(50),
+	client_ip varchar(50),
+	client_datetime numeric(17,0),
+	last_client_name varchar(50),
+	last_client_ip varchar(50),
+	last_client_datetime numeric(17,0),
+	constraint pk_common_project_versions primary key  
+	(
+		project_id, version, idx 
+	)
+);
+
+
 drop table common.groups;
 create table common.groups(
 	id integer not null,
 	name varchar(150) not null,
-	project_id varchar(50) not null,		
+	project_id char(5) not null,		
 	hierarchy varchar(150),
 	group_type char not null default 'U',
-	status char not null default 'A',	
+	status char not null default 'A',
 	
-	owner varchar(50),
-	remaddress varchar(50),
-	datetime numeric(17,0),
-	last_owner varchar(50),
-	last_remaddress varchar(50),
-	last_datetime numeric(17,0),
+	client_name varchar(50),
+	client_ip varchar(50),
+	client_datetime numeric(17,0),
+	last_client_name varchar(50),
+	last_client_ip varchar(50),
+	last_client_datetime numeric(17,0),
 	constraint pk_common_groups primary key  
 	(
 		id 
 	)
 );
-drop table common.group_funcs;
-create table common.group_funcs(
+drop table common.group_project_funcs;
+create table common.group_project_funcs(
 	group_id integer not null,
-	func_id varchar(150) not null,	
+	project_funcs_id varchar(50) not null,	
 	
-	owner varchar(50),
-	remaddress varchar(50),
-	datetime numeric(17,0),
-	last_owner varchar(50),
-	last_remaddress varchar(50),
-	last_datetime numeric(17,0),
-	constraint pk_common_group_funcs primary key  
+	client_name varchar(50),
+	client_ip varchar(50),
+	client_datetime numeric(17,0),
+	last_client_name varchar(50),
+	last_client_ip varchar(50),
+	last_client_datetime numeric(17,0),
+	constraint pk_common_group_project_funcs primary key  
 	(
-		group_id, func_id 
+		group_id, project_funcs_id 
 	)
 );
-drop table common.group_funcs_history;
-create table common.group_funcs_history(
+drop table common.group_project_funcs_history;
+create table common.group_project_funcs_history(
 	idx bigint not null,
 	group_id integer not null,
-	func_id varchar(150) not null,
+	project_funcs_id varchar(50) not null,
 	
+	update_datetime numeric(17, 0),	
 	update_user_id integer,
 	update_user_name varchar(100),
 	update_user_title varchar(50),
 	update_mode char not null default 'A',
 	
-	owner varchar(50),
-	remaddress varchar(50),
-	datetime numeric(17,0),
-	constraint pk_common_group_funcs_history primary key  
+	
+	client_name varchar(50),
+	client_ip varchar(50),
+	client_datetime numeric(17,0),
+	constraint pk_common_group_project_funcs_history primary key  
 	(
 		idx 
 	)
@@ -111,12 +137,12 @@ create table common.group_users(
 	group_id integer not null,
 	user_id integer not null,
 	
-	owner varchar(50),
-	remaddress varchar(50),
-	datetime numeric(17,0),
-	last_owner varchar(50),
-	last_remaddress varchar(50),
-	last_datetime numeric(17,0),
+	client_name varchar(50),
+	client_ip varchar(50),
+	client_datetime numeric(17,0),
+	last_client_name varchar(50),
+	last_client_ip varchar(50),
+	last_client_datetime numeric(17,0),
 	constraint pk_common_group_users primary key  
 	(
 		group_id, user_id 
@@ -134,9 +160,9 @@ create table common.group_users_history(
 	update_user_title varchar(50),
 	update_mode char not null default 'A',
 	
-	owner varchar(50),
-	remaddress varchar(50),
-	datetime numeric(17,0),
+	client_name varchar(50),
+	client_ip varchar(50),
+	client_datetime numeric(17,0),
 	constraint pk_common_group_users_history primary key  
 	(
 		idx 
@@ -145,7 +171,7 @@ create table common.group_users_history(
 drop table common.users;
 create table common.users(
 	id integer not null,
-	citizenship_no numeric(11,0) NOT NULL DEFAULT 0,
+	citizenship_nu numeric(11,0) NOT NULL DEFAULT 0,
 	name varchar(75) not null default '',
 	surname varchar(75) not null default '',
 	birth_date numeric(8,0) default 0,
@@ -172,14 +198,14 @@ create table common.users(
 	invoice_city integer   default -1,
 	invoice_district integer  default -1,
 	invoice_address varchar(150)   default '',
-	status char not null default 'A',	
+	status char not null default 'A',
 	
-	owner varchar(50),
-	remaddress varchar(50),
-	datetime numeric(17,0),
-	last_owner varchar(50),
-	last_remaddress varchar(50),
-	last_datetime numeric(17,0),
+	client_name varchar(50),
+	client_ip varchar(50),
+	client_datetime numeric(17,0),
+	last_client_name varchar(50),
+	last_client_ip varchar(50),
+	last_client_datetime numeric(17,0),
 	constraint pk_common_users primary key  
 	(
 		id 
@@ -190,13 +216,14 @@ create table common.user_images(
 	user_id integer not null,
 	idx integer not null,
 	image blob not null,	
+	image_type varchar(75),
 	
-	owner varchar(50),
-	remaddress varchar(50),
-	datetime numeric(17,0),
-	last_owner varchar(50),
-	last_remaddress varchar(50),
-	last_datetime numeric(17,0),
+	client_name varchar(50),
+	client_ip varchar(50),
+	client_datetime numeric(17,0),
+	last_client_name varchar(50),
+	last_client_ip varchar(50),
+	last_client_datetime numeric(17,0),
 	constraint pk_common_user_images primary key  
 	(
 		user_id, idx 
@@ -205,13 +232,14 @@ create table common.user_images(
 drop table common.login_history;
 create table common.login_history(
 	idx bigint not null,
-	project_id integer not null,
+	project_id varchar(50) not null,		
 	user_id integer not null,
 	login_datetime numeric(17, 0),
 	
-	owner varchar(50),
-	remaddress varchar(50),
-	datetime numeric(17,0),
+	
+	client_name varchar(50),
+	client_ip varchar(50),
+	client_datetime numeric(17,0),
 	constraint pk_common_login_history primary key  
 	(
 		idx 
@@ -228,9 +256,9 @@ create table common.pwd_history(
 	update_user_name varchar(100),
 	update_user_title varchar(50),
 	
-	owner varchar(50),
-	remaddress varchar(50),
-	datetime numeric(17,0),
+	client_name varchar(50),
+	client_ip varchar(50),
+	client_datetime numeric(17,0),
 	constraint pk_common_pwd_history primary key  
 	(
 		idx 
@@ -252,12 +280,12 @@ create table common.commons(
 	icon_url varchar(30) default '',
 	status char not null default 'A',
 	
-	owner varchar(50),
-	remaddress varchar(50),
-	datetime numeric(17,0),
-	last_owner varchar(50),
-	last_remaddress varchar(50),
-	last_datetime numeric(17,0),
+	client_name varchar(50),
+	client_ip varchar(50),
+	client_datetime numeric(17,0),
+	last_client_name varchar(50),
+	last_client_ip varchar(50),
+	last_client_datetime numeric(17,0),
 	constraint pk_common_commons primary key  
 	(
 		id 
@@ -284,10 +312,10 @@ create table common.transfers(
 		source_schema, source_table, target_schema, target_table 
 	)
 );
-drop table common.indeks;
-create table common.indeks(
+drop table common.idx;
+create table common.idx(
 	idx int not null default 0, 
-	constraint pk_common_indeks primary key  
+	constraint pk_common_idx primary key  
 	(
 		idx 
 	)

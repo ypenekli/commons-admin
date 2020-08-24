@@ -2,12 +2,11 @@ package com.yp.admin.data;
 
 
 import com.yp.core.entity.DataEntity;
-import java.lang.String;
-import java.lang.Integer;
 
 
 public class Commons extends DataEntity {
 
+	private static final long serialVersionUID = 8655468033821499434L;
 	private static String schemaName = "COMMON";
 	private static String tableName = "COMMONS";
 
@@ -18,9 +17,9 @@ public class Commons extends DataEntity {
 		setPrimaryKeys(ID);
 	}
 
-	public Commons(Integer pid){
+	public Commons(Integer pId){
 		this();
-		set(ID, pid);
+		set(ID, pId);
 	}
 
 	protected static final String ID = "id";
@@ -199,6 +198,16 @@ public class Commons extends DataEntity {
 	@Override
 	public String getTableName() {
 		return tableName;
+	}
+
+	@Override
+	public void checkValues(){
+		super.checkValues();
+		checkInteger(ID);
+		checkInteger(GROUP_CODE);
+		checkInteger(PARENT_ID);
+		checkInteger(IDX);
+		checkInteger(LEVEL);
 	}
 
 }

@@ -7,23 +7,34 @@ import com.yp.core.entity.DataEntity;
 import com.yp.core.tools.DateTime;
 
 
-public class PwdHistory extends DataEntity {
+public class GroupProjectFuncsHistory extends DataEntity {
 
-	private static final long serialVersionUID = 7074090885690221383L;
+	private static final long serialVersionUID = 5332682404804031743L;
 	private static String schemaName = "COMMON";
-	private static String tableName = "PWD_HISTORY";
+	private static String tableName = "GROUP_PROJECT_FUNCS_HISTORY";
+
+	public static final String UPDATE_MODE_ADD = "A";
+	public static final String UPDATE_MODE_DELETE = "D";
 
 
-	public PwdHistory(){
+
+	public GroupProjectFuncsHistory(){
 		super();
-		className = "PwdHistory";
+		className = "GroupProjectFuncsHistory";
 		setPrimaryKeys(IDX);
 	}
 
-	public PwdHistory(Long pIdx){
+	public GroupProjectFuncsHistory(Long pIdx){
 		this();
 		set(IDX, pIdx);
 	}
+
+	public GroupProjectFuncsHistory(Long pIdx, GroupProjectFuncs pGroupProjectFunc){
+		this(pIdx);
+		setGroupId(pGroupProjectFunc.getGroupId());
+		setProjectFuncsId(pGroupProjectFunc.getProjectFuncsId());
+	}
+
 
 	protected static final String IDX = "idx";
 
@@ -39,32 +50,32 @@ public class PwdHistory extends DataEntity {
 		return isNull(IDX);
 	}
 
-	protected static final String USER_ID = "user_id";
+	protected static final String GROUP_ID = "group_id";
 
-	public Integer getUserId() {
-		return (Integer) get(USER_ID);
+	public Integer getGroupId() {
+		return (Integer) get(GROUP_ID);
 	}
 	
-	public void setUserId(Integer pUserId){
-		set(USER_ID, pUserId);
+	public void setGroupId(Integer pGroupId){
+		set(GROUP_ID, pGroupId);
 	}
 	
-	public boolean isUserIdNull(){
-		return isNull(USER_ID);
+	public boolean isGroupIdNull(){
+		return isNull(GROUP_ID);
 	}
 
-	protected static final String PASSWORD = "password";
+	protected static final String PROJECT_FUNCS_ID = "project_funcs_id";
 
-	public String getPassword() {
-		return (String) get(PASSWORD);
+	public String getProjectFuncsId() {
+		return (String) get(PROJECT_FUNCS_ID);
 	}
 	
-	public void setPassword(String pPassword){
-		set(PASSWORD, pPassword);
+	public void setProjectFuncsId(String pProjectFuncsId){
+		set(PROJECT_FUNCS_ID, pProjectFuncsId);
 	}
 	
-	public boolean isPasswordNull(){
-		return isNull(PASSWORD);
+	public boolean isProjectFuncsIdNull(){
+		return isNull(PROJECT_FUNCS_ID);
 	}
 
 	protected static final String UPDATE_DATETIME = "update_datetime";
@@ -137,6 +148,20 @@ public class PwdHistory extends DataEntity {
 		return isNull(UPDATE_USER_TITLE);
 	}
 
+	protected static final String UPDATE_MODE = "update_mode";
+
+	public String getUpdateMode() {
+		return (String) get(UPDATE_MODE);
+	}
+	
+	public void setUpdateMode(String pUpdateMode){
+		set(UPDATE_MODE, pUpdateMode);
+	}
+	
+	public boolean isUpdateModeNull(){
+		return isNull(UPDATE_MODE);
+	}
+
 	@Override
 	public String getSchemaName() {
 		return schemaName;
@@ -151,19 +176,25 @@ public class PwdHistory extends DataEntity {
 	public void checkValues(){
 		super.checkValues();
 		checkLong(IDX);
-		checkInteger(USER_ID);
+		checkInteger(GROUP_ID);
 		checkBigDecimal(UPDATE_DATETIME);
 		checkInteger(UPDATE_USER_ID);
 	}
 
-	// ************
+	// ***************
 
-	public void setUpdateUser(Users pUser) {
-		setUpdateUserId(pUser.getId());
+	public void setUpdateUser(Users pUser, String pUpdateMode) {
+		if (pUser != null) {
+			setUpdateUserId(pUser.getId());
+			setUpdateUserName(pUser.getFullName());
+			setUpdateUserTitle(pUser.getTitleName());
+		} else {
+			setUpdateUserId(0);
+			setUpdateUserName("Admin");
+			setUpdateUserTitle("Admin");
+		}
+		setUpdateMode(pUpdateMode);
 		setUpdateDatetimeDb(DateTime.dbNow());
-		setUpdateUserName(pUser.getFullName());
-		setUpdateUserTitle(pUser.getTitleName());
 	}
-
 
 }

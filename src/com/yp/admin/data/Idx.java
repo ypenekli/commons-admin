@@ -2,24 +2,24 @@ package com.yp.admin.data;
 
 
 import com.yp.core.entity.DataEntity;
-import java.lang.Integer;
 
 
-public class Indeks extends DataEntity {
+public class Idx extends DataEntity {
 
+	private static final long serialVersionUID = 8698818900269624526L;
 	private static String schemaName = "COMMON";
-	private static String tableName = "INDEKS";
+	private static String tableName = "IDX";
 
 
-	public Indeks(){
+	public Idx(){
 		super();
-		className = "Indeks";
+		className = "Idx";
 		setPrimaryKeys(IDX);
 	}
 
-	public Indeks(Integer pidx){
+	public Idx(Integer pIdx){
 		this();
-		set(IDX, pidx);
+		set(IDX, pIdx);
 	}
 
 	protected static final String IDX = "idx";
@@ -44,6 +44,12 @@ public class Indeks extends DataEntity {
 	@Override
 	public String getTableName() {
 		return tableName;
+	}
+
+	@Override
+	public void checkValues(){
+		super.checkValues();
+		checkInteger(IDX);
 	}
 
 }

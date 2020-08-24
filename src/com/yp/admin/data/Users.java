@@ -3,14 +3,17 @@ package com.yp.admin.data;
 
 import java.math.BigDecimal;
 import java.util.Date;
+
+import com.yp.core.BaseConstants;
 import com.yp.core.entity.DataEntity;
+import com.yp.core.entity.IDataEntity;
 import com.yp.core.tools.DateTime;
-import java.lang.String;
-import java.lang.Integer;
+import com.yp.core.user.IUser;
 
 
-public class Users extends DataEntity {
+public class Users extends DataEntity implements IUser{
 
+	private static final long serialVersionUID = 6685001995998534606L;
 	private static String schemaName = "COMMON";
 	private static String tableName = "USERS";
 
@@ -21,9 +24,37 @@ public class Users extends DataEntity {
 		setPrimaryKeys(ID);
 	}
 
-	public Users(Integer pid){
+	public Users(Integer pId){
 		this();
-		set(ID, pid);
+		set(ID, pId);
+		set(CITIZENSHIP_NU, BigDecimal.ZERO);
+		set(LOGIN_ERROR_COUNT, 0);
+		setStatusActive(false);
+	}
+
+	public Users(IDataEntity pUser) {
+		this(Double.valueOf(pUser.get(ID).toString()).intValue());
+		set(CITIZENSHIP_NU, pUser.get(CITIZENSHIP_NU));
+		set(NAME, pUser.get(NAME));
+		set(SURNAME, pUser.get(SURNAME));
+		set(BIRTH_DATE, pUser.get(BIRTH_DATE));
+		set(BIRTH_CITY, pUser.get(BIRTH_CITY));
+		set(TITLE, pUser.get(TITLE));
+		set(PROFESSION, pUser.get(PROFESSION));
+		set(POSITION, pUser.get(POSITION));
+		set(CHECKIN_DATE, pUser.get(CHECKIN_DATE));
+		set(CHECKOUT_DATE, pUser.get(CHECKOUT_DATE));
+		set(INVOICE_ADDRESS, pUser.get(INVOICE_ADDRESS));
+		set(INVOICE_CITY, pUser.get(INVOICE_CITY));
+		set(INVOICE_DISTRICT, pUser.get(INVOICE_DISTRICT));
+		setEmail((String) pUser.get(EMAIL));
+		set(PHONENO1, pUser.get(PHONENO1));
+		set(PHONENO2, pUser.get(PHONENO2));
+		set(PHONENO3, pUser.get(PHONENO3));
+		set(PASSWORD, pUser.get(PASSWORD));
+		set(LOGIN_ERROR_COUNT, pUser.get(LOGIN_ERROR_COUNT));
+		set(PWD_UPDATE_DATETIME, pUser.get(PWD_UPDATE_DATETIME));
+		set(STATUS, pUser.get(STATUS));
 	}
 
 	protected static final String ID = "id";
@@ -40,18 +71,18 @@ public class Users extends DataEntity {
 		return isNull(ID);
 	}
 
-	protected static final String CITIZENSHIP_NO = "citizenship_no";
+	protected static final String CITIZENSHIP_NU = "citizenship_nu";
 
-	public BigDecimal getCitizenshipNo() {
-		return (BigDecimal) get(CITIZENSHIP_NO);
+	public BigDecimal getCitizenshipNu() {
+		return (BigDecimal) get(CITIZENSHIP_NU);
 	}
 	
-	public void setCitizenshipNo(BigDecimal pCitizenshipNo){
-		set(CITIZENSHIP_NO, pCitizenshipNo);
+	public void setCitizenshipNu(BigDecimal pCitizenshipNu){
+		set(CITIZENSHIP_NU, pCitizenshipNu);
 	}
 	
-	public boolean isCitizenshipNoNull(){
-		return isNull(CITIZENSHIP_NO);
+	public boolean isCitizenshipNuNull(){
+		return isNull(CITIZENSHIP_NU);
 	}
 
 	protected static final String NAME = "name";
@@ -496,6 +527,84 @@ public class Users extends DataEntity {
 	@Override
 	public String getTableName() {
 		return tableName;
+	}
+
+	@Override
+	public void checkValues(){
+		super.checkValues();
+		checkInteger(ID);
+		checkBigDecimal(CITIZENSHIP_NU);
+		checkBigDecimal(BIRTH_DATE);
+		checkInteger(BIRTH_CITY);
+		checkInteger(TITLE);
+		checkInteger(PROFESSION);
+		checkInteger(POSITION);
+		checkBigDecimal(CHECKIN_DATE);
+		checkBigDecimal(CHECKOUT_DATE);
+		checkInteger(LOGIN_ERROR_COUNT);
+		checkBigDecimal(PWD_UPDATE_DATETIME);
+		checkInteger(HOME_CITY);
+		checkInteger(HOME_DISTRICT);
+		checkInteger(INVOICE_CITY);
+		checkInteger(INVOICE_DISTRICT);
+	}
+
+	/***********/
+
+	protected static final String TITLE_NAME = "title_name";
+
+	public String getTitleName() {
+		return (String) get(TITLE_NAME);
+	}
+
+	protected static final String PROFESSION_NAME = "profession_name";
+
+	public String getProfessionName() {
+		return (String) get(PROFESSION_NAME);
+	}
+
+	protected static final String FULL_NAME = "full_name";
+
+	public String getFullName() {
+		if (isNull(FULL_NAME)) {
+			String name = getName() + " " + getSurname();
+
+			if (!isNull(PROFESSION_NAME))
+				name = get(PROFESSION_NAME) + " " + name;
+			setField(FULL_NAME, name, false);
+		}
+		return (String) get(FULL_NAME);
+	}
+
+	public void incrementLoginErrorCount() {
+		Integer count = getLoginErrorCount();
+		if (count == null)
+			count = 0;
+		count += 1;
+		setLoginErrorCount(count);
+	}
+
+	protected static final String GROUP_ID = "group_id";
+
+	public Integer getGroupId() {
+		return (Integer) get(GROUP_ID);
+	}
+
+	public void setGroupId(Integer pGroupId) {
+		setField(GROUP_ID, pGroupId, false);
+	}
+
+	public void setStatusActive(Boolean pStatus) {
+		set(STATUS, pStatus ? BaseConstants.ENABLED.getKey() : BaseConstants.DISABLED.getKey());
+	}
+
+	public boolean isStatusActive() {
+		return BaseConstants.ENABLED.equals(get(STATUS));
+	}
+
+
+	public String getMobilePhoneNu() {
+		return (String) get(PHONENO2);
 	}
 
 }

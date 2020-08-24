@@ -2,18 +2,20 @@ package com.yp.admin.data;
 
 
 import java.math.BigDecimal;
-import java.lang.Long;
 import java.util.Date;
 import com.yp.core.entity.DataEntity;
 import com.yp.core.tools.DateTime;
-import java.lang.String;
-import java.lang.Integer;
 
 
 public class GroupUsersHistory extends DataEntity {
-
+	
+	private static final long serialVersionUID = 7976844798422445326L;
 	private static String schemaName = "COMMON";
 	private static String tableName = "GROUP_USERS_HISTORY";
+
+	public static final String UPDATE_MODE_ADD = "A";
+	public static final String UPDATE_MODE_DELETE = "D";
+
 
 
 	public GroupUsersHistory(){
@@ -22,9 +24,15 @@ public class GroupUsersHistory extends DataEntity {
 		setPrimaryKeys(IDX);
 	}
 
-	public GroupUsersHistory(Long pidx){
+	public GroupUsersHistory(Long pIdx){
 		this();
-		set(IDX, pidx);
+		set(IDX, pIdx);
+	}
+
+	public GroupUsersHistory(Long pIdx, GroupUsers pGroupUsers){
+		this(pIdx);
+		setGroupId(pGroupUsers.getGroupId());
+		setUserId(pGroupUsers.getUserId());
 	}
 
 	protected static final String IDX = "idx";
@@ -162,5 +170,32 @@ public class GroupUsersHistory extends DataEntity {
 	public String getTableName() {
 		return tableName;
 	}
+
+	@Override
+	public void checkValues(){
+		super.checkValues();
+		checkLong(IDX);
+		checkInteger(GROUP_ID);
+		checkInteger(USER_ID);
+		checkBigDecimal(UPDATE_DATETIME);
+		checkInteger(UPDATE_USER_ID);
+	}
+
+	// **************
+
+	public void setUpdateUser(Users pUser, String pUpdateMode) {
+		if (pUser != null) {
+			setUpdateUserId(pUser.getId());
+			setUpdateUserName(pUser.getFullName());
+			setUpdateUserTitle(pUser.getTitleName());
+		} else {
+			setUpdateUserId(0);
+			setUpdateUserName("Admin");
+			setUpdateUserTitle("Admin");
+		}
+		setUpdateMode(pUpdateMode);
+		setUpdateDatetimeDb(DateTime.dbNow());
+	}
+
 
 }

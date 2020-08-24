@@ -2,11 +2,11 @@ package com.yp.admin.data;
 
 
 import com.yp.core.entity.DataEntity;
-import java.lang.Integer;
 
 
 public class GroupUsers extends DataEntity {
 
+	private static final long serialVersionUID = 7989574171523810300L;
 	private static String schemaName = "COMMON";
 	private static String tableName = "GROUP_USERS";
 
@@ -17,10 +17,10 @@ public class GroupUsers extends DataEntity {
 		setPrimaryKeys(GROUP_ID, USER_ID);
 	}
 
-	public GroupUsers(Integer pgroup_id, Integer puser_id){
+	public GroupUsers(Integer pGroupId, Integer pUserId){
 		this();
-		set(GROUP_ID, pgroup_id);
-		set(USER_ID, puser_id);
+		set(GROUP_ID, pGroupId);
+		set(USER_ID, pUserId);
 	}
 
 	protected static final String GROUP_ID = "group_id";
@@ -59,6 +59,13 @@ public class GroupUsers extends DataEntity {
 	@Override
 	public String getTableName() {
 		return tableName;
+	}
+
+	@Override
+	public void checkValues(){
+		super.checkValues();
+		checkInteger(GROUP_ID);
+		checkInteger(USER_ID);
 	}
 
 }

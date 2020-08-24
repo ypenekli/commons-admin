@@ -2,15 +2,14 @@ package com.yp.admin.data;
 
 
 import java.math.BigDecimal;
-import java.lang.Long;
 import java.util.Date;
 import com.yp.core.entity.DataEntity;
 import com.yp.core.tools.DateTime;
-import java.lang.Integer;
 
 
 public class LoginHistory extends DataEntity {
 
+	private static final long serialVersionUID = 1722047788792203625L;
 	private static String schemaName = "COMMON";
 	private static String tableName = "LOGIN_HISTORY";
 
@@ -21,9 +20,9 @@ public class LoginHistory extends DataEntity {
 		setPrimaryKeys(IDX);
 	}
 
-	public LoginHistory(Long pidx){
+	public LoginHistory(Long pIdx){
 		this();
-		set(IDX, pidx);
+		set(IDX, pIdx);
 	}
 
 	protected static final String IDX = "idx";
@@ -42,11 +41,11 @@ public class LoginHistory extends DataEntity {
 
 	protected static final String PROJECT_ID = "project_id";
 
-	public Integer getProjectId() {
-		return (Integer) get(PROJECT_ID);
+	public String getProjectId() {
+		return (String) get(PROJECT_ID);
 	}
 	
-	public void setProjectId(Integer pProjectId){
+	public void setProjectId(String pProjectId){
 		set(PROJECT_ID, pProjectId);
 	}
 	
@@ -104,6 +103,14 @@ public class LoginHistory extends DataEntity {
 	@Override
 	public String getTableName() {
 		return tableName;
+	}
+
+	@Override
+	public void checkValues(){
+		super.checkValues();
+		checkLong(IDX);
+		checkInteger(USER_ID);
+		checkBigDecimal(LOGIN_DATETIME);
 	}
 
 }

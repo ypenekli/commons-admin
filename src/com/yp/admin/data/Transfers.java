@@ -5,12 +5,11 @@ import java.math.BigDecimal;
 import java.util.Date;
 import com.yp.core.entity.DataEntity;
 import com.yp.core.tools.DateTime;
-import java.lang.String;
-import java.lang.Integer;
 
 
 public class Transfers extends DataEntity {
 
+	private static final long serialVersionUID = 783015803424147220L;
 	private static String schemaName = "COMMON";
 	private static String tableName = "TRANSFERS";
 
@@ -21,12 +20,12 @@ public class Transfers extends DataEntity {
 		setPrimaryKeys(SOURCE_SCHEMA, SOURCE_TABLE, TARGET_SCHEMA, TARGET_TABLE);
 	}
 
-	public Transfers(String psource_schema, String psource_table, String ptarget_schema, String ptarget_table){
+	public Transfers(String pSourceSchema, String pSourceTable, String pTargetSchema, String pTargetTable){
 		this();
-		set(SOURCE_SCHEMA, psource_schema);
-		set(SOURCE_TABLE, psource_table);
-		set(TARGET_SCHEMA, ptarget_schema);
-		set(TARGET_TABLE, ptarget_table);
+		set(SOURCE_SCHEMA, pSourceSchema);
+		set(SOURCE_TABLE, pSourceTable);
+		set(TARGET_SCHEMA, pTargetSchema);
+		set(TARGET_TABLE, pTargetTable);
 	}
 
 	protected static final String SOURCE_SCHEMA = "source_schema";
@@ -247,6 +246,17 @@ public class Transfers extends DataEntity {
 	@Override
 	public String getTableName() {
 		return tableName;
+	}
+
+	@Override
+	public void checkValues(){
+		super.checkValues();
+		checkInteger(SOURCE_COUNT);
+		checkInteger(TARGET_COUNT);
+		checkBigDecimal(START_DATETIME);
+		checkBigDecimal(END_DATETIME);
+		checkInteger(IDX);
+		checkInteger(ERROR_CODE);
 	}
 
 }

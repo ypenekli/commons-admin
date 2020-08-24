@@ -3,11 +3,11 @@ package com.yp.admin.data;
 
 import com.yp.core.entity.DataEntity;
 import java.sql.Blob;
-import java.lang.Integer;
 
 
 public class UserImages extends DataEntity {
 
+	private static final long serialVersionUID = 553319198399236230L;
 	private static String schemaName = "COMMON";
 	private static String tableName = "USER_IMAGES";
 
@@ -18,10 +18,10 @@ public class UserImages extends DataEntity {
 		setPrimaryKeys(USER_ID, IDX);
 	}
 
-	public UserImages(Integer puser_id, Integer pidx){
+	public UserImages(Integer pUserId, Integer pIdx){
 		this();
-		set(USER_ID, puser_id);
-		set(IDX, pidx);
+		set(USER_ID, pUserId);
+		set(IDX, pIdx);
 	}
 
 	protected static final String USER_ID = "user_id";
@@ -66,6 +66,20 @@ public class UserImages extends DataEntity {
 		return isNull(IMAGE);
 	}
 
+	protected static final String IMAGE_TYPE = "image_type";
+
+	public String getImageType() {
+		return (String) get(IMAGE_TYPE);
+	}
+	
+	public void setImageType(String pImageType){
+		set(IMAGE_TYPE, pImageType);
+	}
+	
+	public boolean isImageTypeNull(){
+		return isNull(IMAGE_TYPE);
+	}
+
 	@Override
 	public String getSchemaName() {
 		return schemaName;
@@ -74,6 +88,14 @@ public class UserImages extends DataEntity {
 	@Override
 	public String getTableName() {
 		return tableName;
+	}
+
+	@Override
+	public void checkValues(){
+		super.checkValues();
+		checkInteger(USER_ID);
+		checkInteger(IDX);
+		checkBlob(IMAGE);
 	}
 
 }
