@@ -3,6 +3,7 @@ package com.yp.admin.data;
 
 import com.yp.core.BaseConstants;
 import com.yp.core.entity.DataEntity;
+import com.yp.core.entity.IDataEntity;
 
 
 public class ProjectFuncs extends DataEntity {
@@ -15,13 +16,28 @@ public class ProjectFuncs extends DataEntity {
 	public ProjectFuncs(){
 		super();
 		className = "ProjectFuncs";
-		setPrimaryKeys(PROJECT_ID, ID);
+		setPrimaryKeys(ID);
 	}
 
-	public ProjectFuncs(String pProjectId, String pId){
+	public ProjectFuncs(String pId){
 		this();
-		set(PROJECT_ID, pProjectId);
 		set(ID, pId);
+	}
+
+	public ProjectFuncs(IDataEntity pDe){
+		this((String)pDe.get(ID));
+		set(DESCRIPTION, pDe.get(DESCRIPTION));
+		set(HIERARCHY, pDe.get(HIERARCHY));
+		set(ICON_URL, pDe.get(ICON_URL));
+		set(IDX, pDe.get(IDX));
+		set(LEAF, pDe.get(LEAF));
+		set(LEVEL, pDe.get(LEVEL));
+		set(NAME, pDe.get(NAME));
+		set(PARENT_ID, pDe.get(PARENT_ID));
+		set(PROJECT_ID, pDe.get(PROJECT_ID));
+		set(STATUS, pDe.get(STATUS));
+		set(TARGET, pDe.get(TARGET));
+		set(URL, pDe.get(URL));
 	}
 
 	protected static final String PROJECT_ID = "project_id";
@@ -222,9 +238,11 @@ public class ProjectFuncs extends DataEntity {
 		checkInteger(IDX);
 		checkInteger(LEVEL);
 	}
+	
+	//*************
 
-	public boolean isStatusActive() {
-		return BaseConstants.ACTIVE.equals(get(STATUS));
+	public boolean isStatusEnabled() {
+		return BaseConstants.ENABLED.equals(get(STATUS));
 	}
 
 	public boolean isLeaf() {

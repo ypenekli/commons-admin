@@ -1,8 +1,7 @@
 package com.yp.admin.data;
 
-
 import com.yp.core.entity.DataEntity;
-
+import com.yp.core.entity.IDataEntity;
 
 public class GroupUsers extends DataEntity {
 
@@ -10,17 +9,21 @@ public class GroupUsers extends DataEntity {
 	private static String schemaName = "COMMON";
 	private static String tableName = "GROUP_USERS";
 
-
-	public GroupUsers(){
+	public GroupUsers() {
 		super();
 		className = "GroupUsers";
 		setPrimaryKeys(GROUP_ID, USER_ID);
 	}
 
-	public GroupUsers(Integer pGroupId, Integer pUserId){
+	public GroupUsers(Integer pGroupId, Integer pUserId) {
 		this();
 		set(GROUP_ID, pGroupId);
 		set(USER_ID, pUserId);
+	}
+
+	public GroupUsers(IDataEntity pDe) {
+		this(Double.valueOf(pDe.get(GROUP_ID).toString()).intValue(),
+				Double.valueOf(pDe.get(USER_ID).toString()).intValue());
 	}
 
 	protected static final String GROUP_ID = "group_id";
@@ -28,12 +31,12 @@ public class GroupUsers extends DataEntity {
 	public Integer getGroupId() {
 		return (Integer) get(GROUP_ID);
 	}
-	
-	public void setGroupId(Integer pGroupId){
+
+	public void setGroupId(Integer pGroupId) {
 		set(GROUP_ID, pGroupId);
 	}
-	
-	public boolean isGroupIdNull(){
+
+	public boolean isGroupIdNull() {
 		return isNull(GROUP_ID);
 	}
 
@@ -42,12 +45,12 @@ public class GroupUsers extends DataEntity {
 	public Integer getUserId() {
 		return (Integer) get(USER_ID);
 	}
-	
-	public void setUserId(Integer pUserId){
+
+	public void setUserId(Integer pUserId) {
 		set(USER_ID, pUserId);
 	}
-	
-	public boolean isUserIdNull(){
+
+	public boolean isUserIdNull() {
 		return isNull(USER_ID);
 	}
 
@@ -62,7 +65,7 @@ public class GroupUsers extends DataEntity {
 	}
 
 	@Override
-	public void checkValues(){
+	public void checkValues() {
 		super.checkValues();
 		checkInteger(GROUP_ID);
 		checkInteger(USER_ID);

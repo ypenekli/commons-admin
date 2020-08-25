@@ -1,4 +1,7 @@
-drop table common.projects;
+drop schema  if exists  `common`;
+create schema `common` character set utf8 default collate  utf8_turkish_ci;
+grant all on `common`.* TO `admin`@'%' IDENTIFIED BY '***';
+drop table if exists common.projects;
 create table common.projects(
 	id char(5) not null,
 	name varchar(150) not null,
@@ -23,8 +26,8 @@ create table common.projects(
 		id 
 	)
 );
-drop table common.project_funcs;
-create table common.project_funcs(
+drop table if exists common.project_funcs;
+create table common.project_funcs(	
 	id varchar(50) not null,
 	project_id char(5) not null,
 	name varchar(150) not null,
@@ -52,7 +55,7 @@ create table common.project_funcs(
 	)
 );
 
-drop table common.project_versions;
+drop table if exists common.project_versions;
 create table common.project_versions(
 	project_id char(5) not null,
 	version int not null default 100,
@@ -75,7 +78,7 @@ create table common.project_versions(
 );
 
 
-drop table common.groups;
+drop table if exists common.groups;
 create table common.groups(
 	id integer not null,
 	name varchar(150) not null,
@@ -95,7 +98,7 @@ create table common.groups(
 		id 
 	)
 );
-drop table common.group_project_funcs;
+drop table if exists common.group_project_funcs;
 create table common.group_project_funcs(
 	group_id integer not null,
 	project_funcs_id varchar(50) not null,	
@@ -111,7 +114,7 @@ create table common.group_project_funcs(
 		group_id, project_funcs_id 
 	)
 );
-drop table common.group_project_funcs_history;
+drop table if exists common.group_project_funcs_history;
 create table common.group_project_funcs_history(
 	idx bigint not null,
 	group_id integer not null,
@@ -132,7 +135,7 @@ create table common.group_project_funcs_history(
 		idx 
 	)
 );
-drop table common.group_users;
+drop table if exists common.group_users;
 create table common.group_users(
 	group_id integer not null,
 	user_id integer not null,
@@ -148,7 +151,7 @@ create table common.group_users(
 		group_id, user_id 
 	)
 );
-drop table common.group_users_history;
+drop table if exists common.group_users_history;
 create table common.group_users_history(
 	idx bigint not null,
 	group_id integer not null,
@@ -168,7 +171,7 @@ create table common.group_users_history(
 		idx 
 	)
 );
-drop table common.users;
+drop table if exists common.users;
 create table common.users(
 	id integer not null,
 	citizenship_nu numeric(11,0) NOT NULL DEFAULT 0,
@@ -211,7 +214,7 @@ create table common.users(
 		id 
 	)
 );
-drop table common.user_images;
+drop table if exists common.user_images;
 create table common.user_images(
 	user_id integer not null,
 	idx integer not null,
@@ -229,7 +232,7 @@ create table common.user_images(
 		user_id, idx 
 	)
 );
-drop table common.login_history;
+drop table if exists common.login_history;
 create table common.login_history(
 	idx bigint not null,
 	project_id varchar(50) not null,		
@@ -245,7 +248,7 @@ create table common.login_history(
 		idx 
 	)
 );
-drop table common.pwd_history;
+drop table if exists common.pwd_history;
 create table common.pwd_history(
 	idx bigint not null,
 	user_id integer not null,
@@ -264,7 +267,7 @@ create table common.pwd_history(
 		idx 
 	)
 );
-drop table common.commons;
+drop table if exists common.commons;
 create table common.commons(
 	id integer not null,
 	name varchar(150) not null,
@@ -273,7 +276,7 @@ create table common.commons(
 	group_code integer not null default -1,	
 	
     parent_id integer not null default -1,
-	idx int default 0,
+	idx int not null default 0,
     level int not null default 0,
     hierarchy varchar(150),
     leaf char not null default 'F',    
@@ -291,7 +294,7 @@ create table common.commons(
 		id 
 	)
 );	
-drop table common.transfers;
+drop table if exists common.transfers;
 create table common.transfers(
 	source_schema varchar(50) not null,
 	source_table varchar(50) not null,
@@ -312,7 +315,7 @@ create table common.transfers(
 		source_schema, source_table, target_schema, target_table 
 	)
 );
-drop table common.idx;
+drop table if exists common.idx;
 create table common.idx(
 	idx int not null default 0, 
 	constraint pk_common_idx primary key  
@@ -320,3 +323,21 @@ create table common.idx(
 		idx 
 	)
 );
+
+drop procedure if exists `fill_idx`;
+DELIMITER $$
+USE `common`$$
+CREATE PROCEDURE `fill_idx`(IN ykn int)
+BEGIN  
+  declare i int default 0; 
+  
+  SET SQL_SAFE_UPDATES = 0; 
+  SELECT count(idx) into i FROM idx;     
+  SET i = i + 1;
+  WHILE i <= ykn DO
+    INSERT INTO IDX VALUES (i);
+    SET i = i + 1;
+  END WHILE;  
+  SET SQL_SAFE_UPDATES = 1; 
+END$$
+DELIMITER ;

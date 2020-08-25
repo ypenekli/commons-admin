@@ -1,7 +1,9 @@
 package com.yp.admin.data;
 
 
+import com.yp.core.BaseConstants;
 import com.yp.core.entity.DataEntity;
+import com.yp.core.entity.IDataEntity;
 
 
 public class Groups extends DataEntity {
@@ -23,6 +25,15 @@ public class Groups extends DataEntity {
 	public Groups(Integer pId){
 		this();
 		set(ID, pId);
+	}
+
+	public Groups(IDataEntity pDe){
+		this(Double.valueOf(pDe.get(ID).toString()).intValue());
+		set(GROUP_TYPE, pDe.get(GROUP_TYPE));
+		set(HIERARCHY, pDe.get(HIERARCHY));
+		set(NAME, pDe.get(NAME));
+		set(PROJECT_ID, pDe.get(PROJECT_ID));
+		set(STATUS, pDe.get(STATUS));		
 	}
 
 	protected static final String ID = "id";
@@ -124,6 +135,13 @@ public class Groups extends DataEntity {
 		super.checkValues();
 		checkInteger(ID);
 	}
+	
+	//***********
+	
+	public boolean isStatusEnabled() {
+		return BaseConstants.ENABLED.equals(get(STATUS));
+	}
+
 
 	// for rootMenuList add query below fields
 

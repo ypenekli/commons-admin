@@ -1,8 +1,7 @@
 package com.yp.admin.data;
 
-
 import com.yp.core.entity.DataEntity;
-
+import com.yp.core.entity.IDataEntity;
 
 public class GroupProjectFuncs extends DataEntity {
 
@@ -10,17 +9,20 @@ public class GroupProjectFuncs extends DataEntity {
 	private static String schemaName = "COMMON";
 	private static String tableName = "GROUP_PROJECT_FUNCS";
 
-
-	public GroupProjectFuncs(){
+	public GroupProjectFuncs() {
 		super();
 		className = "GroupProjectFuncs";
 		setPrimaryKeys(GROUP_ID, PROJECT_FUNCS_ID);
 	}
 
-	public GroupProjectFuncs(Integer pGroupId, String pProjectFuncsId){
+	public GroupProjectFuncs(Integer pGroupId, String pProjectFuncsId) {
 		this();
 		set(GROUP_ID, pGroupId);
 		set(PROJECT_FUNCS_ID, pProjectFuncsId);
+	}
+
+	public GroupProjectFuncs(IDataEntity pDe) {
+		this(Double.valueOf(pDe.get(GROUP_ID).toString()).intValue(), (String) pDe.get(PROJECT_FUNCS_ID));
 	}
 
 	protected static final String GROUP_ID = "group_id";
@@ -28,12 +30,12 @@ public class GroupProjectFuncs extends DataEntity {
 	public Integer getGroupId() {
 		return (Integer) get(GROUP_ID);
 	}
-	
-	public void setGroupId(Integer pGroupId){
+
+	public void setGroupId(Integer pGroupId) {
 		set(GROUP_ID, pGroupId);
 	}
-	
-	public boolean isGroupIdNull(){
+
+	public boolean isGroupIdNull() {
 		return isNull(GROUP_ID);
 	}
 
@@ -42,12 +44,12 @@ public class GroupProjectFuncs extends DataEntity {
 	public String getProjectFuncsId() {
 		return (String) get(PROJECT_FUNCS_ID);
 	}
-	
-	public void setProjectFuncsId(String pProjectFuncsId){
+
+	public void setProjectFuncsId(String pProjectFuncsId) {
 		set(PROJECT_FUNCS_ID, pProjectFuncsId);
 	}
-	
-	public boolean isProjectFuncsIdNull(){
+
+	public boolean isProjectFuncsIdNull() {
 		return isNull(PROJECT_FUNCS_ID);
 	}
 
@@ -62,7 +64,7 @@ public class GroupProjectFuncs extends DataEntity {
 	}
 
 	@Override
-	public void checkValues(){
+	public void checkValues() {
 		super.checkValues();
 		checkInteger(GROUP_ID);
 	}

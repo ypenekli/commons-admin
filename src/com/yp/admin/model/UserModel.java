@@ -8,6 +8,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.yp.admin.Constants;
 import com.yp.admin.data.LoginHistory;
 import com.yp.admin.data.Projects;
 import com.yp.admin.data.PwdHistory;
@@ -29,7 +30,7 @@ public class UserModel extends AModel<Users> {
 
 	public static final String Q_Principles = "Principles";
 	public static final String Q_KISITNM1 = "SRGKISITNM1";
-	public static final String Q_EMail = "SRGKISITNM3";
+	public static final String Q_EMail = "Q.USERS3";
 	public static final String Q_KISITNM2 = "SRGKISITNM2";
 	public static final String Q_KISITNM4 = "SRGKISITNM4";
 	public static final String Q_Telephone = "SRGKISITNM5";
@@ -52,7 +53,7 @@ public class UserModel extends AModel<Users> {
 			pEMail = pEMail.toLowerCase(BaseConstants.LOCALE_EN);
 
 			DbCommand query = new DbCommand(Q_EMail, new FnParam("email", pEMail));
-			query.setQuery(BaseConstants.getSgl(Q_EMail));
+			query.setQuery(Constants.getSgl(Q_EMail));
 
 			return findOne(query);
 		}
@@ -146,7 +147,7 @@ public class UserModel extends AModel<Users> {
 		return 0L;
 	}
 
-	private IResult<Object[]> verify(Users pUser, String pPassword, String pProjectId, String pClientIP) {
+	private IResult<Object[]> checkUser(Users pUser, String pPassword, String pProjectId, String pClientIP) {
 		final IResult<Object[]> result = new Result<>();
 		List<Projects> userMenu = null;
 		if (pUser != null) {
@@ -185,7 +186,7 @@ public class UserModel extends AModel<Users> {
 		IResult<Object[]> res;
 
 		user = findByTC(pTckmlnmr);
-		res = verify(user, pPassword, pProjectId, pClientIP);
+		res = checkUser(user, pPassword, pProjectId, pClientIP);
 
 		return res;
 	}
@@ -195,7 +196,7 @@ public class UserModel extends AModel<Users> {
 		IResult<Object[]> res;
 
 		user = findByEMail(pEMail);
-		res = verify(user, pPassword, pProjectId, pClientIP);
+		res = checkUser(user, pPassword, pProjectId, pClientIP);
 
 		return res;
 

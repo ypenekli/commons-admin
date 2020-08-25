@@ -9,7 +9,6 @@ import com.yp.admin.Constants;
 import com.yp.admin.data.GroupProjectFuncs;
 import com.yp.admin.data.GroupProjectFuncsHistory;
 import com.yp.admin.data.ProjectFuncs;
-import com.yp.admin.data.Projects;
 import com.yp.admin.data.Users;
 import com.yp.core.AModel;
 import com.yp.core.BaseConstants;
@@ -35,7 +34,8 @@ public class ProjectFuncModel extends AModel<ProjectFuncs> {
 	public static final String Q_VERSION_NOTES = "Version.Notes";
 	public static final String Q_VERSIONS = "Versions";
 
-	public static final IReference<String> TARGET_UPDATE = new Reference<>("targetAUDL",
+	public static final IReference<String> TARGET_UPDATE = new Reference<>(
+			"targetAUDL",
 			BaseConstants.getString("TARGET.UPDATE"));
 	public static final IReference<String> TARGET_EDIT = new Reference<>("targetAUD",
 			BaseConstants.getString("TARGET.EDIT"));

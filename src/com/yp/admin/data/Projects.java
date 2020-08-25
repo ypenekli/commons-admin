@@ -3,7 +3,10 @@ package com.yp.admin.data;
 
 import java.math.BigDecimal;
 import java.util.Date;
+
+import com.yp.core.BaseConstants;
 import com.yp.core.entity.DataEntity;
+import com.yp.core.entity.IDataEntity;
 import com.yp.core.tools.DateTime;
 
 
@@ -23,6 +26,20 @@ public class Projects extends DataEntity {
 	public Projects(String pId){
 		this();
 		set(ID, pId);
+	}
+
+	public Projects(IDataEntity pDe){
+		this((String)pDe.get(ID));
+		set(AUTOR, pDe.get(AUTOR));
+		set(DESCRIPTION, pDe.get(DESCRIPTION));
+		set(ICON_URL, pDe.get(ICON_URL));
+		set(NAME, pDe.get(NAME));
+		set(ORGANIZATION, pDe.get(ORGANIZATION));
+		set(STATUS, pDe.get(STATUS));
+		set(TARGET, pDe.get(TARGET));
+		set(URL, pDe.get(URL));
+		set(VERSION, pDe.get(VERSION));
+		set(VERSION_UPDATE_DATE, pDe.get(VERSION_UPDATE_DATE));
 	}
 
 	protected static final String ID = "id";
@@ -207,6 +224,13 @@ public class Projects extends DataEntity {
 	public void checkValues(){
 		super.checkValues();
 		checkBigDecimal(VERSION_UPDATE_DATE);
+	}
+	
+	//**************
+
+
+	public boolean isStatusEnabled() {
+		return BaseConstants.ENABLED.equals(get(STATUS));
 	}
 
 }

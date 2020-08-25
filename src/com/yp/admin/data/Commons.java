@@ -1,7 +1,9 @@
 package com.yp.admin.data;
 
 
+import com.yp.core.BaseConstants;
 import com.yp.core.entity.DataEntity;
+import com.yp.core.entity.IDataEntity;
 
 
 public class Commons extends DataEntity {
@@ -20,6 +22,21 @@ public class Commons extends DataEntity {
 	public Commons(Integer pId){
 		this();
 		set(ID, pId);
+	}
+
+	public Commons(IDataEntity pDe){
+		this(Double.valueOf(pDe.get(ID).toString()).intValue());
+		setAbrv((String)pDe.get(ABRV));
+		set(DESCRIPTION, pDe.get(DESCRIPTION));
+		set(GROUP_CODE, pDe.get(GROUP_CODE));
+		set(HIERARCHY, pDe.get(HIERARCHY));
+		set(ICON_URL, pDe.get(ICON_URL));
+		set(IDX, pDe.get(IDX));
+		set(LEAF, pDe.get(LEAF));
+		set(LEVEL, pDe.get(LEVEL));
+		set(NAME, pDe.get(NAME));
+		set(PARENT_ID, pDe.get(PARENT_ID));		
+		set(STATUS, pDe.get(STATUS));
 	}
 
 	protected static final String ID = "id";
@@ -57,7 +74,7 @@ public class Commons extends DataEntity {
 	}
 	
 	public void setAbrv(String pAbrv){
-		set(ABRV, pAbrv);
+		set(ABRV, pAbrv, 75);
 	}
 	
 	public boolean isAbrvNull(){
@@ -209,5 +226,12 @@ public class Commons extends DataEntity {
 		checkInteger(IDX);
 		checkInteger(LEVEL);
 	}
+	
+	//************
+	
+	public boolean isStatusEnabled() {
+		return BaseConstants.ENABLED.equals(get(STATUS));
+	}
+
 
 }
