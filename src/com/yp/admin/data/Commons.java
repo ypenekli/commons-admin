@@ -1,32 +1,39 @@
 package com.yp.admin.data;
 
-
 import com.yp.core.BaseConstants;
 import com.yp.core.entity.DataEntity;
 import com.yp.core.entity.IDataEntity;
+import com.yp.core.ref.IReference;
 
-
-public class Commons extends DataEntity {
+public class Commons extends DataEntity implements IReference<Integer> {
 
 	private static final long serialVersionUID = 8655468033821499434L;
 	private static String schemaName = "COMMON";
 	private static String tableName = "COMMONS";
 
-
-	public Commons(){
+	public Commons() {
 		super();
 		className = "Commons";
 		setPrimaryKeys(ID);
 	}
 
-	public Commons(Integer pId){
+	public Commons(Integer pId) {
 		this();
 		set(ID, pId);
 	}
 
-	public Commons(IDataEntity pDe){
+	public Commons(final Integer pId, final Integer pParentId, final Integer pLevel, final Integer pGroupCode,
+			final String pHierarchy) {
+		this(pId);
+		setParentId(pParentId);
+		setLevel(pLevel);
+		setGroupCode(pGroupCode);
+		setHierarchy(pHierarchy);
+	}
+
+	public Commons(IDataEntity pDe) {
 		this(Double.valueOf(pDe.get(ID).toString()).intValue());
-		setAbrv((String)pDe.get(ABRV));
+		setAbrv((String) pDe.get(ABRV));
 		set(DESCRIPTION, pDe.get(DESCRIPTION));
 		set(GROUP_CODE, pDe.get(GROUP_CODE));
 		set(HIERARCHY, pDe.get(HIERARCHY));
@@ -35,7 +42,7 @@ public class Commons extends DataEntity {
 		set(LEAF, pDe.get(LEAF));
 		set(LEVEL, pDe.get(LEVEL));
 		set(NAME, pDe.get(NAME));
-		set(PARENT_ID, pDe.get(PARENT_ID));		
+		set(PARENT_ID, pDe.get(PARENT_ID));
 		set(STATUS, pDe.get(STATUS));
 	}
 
@@ -44,12 +51,12 @@ public class Commons extends DataEntity {
 	public Integer getId() {
 		return (Integer) get(ID);
 	}
-	
-	public void setId(Integer pId){
+
+	public void setId(Integer pId) {
 		set(ID, pId);
 	}
-	
-	public boolean isIdNull(){
+
+	public boolean isIdNull() {
 		return isNull(ID);
 	}
 
@@ -58,12 +65,12 @@ public class Commons extends DataEntity {
 	public String getName() {
 		return (String) get(NAME);
 	}
-	
-	public void setName(String pName){
+
+	public void setName(String pName) {
 		set(NAME, pName);
 	}
-	
-	public boolean isNameNull(){
+
+	public boolean isNameNull() {
 		return isNull(NAME);
 	}
 
@@ -72,12 +79,12 @@ public class Commons extends DataEntity {
 	public String getAbrv() {
 		return (String) get(ABRV);
 	}
-	
-	public void setAbrv(String pAbrv){
+
+	public void setAbrv(String pAbrv) {
 		set(ABRV, pAbrv, 75);
 	}
-	
-	public boolean isAbrvNull(){
+
+	public boolean isAbrvNull() {
 		return isNull(ABRV);
 	}
 
@@ -86,12 +93,12 @@ public class Commons extends DataEntity {
 	public String getDescription() {
 		return (String) get(DESCRIPTION);
 	}
-	
-	public void setDescription(String pDescription){
+
+	public void setDescription(String pDescription) {
 		set(DESCRIPTION, pDescription);
 	}
-	
-	public boolean isDescriptionNull(){
+
+	public boolean isDescriptionNull() {
 		return isNull(DESCRIPTION);
 	}
 
@@ -100,12 +107,12 @@ public class Commons extends DataEntity {
 	public Integer getGroupCode() {
 		return (Integer) get(GROUP_CODE);
 	}
-	
-	public void setGroupCode(Integer pGroupCode){
+
+	public void setGroupCode(Integer pGroupCode) {
 		set(GROUP_CODE, pGroupCode);
 	}
-	
-	public boolean isGroupCodeNull(){
+
+	public boolean isGroupCodeNull() {
 		return isNull(GROUP_CODE);
 	}
 
@@ -114,12 +121,12 @@ public class Commons extends DataEntity {
 	public Integer getParentId() {
 		return (Integer) get(PARENT_ID);
 	}
-	
-	public void setParentId(Integer pParentId){
+
+	public void setParentId(Integer pParentId) {
 		set(PARENT_ID, pParentId);
 	}
-	
-	public boolean isParentIdNull(){
+
+	public boolean isParentIdNull() {
 		return isNull(PARENT_ID);
 	}
 
@@ -128,12 +135,12 @@ public class Commons extends DataEntity {
 	public Integer getIdx() {
 		return (Integer) get(IDX);
 	}
-	
-	public void setIdx(Integer pIdx){
+
+	public void setIdx(Integer pIdx) {
 		set(IDX, pIdx);
 	}
-	
-	public boolean isIdxNull(){
+
+	public boolean isIdxNull() {
 		return isNull(IDX);
 	}
 
@@ -142,12 +149,12 @@ public class Commons extends DataEntity {
 	public Integer getLevel() {
 		return (Integer) get(LEVEL);
 	}
-	
-	public void setLevel(Integer pLevel){
+
+	public void setLevel(Integer pLevel) {
 		set(LEVEL, pLevel);
 	}
-	
-	public boolean isLevelNull(){
+
+	public boolean isLevelNull() {
 		return isNull(LEVEL);
 	}
 
@@ -156,12 +163,12 @@ public class Commons extends DataEntity {
 	public String getHierarchy() {
 		return (String) get(HIERARCHY);
 	}
-	
-	public void setHierarchy(String pHierarchy){
+
+	public void setHierarchy(String pHierarchy) {
 		set(HIERARCHY, pHierarchy);
 	}
-	
-	public boolean isHierarchyNull(){
+
+	public boolean isHierarchyNull() {
 		return isNull(HIERARCHY);
 	}
 
@@ -170,12 +177,12 @@ public class Commons extends DataEntity {
 	public String getLeaf() {
 		return (String) get(LEAF);
 	}
-	
-	public void setLeaf(String pLeaf){
+
+	public void setLeaf(String pLeaf) {
 		set(LEAF, pLeaf);
 	}
-	
-	public boolean isLeafNull(){
+
+	public boolean isLeafNull() {
 		return isNull(LEAF);
 	}
 
@@ -184,12 +191,12 @@ public class Commons extends DataEntity {
 	public String getIconUrl() {
 		return (String) get(ICON_URL);
 	}
-	
-	public void setIconUrl(String pIconUrl){
+
+	public void setIconUrl(String pIconUrl) {
 		set(ICON_URL, pIconUrl);
 	}
-	
-	public boolean isIconUrlNull(){
+
+	public boolean isIconUrlNull() {
 		return isNull(ICON_URL);
 	}
 
@@ -198,12 +205,12 @@ public class Commons extends DataEntity {
 	public String getStatus() {
 		return (String) get(STATUS);
 	}
-	
-	public void setStatus(String pStatus){
+
+	public void setStatus(String pStatus) {
 		set(STATUS, pStatus);
 	}
-	
-	public boolean isStatusNull(){
+
+	public boolean isStatusNull() {
 		return isNull(STATUS);
 	}
 
@@ -218,7 +225,7 @@ public class Commons extends DataEntity {
 	}
 
 	@Override
-	public void checkValues(){
+	public void checkValues() {
 		super.checkValues();
 		checkInteger(ID);
 		checkInteger(GROUP_CODE);
@@ -226,12 +233,65 @@ public class Commons extends DataEntity {
 		checkInteger(IDX);
 		checkInteger(LEVEL);
 	}
-	
-	//************
-	
+
+	// ************
+
+	public static final Integer PARENT_ID_CITY_TR = 1020000000;
+	public static final Integer PARENT_ID_PROFESSION = 1030000000;
+	public static final Integer PARENT_ID_TITLE = 1040000000;
+	public static final Integer PARENT_ID_POSITION = 1050000000;
+	public static final Commons root = new Commons(0, -1, -1, -1, "0");
+
 	public boolean isStatusEnabled() {
 		return BaseConstants.ENABLED.equals(get(STATUS));
 	}
 
+	// ..IReference
+	@Override
+	public Integer getKey() {
+		return (Integer) get(ID);
+	}
 
+	@Override
+	public void setKey(Integer pKey) {
+		set(ID, pKey);
+	}
+
+	@Override
+	public String getDefinition() {
+		return (String) get(NAME);
+	}
+
+	@Override
+	public void setDefinition(String pDefinition) {
+		set(NAME, pDefinition);
+	}
+
+	@Override
+	public String getExtra() {
+		return (String) get(DESCRIPTION);
+	}
+
+	@Override
+	public void setExtra(String pExtra) {
+		set(DESCRIPTION, pExtra);
+	}
+
+	// ..IReference
+
+	@Override
+	public boolean equals(Object pObj) {
+		if (pObj != null)
+			if (pObj instanceof Commons || pObj instanceof IReference<?>) {
+				return getId() != null && getId().equals(((Commons) pObj).getId());
+			} else if (pObj instanceof Integer) {
+				return getId() != null && getId().equals(pObj);
+			}
+		return false;
+	}
+
+	@Override
+	public String toString() {
+		return getName();
+	}
 }

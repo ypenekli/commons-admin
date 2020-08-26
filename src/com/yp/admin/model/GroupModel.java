@@ -28,7 +28,7 @@ public class GroupModel extends AModel<Groups> {
 	public static final String Q_GRPTNM3 = "SRGGRPTNM3";
 	public static final String Q_GRPTNM4 = "SRGGRPTNM4";
 	public static final String Q_GRPTNM41 = "SRGGRPTNM41";
-	public static final String Q_GRPTNM5 = "SRGGRPTNM5";
+	public static final String Q_GROUPS5 = "Q.GROUPS5";
 	public static final String Q_PRSTNM4 = "SRGPRSTNM4";
 	public static final String Q_GRPISLV1 = "SRGGRPISLV1";
 	public static final String Q_GRPPRSSFH1 = "SRGGRPPRSSFH1";
@@ -67,9 +67,9 @@ public class GroupModel extends AModel<Groups> {
 		return this.findAny(query);
 	}
 
-	public List<Groups> findGroupList(final Integer pUserId, final String pPrjkod) {
-		final DbCommand query = new DbCommand(Q_GRPTNM5, new FnParam("prjkod", pPrjkod),
-				new FnParam("kisikytnu", pUserId));
+	public List<Groups> findGroupList(final Integer pUserId, final String pProjectId) {
+		final DbCommand query = new DbCommand(Q_GROUPS5, new FnParam("procet_id", pProjectId),
+				new FnParam("user_id", pUserId));
 		query.setQuery(Constants.getSgl(query.getName()));
 		return this.findAny(query);
 	}
@@ -322,7 +322,7 @@ public class GroupModel extends AModel<Groups> {
 		final List<IDataEntity> addHistoryList = new ArrayList<>();
 		for (int dI = 0; dI < pFuncs.length; ++dI) {
 			final GroupProjectFuncs delete = new GroupProjectFuncs(pGroupId, pFuncs[dI]);
-			delete.setSonkln(email, pClientIP, datetime);
+			delete.setLastClientInfo(email, pClientIP, datetime);
 			delete.accept();
 			delete.delete();
 			deleteList.add(delete);

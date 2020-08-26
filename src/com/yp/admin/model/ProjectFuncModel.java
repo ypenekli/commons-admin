@@ -27,7 +27,7 @@ public class ProjectFuncModel extends AModel<ProjectFuncs> {
 	public static final String Q_PRJKOD0 = "SRGPRJKOD0";
 	public static final String Q_PRJKOD1 = "SRGPRJKOD1";
 	public static final String Q_PRJKOD2 = "SRGPRJKOD2";
-	public static final String Q_PROJECTS4 = "Q_PROJECTS4";
+	public static final String Q_PROJECTFUNCS4 = "Q.PROJECTFUNCS4";
 	public static final String Q_PRJKOD5 = "SRGPRJKOD5";
 	public static final String Q_PRJKOD6 = "SRGPRJKOD6";
 	public static final String Q_PRJKOD7 = "SRGPRJKOD7";
@@ -91,7 +91,7 @@ public class ProjectFuncModel extends AModel<ProjectFuncs> {
 //	}
 //
 	public List<ProjectFuncs> findGroupProjectFuncs(final Integer pGroupId, final String pProjectId) {
-		final DbCommand query = new DbCommand(Q_PROJECTS4, new FnParam("project_id", pProjectId),
+		final DbCommand query = new DbCommand(Q_PROJECTFUNCS4, new FnParam("project_id", pProjectId),
 				new FnParam("groupid", pGroupId));
 		query.setQuery(Constants.getSgl(query.getName()));
 		return this.findAny(query);

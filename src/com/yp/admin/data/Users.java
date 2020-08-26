@@ -6,6 +6,7 @@ import java.util.Date;
 import com.yp.core.BaseConstants;
 import com.yp.core.entity.DataEntity;
 import com.yp.core.entity.IDataEntity;
+import com.yp.core.ref.IReference;
 import com.yp.core.tools.DateTime;
 import com.yp.core.user.IUser;
 
@@ -89,7 +90,7 @@ public class Users extends DataEntity implements IUser {
 		return isNull(CITIZENSHIP_NU);
 	}
 
-	protected static final String NAME = "name";
+	public static final String NAME = "name";
 
 	public String getName() {
 		return (String) get(NAME);
@@ -103,7 +104,7 @@ public class Users extends DataEntity implements IUser {
 		return isNull(NAME);
 	}
 
-	protected static final String SURNAME = "surname";
+	public static final String SURNAME = "surname";
 
 	public String getSurname() {
 		return (String) get(SURNAME);
@@ -117,7 +118,7 @@ public class Users extends DataEntity implements IUser {
 		return isNull(SURNAME);
 	}
 
-	protected static final String BIRTH_DATE = "birth_date";
+	public static final String BIRTH_DATE = "birth_date";
 
 	public BigDecimal getBirthDateDb() {
 		return (BigDecimal) get(BIRTH_DATE);
@@ -138,7 +139,7 @@ public class Users extends DataEntity implements IUser {
 
 	public void setBirthDate(Date pBirthDate) {
 		mBirthDate = pBirthDate;
-		set(BIRTH_DATE, DateTime.asDbDateTime(pBirthDate));
+		set(BIRTH_DATE, DateTime.asDbDate(pBirthDate));
 	}
 
 	public boolean isBirthDateNull() {
@@ -236,7 +237,7 @@ public class Users extends DataEntity implements IUser {
 
 	public void setCheckinDate(Date pCheckinDate) {
 		mCheckinDate = pCheckinDate;
-		set(CHECKIN_DATE, DateTime.asDbDateTime(pCheckinDate));
+		set(CHECKIN_DATE, DateTime.asDbDate(pCheckinDate));
 	}
 
 	public boolean isCheckinDateNull() {
@@ -264,14 +265,14 @@ public class Users extends DataEntity implements IUser {
 
 	public void setCheckoutDate(Date pCheckoutDate) {
 		mCheckoutDate = pCheckoutDate;
-		set(CHECKOUT_DATE, DateTime.asDbDateTime(pCheckoutDate));
+		set(CHECKOUT_DATE, DateTime.asDbDate(pCheckoutDate));
 	}
 
 	public boolean isCheckoutDateNull() {
 		return isNull(CHECKOUT_DATE);
 	}
 
-	protected static final String EMAIL = "email";
+	public static final String EMAIL = "email";
 
 	public String getEmail() {
 		return (String) get(EMAIL);
@@ -299,7 +300,7 @@ public class Users extends DataEntity implements IUser {
 		return isNull(PHONE_NU1);
 	}
 
-	protected static final String PHONE_NU2 = "phone_nu2";
+	public static final String PHONE_NU2 = "phone_nu2";
 
 	public String getPhoneno2() {
 		return (String) get(PHONE_NU2);
@@ -327,7 +328,7 @@ public class Users extends DataEntity implements IUser {
 		return isNull(PHONE_NU3);
 	}
 
-	protected static final String PASSWORD = "password";
+	public static final String PASSWORD = "password";
 
 	public String getPassword() {
 		return (String) get(PASSWORD);
@@ -425,7 +426,7 @@ public class Users extends DataEntity implements IUser {
 		return isNull(PAYCARD_TYPE);
 	}
 
-	protected static final String HOME_CITY = "home_city";
+	public static final String HOME_CITY = "home_city";
 
 	public Integer getHomeCity() {
 		return (Integer) get(HOME_CITY);
@@ -453,7 +454,7 @@ public class Users extends DataEntity implements IUser {
 		return isNull(HOME_DISTRICT);
 	}
 
-	protected static final String HOME_ADDRESS = "home_address";
+	public static final String HOME_ADDRESS = "home_address";
 
 	public String getHomeAddress() {
 		return (String) get(HOME_ADDRESS);
@@ -614,6 +615,48 @@ public class Users extends DataEntity implements IUser {
 
 	public String getMobilePhoneNu() {
 		return (String) get(PHONE_NU2);
+	}
+
+	protected static final String HOME_CITY_NAME = "home_city_name";
+
+	public String getHomeCityName() {
+		return (String) get(HOME_CITY_NAME);
+	}
+	
+	private transient Commons homeCityRef;
+	public IReference<Integer>getHomeCityRef(){
+		if(homeCityRef == null) {
+			homeCityRef = new Commons(getHomeCity());
+			homeCityRef.setName(getHomeCityName());
+		}
+		return homeCityRef;
+	}
+	
+	private transient Commons positionRef;
+	public IReference<Integer>getPositionRef(){
+		if(positionRef == null) {
+			positionRef = new Commons(getPosition());
+			positionRef.setName(getPositionName());
+		}
+		return positionRef;
+	}
+	
+	private transient Commons professionRef;
+	public IReference<Integer>getProfessionRef(){
+		if(professionRef == null) {
+			professionRef = new Commons(getProfession());
+			professionRef.setName(getProfessionName());
+		}
+		return professionRef;
+	}
+	
+	private transient Commons titleRef;
+	public IReference<Integer>getTitleRef(){
+		if(titleRef == null) {
+			titleRef = new Commons(getTitle());
+			titleRef.setName(getTitleName());
+		}
+		return titleRef;
 	}
 
 }

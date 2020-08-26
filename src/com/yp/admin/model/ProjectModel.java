@@ -29,7 +29,7 @@ public class ProjectModel extends AModel<Projects> {
 	public static final String Q_PRJKOD1 = "SRGPRJKOD1";
 	public static final String Q_PRJKOD2 = "SRGPRJKOD2";
 	public static final String Q_PROJECTS4 = "Q_PROJECTS4";
-	public static final String Q_PRJKOD5 = "SRGPRJKOD5";
+	public static final String Q_PROJECTFUNCS5 = "Q.PROJECTFUNCS5";
 	public static final String Q_PRJKOD6 = "SRGPRJKOD6";
 	public static final String Q_PRJKOD7 = "SRGPRJKOD7";
 	public static final String Q_VERSION_NOTES = "Version.Notes";
@@ -76,8 +76,8 @@ public class ProjectModel extends AModel<Projects> {
 	}
 
 	public List<Projects> findUserProjectTree(final Integer pUserId, final String pProjectId) {
-		final DbCommand query = new DbCommand(Q_PRJKOD5, new FnParam("prjkod", pProjectId),
-				new FnParam("prjkod", pProjectId), new FnParam("kisikytnu", pUserId));
+		final DbCommand query = new DbCommand(Q_PROJECTFUNCS5, new FnParam("project_id", pProjectId),
+				new FnParam("project_id", pProjectId), new FnParam("user_id", pUserId));
 		query.setQuery(BaseConstants.getSgl(query.getName()));
 		return this.findAny(query);
 	}

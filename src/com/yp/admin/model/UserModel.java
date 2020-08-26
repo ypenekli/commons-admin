@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 
 import com.yp.admin.Constants;
 import com.yp.admin.data.LoginHistory;
-import com.yp.admin.data.Projects;
 import com.yp.admin.data.PwdHistory;
 import com.yp.admin.data.Users;
 import com.yp.core.AModel;
@@ -34,7 +33,7 @@ public class UserModel extends AModel<Users> {
 	public static final String Q_KISITNM2 = "SRGKISITNM2";
 	public static final String Q_KISITNM4 = "SRGKISITNM4";
 	public static final String Q_Telephone = "SRGKISITNM5";
-	public static final String Q_KISITNM6 = "SRGKISITNM6";
+	public static final String Q_USERS6 = "Q.USERS6";
 	public static final String Q_PRSTNM1 = "SRGPRSTNM1";
 	public static final String Q_PRSTNM3 = "SRGPRSTNM3";
 	public static final String Q_PRJGRSSFH1 = "SRGPRJGRSSFH1";
@@ -147,14 +146,12 @@ public class UserModel extends AModel<Users> {
 		return 0L;
 	}
 
-	private IResult<Object[]> checkUser(Users pUser, String pPassword, String pProjectId, String pClientIP) {
-		final IResult<Object[]> result = new Result<>();
-		List<Projects> userMenu = null;
+	private IResult<IUser> checkUser(IUser pUser, String pPassword, String pProjectId, String pClientIP) {
+		final IResult<IUser> result = new Result<>();
 		if (pUser != null) {
 			LoginHistory history = null;
 			if (pPassword.equals(pUser.getPassword())) {
 				if (pProjectId != null) {
-					userMenu = new ProjectModel().findUserProjectTree(pUser.getId(), pProjectId);
 					history = new LoginHistory(-1L);
 					history.setProjectId(pProjectId);
 					history.setUserId(pUser.getId());
@@ -176,30 +173,23 @@ public class UserModel extends AModel<Users> {
 			result.setErrorcode(BaseConstants.ERRORCODE_NO_USER);
 			result.setMessage(BaseConstants.getString("1009"));
 		}
-		result.setData(new Object[] { pUser, userMenu });
+		result.setData(pUser);
 		return result;
 	}
 
-	public synchronized IResult<Object[]> logIn(BigDecimal pTckmlnmr, String pPassword, String pProjectId,
+	public synchronized IResult<IUser> logIn(BigDecimal pTckmlnmr, String pPassword, String pProjectId,
 			String pClientIP) {
 		Users user = null;
-		IResult<Object[]> res;
 
 		user = findByTC(pTckmlnmr);
-		res = checkUser(user, pPassword, pProjectId, pClientIP);
-
-		return res;
+		return checkUser(user, pPassword, pProjectId, pClientIP);
 	}
 
-	public synchronized IResult<Object[]> logIn(String pEMail, String pPassword, String pProjectId, String pClientIP) {
+	public synchronized IResult<IUser> logIn(String pEMail, String pPassword, String pProjectId, String pClientIP) {
 		Users user = null;
-		IResult<Object[]> res;
 
 		user = findByEMail(pEMail);
-		res = checkUser(user, pPassword, pProjectId, pClientIP);
-
-		return res;
-
+		return checkUser(user, pPassword, pProjectId, pClientIP);
 	}
 
 	private IResult<IUser> validateFields(Users pNewUser) {
@@ -223,25 +213,25 @@ public class UserModel extends AModel<Users> {
 		mString = pNewUser.getName();
 		if (StringTool.isNull(mString)) {
 			res.setSuccess(false);
-			dSb.append(BaseConstants.getString("AddAccount.AdiUyari"));
+			dSb.append(BaseConstants.getString("AddAccount.NameWarning"));
 			dSb.append(BaseConstants.EOL);
 		}
 		mString = pNewUser.getSurname();
 		if (StringTool.isNull(mString)) {
 			res.setSuccess(false);
-			dSb.append(BaseConstants.getString("AddAccount.SoyadiUyari"));
+			dSb.append(BaseConstants.getString("AddAccount.SurnameWarning"));
 			dSb.append(BaseConstants.EOL);
 		}
 		Date date = pNewUser.getBirthDate();
 		if (date == null) {
 			res.setSuccess(false);
-			dSb.append(BaseConstants.getString("AddAccount.DogumtrhUyari"));
+			dSb.append(BaseConstants.getString("AddAccount.BirthdayWarning"));
 			dSb.append(BaseConstants.EOL);
 		}
-		Integer mInt = pNewUser.getBirthCity();
+		Integer mInt = pNewUser.getHomeCity();
 		if (mInt == null || mInt < 0) {
 			res.setSuccess(false);
-			dSb.append(BaseConstants.getString("AddAccount.BlnilkodUyari"));
+			dSb.append(BaseConstants.getString("AddAccount.HomecityWarning"));
 		}
 		res.setMessage(dSb.toString());
 		return res;
@@ -327,10 +317,9 @@ public class UserModel extends AModel<Users> {
 		if (!StringTool.isNull(pEMail)) {
 			if (pNewPassword.equals(pNewPasswordConfirm)) {
 				if (pNewPassword.length() > 4) {
-					IResult<Object[]> login = logIn(pEMail, pPassword, null, pClientIP);
+					IResult<IUser> login = logIn(pEMail, pPassword, null, pClientIP);
 					if (login.isSuccess()) {
-						Object[] array = login.getData();
-						Users user = (Users) array[0];
+						IUser user = login.getData();
 						IResult<IUser> temp = changePassword(user, pNewPassword, pUser, pClientIP);
 						result.setSuccess(temp.isSuccess());
 						result.setMessage(temp.getMessage());
@@ -353,10 +342,9 @@ public class UserModel extends AModel<Users> {
 		if (pCitizenshipNo != null && pCitizenshipNo.compareTo(BigDecimal.ZERO) > 0) {
 			if (pNewPassword.equals(pNewPasswordConfirm)) {
 				if (pNewPassword.length() > 4) {
-					IResult<Object[]> login = logIn(pCitizenshipNo, pPassword, null, pClientIP);
+					IResult<IUser> login = logIn(pCitizenshipNo, pPassword, null, pClientIP);
 					if (login.isSuccess()) {
-						Object[] array = login.getData();
-						Users user = (Users) array[0];
+						IUser user = login.getData();
 						IResult<IUser> temp = changePassword(user, pNewPassword, pUser, pClientIP);
 						result.setSuccess(temp.isSuccess());
 						result.setMessage(temp.getMessage());
@@ -404,9 +392,9 @@ public class UserModel extends AModel<Users> {
 	public List<Users> findByName(String pNameSurname) {
 		List<Users> list = null;
 		if (!StringTool.isNull(pNameSurname)) {
-			DbCommand query = new DbCommand(Q_KISITNM6, new FnParam("adi", "%" + pNameSurname + "%"),
-					new FnParam("soyadi", "%" + pNameSurname + "%"));
-			query.setQuery(BaseConstants.getSgl(query.getName()));
+			DbCommand query = new DbCommand(Q_USERS6, new FnParam("name", "%" + pNameSurname + "%"),
+					new FnParam("surname", "%" + pNameSurname + "%"));
+			query.setQuery(Constants.getSgl(query.getName()));
 			return findAny(query);
 		}
 		return list;
