@@ -1,31 +1,30 @@
 package com.yp.admin.data;
 
-
 import com.yp.core.BaseConstants;
 import com.yp.core.entity.DataEntity;
 import com.yp.core.entity.IDataEntity;
+import com.yp.core.tools.ITree;
+import com.yp.core.tools.StringTool;
 
-
-public class ProjectFuncs extends DataEntity {
+public class ProjectFuncs extends DataEntity implements ITree<String> {
 
 	private static final long serialVersionUID = 3417625341999168302L;
 	private static String schemaName = "COMMON";
 	private static String tableName = "PROJECT_FUNCS";
 
-
-	public ProjectFuncs(){
+	public ProjectFuncs() {
 		super();
 		className = "ProjectFuncs";
 		setPrimaryKeys(ID);
 	}
 
-	public ProjectFuncs(String pId){
+	public ProjectFuncs(String pId) {
 		this();
 		set(ID, pId);
 	}
 
-	public ProjectFuncs(IDataEntity pDe){
-		this((String)pDe.get(ID));
+	public ProjectFuncs(IDataEntity pDe) {
+		this((String) pDe.get(ID));
 		set(DESCRIPTION, pDe.get(DESCRIPTION));
 		set(HIERARCHY, pDe.get(HIERARCHY));
 		set(ICON_URL, pDe.get(ICON_URL));
@@ -45,12 +44,12 @@ public class ProjectFuncs extends DataEntity {
 	public String getProjectId() {
 		return (String) get(PROJECT_ID);
 	}
-	
-	public void setProjectId(String pProjectId){
+
+	public void setProjectId(String pProjectId) {
 		set(PROJECT_ID, pProjectId);
 	}
-	
-	public boolean isProjectIdNull(){
+
+	public boolean isProjectIdNull() {
 		return isNull(PROJECT_ID);
 	}
 
@@ -59,12 +58,12 @@ public class ProjectFuncs extends DataEntity {
 	public String getId() {
 		return (String) get(ID);
 	}
-	
-	public void setId(String pId){
+
+	public void setId(String pId) {
 		set(ID, pId);
 	}
-	
-	public boolean isIdNull(){
+
+	public boolean isIdNull() {
 		return isNull(ID);
 	}
 
@@ -73,12 +72,17 @@ public class ProjectFuncs extends DataEntity {
 	public String getName() {
 		return (String) get(NAME);
 	}
-	
-	public void setName(String pName){
-		set(NAME, pName);
+
+	public void setName(String pName) {
+		if (pName == null)
+			pName = "";
+		if (!isLeaf())
+			set(NAME, pName.toUpperCase(BaseConstants.LOCALE_TR));
+		else
+			set(NAME, StringTool.ucaseFirstCharTR(pName));
 	}
-	
-	public boolean isNameNull(){
+
+	public boolean isNameNull() {
 		return isNull(NAME);
 	}
 
@@ -87,12 +91,12 @@ public class ProjectFuncs extends DataEntity {
 	public String getDescription() {
 		return (String) get(DESCRIPTION);
 	}
-	
-	public void setDescription(String pDescription){
+
+	public void setDescription(String pDescription) {
 		set(DESCRIPTION, pDescription);
 	}
-	
-	public boolean isDescriptionNull(){
+
+	public boolean isDescriptionNull() {
 		return isNull(DESCRIPTION);
 	}
 
@@ -101,12 +105,12 @@ public class ProjectFuncs extends DataEntity {
 	public String getUrl() {
 		return (String) get(URL);
 	}
-	
-	public void setUrl(String pUrl){
+
+	public void setUrl(String pUrl) {
 		set(URL, pUrl);
 	}
-	
-	public boolean isUrlNull(){
+
+	public boolean isUrlNull() {
 		return isNull(URL);
 	}
 
@@ -115,12 +119,12 @@ public class ProjectFuncs extends DataEntity {
 	public String getTarget() {
 		return (String) get(TARGET);
 	}
-	
-	public void setTarget(String pTarget){
+
+	public void setTarget(String pTarget) {
 		set(TARGET, pTarget);
 	}
-	
-	public boolean isTargetNull(){
+
+	public boolean isTargetNull() {
 		return isNull(TARGET);
 	}
 
@@ -129,12 +133,12 @@ public class ProjectFuncs extends DataEntity {
 	public String getParentId() {
 		return (String) get(PARENT_ID);
 	}
-	
-	public void setParentId(String pParentId){
+
+	public void setParentId(String pParentId) {
 		set(PARENT_ID, pParentId);
 	}
-	
-	public boolean isParentIdNull(){
+
+	public boolean isParentIdNull() {
 		return isNull(PARENT_ID);
 	}
 
@@ -143,12 +147,12 @@ public class ProjectFuncs extends DataEntity {
 	public Integer getIdx() {
 		return (Integer) get(IDX);
 	}
-	
-	public void setIdx(Integer pIdx){
+
+	public void setIdx(Integer pIdx) {
 		set(IDX, pIdx);
 	}
-	
-	public boolean isIdxNull(){
+
+	public boolean isIdxNull() {
 		return isNull(IDX);
 	}
 
@@ -157,12 +161,12 @@ public class ProjectFuncs extends DataEntity {
 	public Integer getLevel() {
 		return (Integer) get(LEVEL);
 	}
-	
-	public void setLevel(Integer pLevel){
+
+	public void setLevel(Integer pLevel) {
 		set(LEVEL, pLevel);
 	}
-	
-	public boolean isLevelNull(){
+
+	public boolean isLevelNull() {
 		return isNull(LEVEL);
 	}
 
@@ -171,12 +175,12 @@ public class ProjectFuncs extends DataEntity {
 	public String getHierarchy() {
 		return (String) get(HIERARCHY);
 	}
-	
-	public void setHierarchy(String pHierarchy){
+
+	public void setHierarchy(String pHierarchy) {
 		set(HIERARCHY, pHierarchy);
 	}
-	
-	public boolean isHierarchyNull(){
+
+	public boolean isHierarchyNull() {
 		return isNull(HIERARCHY);
 	}
 
@@ -185,12 +189,12 @@ public class ProjectFuncs extends DataEntity {
 	public String getLeaf() {
 		return (String) get(LEAF);
 	}
-	
-	public void setLeaf(String pLeaf){
+
+	public void setLeaf(String pLeaf) {
 		set(LEAF, pLeaf);
 	}
-	
-	public boolean isLeafNull(){
+
+	public boolean isLeafNull() {
 		return isNull(LEAF);
 	}
 
@@ -199,12 +203,12 @@ public class ProjectFuncs extends DataEntity {
 	public String getIconUrl() {
 		return (String) get(ICON_URL);
 	}
-	
-	public void setIconUrl(String pIconUrl){
+
+	public void setIconUrl(String pIconUrl) {
 		set(ICON_URL, pIconUrl);
 	}
-	
-	public boolean isIconUrlNull(){
+
+	public boolean isIconUrlNull() {
 		return isNull(ICON_URL);
 	}
 
@@ -213,12 +217,12 @@ public class ProjectFuncs extends DataEntity {
 	public String getStatus() {
 		return (String) get(STATUS);
 	}
-	
-	public void setStatus(String pStatus){
+
+	public void setStatus(String pStatus) {
 		set(STATUS, pStatus);
 	}
-	
-	public boolean isStatusNull(){
+
+	public boolean isStatusNull() {
 		return isNull(STATUS);
 	}
 
@@ -233,13 +237,13 @@ public class ProjectFuncs extends DataEntity {
 	}
 
 	@Override
-	public void checkValues(){
+	public void checkValues() {
 		super.checkValues();
 		checkInteger(IDX);
 		checkInteger(LEVEL);
 	}
-	
-	//*************
+
+	// *************
 
 	public boolean isStatusEnabled() {
 		return BaseConstants.ENABLED.equals(get(STATUS));
@@ -249,4 +253,60 @@ public class ProjectFuncs extends DataEntity {
 		return BaseConstants.TRUE.equals(get(LEAF));
 	}
 
+	public void setLeaf(boolean pLeaf) {
+		set(LEAF, pLeaf ? BaseConstants.TRUE.getKey() : BaseConstants.FALSE.getKey());
+	}
+
+	public ProjectFuncs addSubitem(Integer pSubitemSize, boolean isLeaf) {
+		Integer idx = 0;
+		if (pSubitemSize != null) {
+			idx = pSubitemSize + 1;
+		}
+		final ProjectFuncs de = new ProjectFuncs(String.format("%s.%s", getId(), idx));
+		de.setParentId(getId());
+		de.setParentName(getName());
+		de.setProjectId(getProjectId());
+		de.setLevel(getLevel() + 1);
+		de.setIdx(idx);
+		de.setTarget(getTarget());
+		de.setHierarchy(getHierarchy() + StringTool.padLeft(idx.toString(), '0', 4));
+		de.setLeaf(isLeaf);
+		setLeaf(false);
+		return de;
+	}
+
+	protected static final String PARENT_NAME = "parent_name";
+
+	public String getParentName() {
+		return (String) get(PARENT_NAME);
+	}
+
+	public void setParentName(String pParentName) {
+		setField(PARENT_NAME, pParentName, false);
+	}
+
+	@Override
+	public String getValue() {
+		return (String) get(ID);
+	}
+
+	@Override
+	public String getParentValue() {
+		return (String) get(PARENT_ID);
+	}
+
+	@Override
+	public String toString() {
+		return getName();
+	}
+
+	@Override
+	public boolean equals(Object pObj) {
+		if (pObj != null)
+			if (pObj instanceof ProjectFuncs)
+				return getId().equals(((ProjectFuncs) pObj).getId());
+			else if (pObj instanceof String)
+				return getId().equals(pObj);
+		return false;
+	}
 }

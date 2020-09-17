@@ -19,7 +19,8 @@ public class Groups extends DataEntity {
 	public Groups(){
 		super();
 		className = "Groups";
-		setPrimaryKeys(ID);
+		setPrimaryKeys(ID);	
+		setProjectId("-1");
 	}
 
 	public Groups(Integer pId){
@@ -143,6 +144,10 @@ public class Groups extends DataEntity {
 	}
 
 
+
+	public Boolean isAdmin() {
+		return GROUP_TYPE_ADMIN.equals(getGroupType());
+	}
 	// for rootMenuList add query below fields
 
 	protected static final String MENU_ID = "menu_id";
@@ -171,4 +176,10 @@ public class Groups extends DataEntity {
 
 	// for rootMenuList add query below fields
 
+
+	protected static final String PROJECT_NAME = "project_name";
+
+	public String getProjectName() {
+		return (String) get(PROJECT_NAME);
+	}
 }

@@ -1,6 +1,5 @@
 package com.yp.admin.data;
 
-
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -8,7 +7,7 @@ import com.yp.core.BaseConstants;
 import com.yp.core.entity.DataEntity;
 import com.yp.core.entity.IDataEntity;
 import com.yp.core.tools.DateTime;
-
+import com.yp.core.tools.StringTool;
 
 public class Projects extends DataEntity {
 
@@ -16,20 +15,19 @@ public class Projects extends DataEntity {
 	private static String schemaName = "COMMON";
 	private static String tableName = "PROJECTS";
 
-
-	public Projects(){
+	public Projects() {
 		super();
 		className = "Projects";
 		setPrimaryKeys(ID);
 	}
 
-	public Projects(String pId){
+	public Projects(String pId) {
 		this();
 		set(ID, pId);
 	}
 
-	public Projects(IDataEntity pDe){
-		this((String)pDe.get(ID));
+	public Projects(IDataEntity pDe) {
+		this((String) pDe.get(ID));
 		set(AUTOR, pDe.get(AUTOR));
 		set(DESCRIPTION, pDe.get(DESCRIPTION));
 		set(ICON_URL, pDe.get(ICON_URL));
@@ -47,12 +45,12 @@ public class Projects extends DataEntity {
 	public String getId() {
 		return (String) get(ID);
 	}
-	
-	public void setId(String pId){
+
+	public void setId(String pId) {
 		set(ID, pId);
 	}
-	
-	public boolean isIdNull(){
+
+	public boolean isIdNull() {
 		return isNull(ID);
 	}
 
@@ -61,12 +59,12 @@ public class Projects extends DataEntity {
 	public String getName() {
 		return (String) get(NAME);
 	}
-	
-	public void setName(String pName){
+
+	public void setName(String pName) {
 		set(NAME, pName);
 	}
-	
-	public boolean isNameNull(){
+
+	public boolean isNameNull() {
 		return isNull(NAME);
 	}
 
@@ -75,12 +73,12 @@ public class Projects extends DataEntity {
 	public String getDescription() {
 		return (String) get(DESCRIPTION);
 	}
-	
-	public void setDescription(String pDescription){
+
+	public void setDescription(String pDescription) {
 		set(DESCRIPTION, pDescription);
 	}
-	
-	public boolean isDescriptionNull(){
+
+	public boolean isDescriptionNull() {
 		return isNull(DESCRIPTION);
 	}
 
@@ -89,12 +87,12 @@ public class Projects extends DataEntity {
 	public String getUrl() {
 		return (String) get(URL);
 	}
-	
-	public void setUrl(String pUrl){
+
+	public void setUrl(String pUrl) {
 		set(URL, pUrl);
 	}
-	
-	public boolean isUrlNull(){
+
+	public boolean isUrlNull() {
 		return isNull(URL);
 	}
 
@@ -103,12 +101,12 @@ public class Projects extends DataEntity {
 	public String getTarget() {
 		return (String) get(TARGET);
 	}
-	
-	public void setTarget(String pTarget){
+
+	public void setTarget(String pTarget) {
 		set(TARGET, pTarget);
 	}
-	
-	public boolean isTargetNull(){
+
+	public boolean isTargetNull() {
 		return isNull(TARGET);
 	}
 
@@ -117,12 +115,12 @@ public class Projects extends DataEntity {
 	public String getIconUrl() {
 		return (String) get(ICON_URL);
 	}
-	
-	public void setIconUrl(String pIconUrl){
+
+	public void setIconUrl(String pIconUrl) {
 		set(ICON_URL, pIconUrl);
 	}
-	
-	public boolean isIconUrlNull(){
+
+	public boolean isIconUrlNull() {
 		return isNull(ICON_URL);
 	}
 
@@ -131,12 +129,12 @@ public class Projects extends DataEntity {
 	public String getStatus() {
 		return (String) get(STATUS);
 	}
-	
-	public void setStatus(String pStatus){
+
+	public void setStatus(String pStatus) {
 		set(STATUS, pStatus);
 	}
-	
-	public boolean isStatusNull(){
+
+	public boolean isStatusNull() {
 		return isNull(STATUS);
 	}
 
@@ -145,12 +143,12 @@ public class Projects extends DataEntity {
 	public String getAutor() {
 		return (String) get(AUTOR);
 	}
-	
-	public void setAutor(String pAutor){
+
+	public void setAutor(String pAutor) {
 		set(AUTOR, pAutor);
 	}
-	
-	public boolean isAutorNull(){
+
+	public boolean isAutorNull() {
 		return isNull(AUTOR);
 	}
 
@@ -159,12 +157,12 @@ public class Projects extends DataEntity {
 	public String getOrganization() {
 		return (String) get(ORGANIZATION);
 	}
-	
-	public void setOrganization(String pOrganization){
+
+	public void setOrganization(String pOrganization) {
 		set(ORGANIZATION, pOrganization);
 	}
-	
-	public boolean isOrganizationNull(){
+
+	public boolean isOrganizationNull() {
 		return isNull(ORGANIZATION);
 	}
 
@@ -173,22 +171,22 @@ public class Projects extends DataEntity {
 	public String getVersion() {
 		return (String) get(VERSION);
 	}
-	
-	public void setVersion(String pVersion){
+
+	public void setVersion(String pVersion) {
 		set(VERSION, pVersion);
 	}
-	
-	public boolean isVersionNull(){
+
+	public boolean isVersionNull() {
 		return isNull(VERSION);
 	}
 
 	protected static final String VERSION_UPDATE_DATE = "version_update_date";
-		
+
 	public BigDecimal getVersionUpdateDateDb() {
 		return (BigDecimal) get(VERSION_UPDATE_DATE);
 	}
-	
-	public void setVersionUpdateDateDb(BigDecimal pVersionUpdateDate){
+
+	public void setVersionUpdateDateDb(BigDecimal pVersionUpdateDate) {
 		mVersionUpdateDate = null;
 		set(VERSION_UPDATE_DATE, pVersionUpdateDate);
 	}
@@ -200,13 +198,13 @@ public class Projects extends DataEntity {
 			mVersionUpdateDate = DateTime.asDate((BigDecimal) get(VERSION_UPDATE_DATE));
 		return mVersionUpdateDate;
 	}
-	
+
 	public void setVersionUpdateDate(Date pVersionUpdateDate) {
 		mVersionUpdateDate = pVersionUpdateDate;
 		set(VERSION_UPDATE_DATE, DateTime.asDbDateTime(pVersionUpdateDate));
 	}
-	
-	public boolean isVersionUpdateDateNull(){
+
+	public boolean isVersionUpdateDateNull() {
 		return isNull(VERSION_UPDATE_DATE);
 	}
 
@@ -221,16 +219,58 @@ public class Projects extends DataEntity {
 	}
 
 	@Override
-	public void checkValues(){
+	public void checkValues() {
 		super.checkValues();
 		checkBigDecimal(VERSION_UPDATE_DATE);
+		checkInteger(GROUP_ID);
 	}
-	
-	//**************
 
+	// **************
 
 	public boolean isStatusEnabled() {
 		return BaseConstants.ENABLED.equals(get(STATUS));
 	}
 
+	public ProjectFuncs addFuncs(Integer pFuncSize, boolean isLeaf) {
+		Integer idx = 0;
+		if (pFuncSize != null) {
+			idx = pFuncSize + 1;
+		}
+		final ProjectFuncs de = new ProjectFuncs(String.format("%s.%s", getId(), idx));
+		de.setParentId(getId());
+		de.setProjectId(getId());
+		de.setLevel(1);
+		de.setIdx(idx);
+		de.setTarget(getTarget());
+		de.setHierarchy(
+				StringTool.padLeft(getId().replace(".", ""), '0', 4) + StringTool.padLeft(idx.toString(), '0', 4));
+		de.setLeaf(isLeaf);
+		return de;
+	}
+
+
+	protected static final String GROUP_ID = "group_id";
+
+	public Integer getGroupId() {
+		return (Integer) get(GROUP_ID);
+	}
+
+	public void setGroupId(Integer pGroupId) {
+		setField(GROUP_ID, pGroupId, false);
+	}
+
+	@Override
+	public String toString() {
+		return getName();
+	}
+
+	@Override
+	public boolean equals(Object pObj) {
+		if (pObj != null)
+			if (pObj instanceof Projects)
+				return getId().equals(((Projects) pObj).getId());
+			else if (pObj instanceof String)
+				return getId().equals(pObj);
+		return false;
+	}
 }

@@ -71,4 +71,49 @@ public class GroupUsers extends DataEntity {
 		checkInteger(USER_ID);
 	}
 
+	protected static final String USER_NAME = "user_name";
+
+	public String getUserName() {
+		return (String) get(USER_NAME);
+	}
+
+	protected static final String USER_SURNAME = "user_surname";
+
+	public String getUserSurname() {
+		return (String) get(USER_SURNAME);
+	}
+
+	protected static final String USER_TITLE_NAME = "user_title_name";
+
+	public String getUserTitleName() {
+		return (String) get(USER_TITLE_NAME);
+	}
+
+	protected static final String USER_FULL_NAME = "user_full_name";
+
+	public String getUserFullName() {
+		if (isNull(USER_FULL_NAME)) {
+			setField(USER_FULL_NAME, getUserName() + " " + getUserSurname(), false);
+		}
+		return (String) get(USER_FULL_NAME);
+	}
+
+	protected static final String USER_EMAIL = "user_email";
+
+	public String getUserEmail() {
+		return (String) get(USER_EMAIL);
+	}
+
+	protected static final String USER_PHONE_NU1 = "user_phone_nu1";
+
+	public String getUserPhoneNu1() {
+		return (String) get(USER_PHONE_NU1);
+	}
+
+	protected static final String GROUP_NAME = "group_name";
+
+	public String getGroupName() {
+		return (String) get(GROUP_NAME);
+	}
+
 }

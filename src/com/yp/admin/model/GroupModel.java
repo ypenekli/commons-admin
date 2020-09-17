@@ -23,21 +23,24 @@ import com.yp.core.user.IUser;
 
 public class GroupModel extends AModel<Groups> {
 
-	public static final String Q_GRPTNM1 = "SRGGRPTNM1";
-	public static final String Q_GRPTNM2 = "SRGGRPTNM2";
+	public static final String Q_GROUPS1 = "Q.GROUPS1";
+	public static final String Q_GROUPS2 = "Q.GROUPS2";
 	public static final String Q_GRPTNM3 = "SRGGRPTNM3";
 	public static final String Q_GRPTNM4 = "SRGGRPTNM4";
 	public static final String Q_GRPTNM41 = "SRGGRPTNM41";
 	public static final String Q_GROUPS5 = "Q.GROUPS5";
-	public static final String Q_PRSTNM4 = "SRGPRSTNM4";
-	public static final String Q_GRPISLV1 = "SRGGRPISLV1";
-	public static final String Q_GRPPRSSFH1 = "SRGGRPPRSSFH1";
-	public static final String Q_GRPISLVSFH1 = "SRGGRPISLVSFH1";
+	//public static final String Q_PRSTNM4 = "SRGPRSTNM4";
+	//public static final String Q_GRPISLV1 = "SRGGRPISLV1";
+	public static final String Q_GROUP_USERS1 = "Q.GROUP.USERS1";
+	public static final String Q_GROUP_FUNCS1 = "Q.GROUP.FUNCS1";
+	public static final String Q_GROUP_USERS_HISTORY1= "Q.GROUP.USERS.HISTORY1";
+	public static final String Q_GROUP_PROJECT_FUNCS_HISTORY1= "Q.GROUP.PROJECT.FUNCS.HISTORY1";
+	
 
 	public synchronized Integer findGroupId() {
-		final DbCommand query = new DbCommand(Q_GRPTNM2, new FnParam[0]);
+		final DbCommand query = new DbCommand(Q_GROUPS2, new FnParam[0]);
 		query.setQuery(Constants.getSgl(query.getName()));
-		final Groups de = this.findOne(query);
+		final Groups de = findOne(query);
 		Integer res = null;
 		if (de != null) {
 			res = de.getId();
@@ -49,7 +52,7 @@ public class GroupModel extends AModel<Groups> {
 	}
 
 	public List<Groups> findGroupList(final Integer pUserId) {
-		final DbCommand query = new DbCommand(Q_GRPTNM1, new FnParam("kisikytnu", pUserId));
+		final DbCommand query = new DbCommand(Q_GROUPS1, new FnParam("userid", pUserId));
 		query.setQuery(Constants.getSgl(query.getName()));
 		return this.findAny(query);
 	}
@@ -82,7 +85,7 @@ public class GroupModel extends AModel<Groups> {
 	}
 
 	public Long findGroupUsersHistoryId() {
-		final DbCommand query = new DbCommand(Q_GRPPRSSFH1, new FnParam[0]);
+		final DbCommand query = new DbCommand(Q_GROUP_USERS_HISTORY1, new FnParam[0]);
 		query.setQuery(Constants.getSgl(query.getName()));
 		final GroupUsersHistory de = (GroupUsersHistory) this.findOne(query, GroupUsersHistory.class);
 		Long idx = null;
@@ -96,7 +99,7 @@ public class GroupModel extends AModel<Groups> {
 	}
 
 	public synchronized Long findGroupProjectFuncsHistoryId() {
-		final DbCommand query = new DbCommand(Q_GRPISLVSFH1, new FnParam[0]);
+		final DbCommand query = new DbCommand(Q_GROUP_PROJECT_FUNCS_HISTORY1, new FnParam[0]);
 		query.setQuery(Constants.getSgl(query.getName()));
 		final GroupProjectFuncsHistory de = (GroupProjectFuncsHistory) this.findOne(query,
 				GroupProjectFuncsHistory.class);
@@ -255,14 +258,14 @@ public class GroupModel extends AModel<Groups> {
 	}
 
 	public List<IDataEntity> findGroupUsers(final Integer pGroupId) {
-		final DbCommand query = new DbCommand(Q_PRSTNM4, new FnParam("grpkod", pGroupId));
-		query.setQuery(BaseConstants.getSgl(query.getName()));
+		final DbCommand query = new DbCommand(Q_GROUP_USERS1, new FnParam("groupid", pGroupId));
+		query.setQuery(Constants.getSgl(query.getName()));
 		return this.findAny(query, GroupUsers.class);
 	}
 
 	public List<IDataEntity> findGroupFuncs(final Integer pGroupId) {
-		final DbCommand query = new DbCommand(Q_GRPISLV1, new FnParam("grpkod", pGroupId));
-		query.setQuery(BaseConstants.getSgl(query.getName()));
+		final DbCommand query = new DbCommand(Q_GROUP_FUNCS1, new FnParam("grpkod", pGroupId));
+		query.setQuery(Constants.getSgl(query.getName()));
 		return this.findAny(query, GroupProjectFuncs.class);
 	}
 
@@ -315,7 +318,7 @@ public class GroupModel extends AModel<Groups> {
 	public synchronized IResult<String> deleteFnFromGroup(final Integer pGroupId, final String[] pFuncs,
 			final IUser pUser, final String pClientIP) {
 		IResult<String> dSnc = null;
-		Long idx = this.findGroupProjectFuncsHistoryId();
+		Long idx = findGroupProjectFuncsHistoryId();
 		final Date datetime = new Date();
 		final String email = pUser.getEmail();
 		final List<IDataEntity> deleteList = new ArrayList<>();
@@ -333,7 +336,7 @@ public class GroupModel extends AModel<Groups> {
 			++idx;
 		}
 		if (!deleteList.isEmpty()) {
-			dSnc = this.saveAtomic(deleteList, addHistoryList);
+			dSnc = saveAtomic(deleteList, addHistoryList);
 		}
 		return dSnc;
 	}
