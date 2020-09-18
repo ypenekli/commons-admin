@@ -28,16 +28,15 @@ import com.yp.core.user.IUser;
 public class UserModel extends AModel<Users> {
 
 	public static final String Q_Principles = "Principles";
-	public static final String Q_KISITNM1 = "SRGKISITNM1";
-	public static final String Q_EMail = "Q.USERS3";
-	public static final String Q_KISITNM2 = "SRGKISITNM2";
-	public static final String Q_KISITNM4 = "SRGKISITNM4";
-	public static final String Q_Telephone = "SRGKISITNM5";
+	public static final String Q_USERS1 = "Q.USERS1";
+	public static final String Q_USERS2 = "Q.USERS2";
+	public static final String Q_EMail = "Q.USERS3";	
+	public static final String Q_USERS4 = "Q.USERS4";
+	public static final String Q_Telephone = "Q.USERS5";
 	public static final String Q_USERS6 = "Q.USERS6";
-	public static final String Q_PRSTNM1 = "SRGPRSTNM1";
-	public static final String Q_PRSTNM3 = "SRGPRSTNM3";
-	public static final String Q_PRJGRSSFH1 = "SRGPRJGRSSFH1";
-	public static final String Q_PRLDGSSFH1 = "SRGPRLDGSSFH1";
+	public static final String Q_USERS7 = "Q.USERS7";
+	public static final String Q_LOGIN_HISTORY1= "Q.LOGIN.HISTORY1";
+	public static final String Q_PWD_HISTORY1= "Q.PWD.HISTORY1";
 
 	public UserModel() {
 		super();
@@ -62,17 +61,17 @@ public class UserModel extends AModel<Users> {
 	public Users findByTelphone(String pTelnu) {
 		if (!StringTool.isNull(pTelnu) && StringTool.isNumber(pTelnu)) {
 			DbCommand query = new DbCommand(Q_Telephone, new FnParam("phonenumber", pTelnu));
-			query.setQuery(BaseConstants.getSgl(query.getName()));
+			query.setQuery(Constants.getSgl(query.getName()));
 
 			return findOne(query);
 		}
 		return null;
 	}
 
-	public Users findByTC(BigDecimal pTcnu) {
-		if (pTcnu != null && pTcnu.intValue() > 100) {
-			DbCommand query = new DbCommand(Q_PRSTNM3, new FnParam("tcnu", pTcnu));
-			query.setQuery(BaseConstants.getSgl(query.getName()));
+	public Users findByTC(BigDecimal pCitizinShipNu) {
+		if (pCitizinShipNu != null && pCitizinShipNu.intValue() > 100) {
+			DbCommand query = new DbCommand(Q_USERS7, new FnParam("tcnu", pCitizinShipNu));
+			query.setQuery(Constants.getSgl(query.getName()));
 			return findOne(query);
 		}
 		return null;
@@ -80,47 +79,47 @@ public class UserModel extends AModel<Users> {
 
 	public Users find(Integer pUserId) {
 		if (pUserId != null && pUserId > -1) {
-			DbCommand query = new DbCommand(Q_KISITNM1, new FnParam("userid", pUserId));
-			query.setQuery(BaseConstants.getSgl(query.getName()));
+			DbCommand query = new DbCommand(Q_USERS1, new FnParam("userid", pUserId));
+			query.setQuery(Constants.getSgl(query.getName()));
 
 			return findOne(query);
 		}
 		return null;
 	}
 
-	public Users find(Integer pUserId, BigDecimal pTcnu) {
+	public Users find(Integer pUserId, BigDecimal pCitizenShipNu) {
 		if (pUserId == null)
 			pUserId = -1;
-		if (pTcnu == null)
-			pTcnu = BaseConstants.BIGDECIMAL_MINUS_ONE;
-		if (pUserId > -1 || pTcnu.compareTo(BigDecimal.ZERO) > 0) {
-			DbCommand query = new DbCommand(Q_KISITNM2, new FnParam("userid", pUserId), new FnParam("tcnu", pTcnu));
-			query.setQuery(BaseConstants.getSgl(query.getName()));
+		if (pCitizenShipNu == null)
+			pCitizenShipNu = BaseConstants.BIGDECIMAL_MINUS_ONE;
+		if (pUserId > -1 || pCitizenShipNu.compareTo(BigDecimal.ZERO) > 0) {
+			DbCommand query = new DbCommand(Q_USERS2, new FnParam("userid", pUserId), new FnParam("tcnu", pCitizenShipNu));
+			query.setQuery(Constants.getSgl(query.getName()));
 
 			return findOne(query);
 		}
 		return null;
 	}
 
-	public Users find(Integer pUserId, String pEposta) {
+	public Users find(Integer pUserId, String pEmail) {
 		if (pUserId == null)
 			pUserId = -1;
-		if (pEposta == null)
-			pEposta = "";
-		pEposta = pEposta.toLowerCase(BaseConstants.LOCALE_EN);
+		if (pEmail == null)
+			pEmail = "";
+		pEmail = pEmail.toLowerCase(BaseConstants.LOCALE_EN);
 
-		if (pUserId > -1 || !StringTool.isNull(pEposta)) {
-			DbCommand query = new DbCommand(Q_KISITNM4, new FnParam("userid", pUserId), new FnParam("email", pEposta));
-			query.setQuery(BaseConstants.getSgl(query.getName()));
+		if (pUserId > -1 || !StringTool.isNull(pEmail)) {
+			DbCommand query = new DbCommand(Q_USERS4, new FnParam("userid", pUserId), new FnParam("email", pEmail));
+			query.setQuery(Constants.getSgl(query.getName()));
 
 			return findOne(query);
 		}
 		return null;
 	}
 
-	public synchronized Long getLoginHistoryId() {
-		DbCommand query = new DbCommand(Q_PRJGRSSFH1, new FnParam[] {});
-		query.setQuery(BaseConstants.getSgl(query.getName()));
+	public synchronized Long findLoginHistoryId() {
+		DbCommand query = new DbCommand(Q_LOGIN_HISTORY1, new FnParam[] {});
+		query.setQuery(Constants.getSgl(query.getName()));
 		LoginHistory de = (LoginHistory) findOne(query, LoginHistory.class);
 		Long idx = null;
 		if (de != null) {
@@ -132,9 +131,9 @@ public class UserModel extends AModel<Users> {
 		return 0L;
 	}
 
-	public synchronized Long getPwdHistoryId() {
-		DbCommand query = new DbCommand(Q_PRLDGSSFH1, new FnParam[] {});
-		query.setQuery(BaseConstants.getSgl(query.getName()));
+	public synchronized Long findPwdHistoryId() {
+		DbCommand query = new DbCommand(Q_PWD_HISTORY1, new FnParam[] {});
+		query.setQuery(Constants.getSgl(query.getName()));
 		PwdHistory de = (PwdHistory) findOne(query, PwdHistory.class);
 		Long idx = null;
 		if (de != null) {

@@ -258,35 +258,59 @@ public class Commons extends DataEntity implements IReference<Integer> {
 	}
 
 	@Override
-	public String getDefinition() {
+	public String getValue() {
 		return (String) get(NAME);
 	}
 
 	@Override
-	public void setDefinition(String pDefinition) {
-		set(NAME, pDefinition);
+	public void setValue(String pValue) {
+		set(NAME, pValue);
 	}
 
-	@Override
-	public String getExtra() {
-		return (String) get(DESCRIPTION);
+	public boolean isLeaf() {
+		return BaseConstants.TRUE.equals(get(LEAF));
 	}
 
-	@Override
-	public void setExtra(String pExtra) {
-		set(DESCRIPTION, pExtra);
+	public void setLeaf(boolean pLeaf) {
+		set(LEAF, pLeaf ? BaseConstants.TRUE.getKey() : BaseConstants.FALSE.getKey());
 	}
 
 	// ..IReference
 
+	public Commons addSubitem(Integer pSubitemSize, boolean isLeaf) {
+		Integer idx = 0;
+		if (pSubitemSize != null) {
+			idx = pSubitemSize + 1;
+		}
+		Integer groupCode = getGroupCode();
+		if (groupCode == null || groupCode == -1) {
+			groupCode = idx;
+		}
+		Integer id = (100 + groupCode) * 10000000;
+		if (getLevel() > 2) {
+			id += 100000;
+		}
+		if (getLevel() > -1) {
+			id += idx;
+		}
+		final Commons aNew = new Commons(id);
+		aNew.setParentId(getId());
+		aNew.setGroupCode(groupCode);
+		aNew.setLeaf(isLeaf);
+		aNew.setLevel(getLevel() + 1);
+		aNew.setHierarchy(String.format("%s.%s", getHierarchy(), id));
+		return aNew;
+	}
+
 	@Override
 	public boolean equals(Object pObj) {
-		if (pObj != null)
+		if (pObj != null) {
 			if (pObj instanceof Commons || pObj instanceof IReference<?>) {
 				return getId() != null && getId().equals(((Commons) pObj).getId());
 			} else if (pObj instanceof Integer) {
 				return getId() != null && getId().equals(pObj);
 			}
+		}
 		return false;
 	}
 

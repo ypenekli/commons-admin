@@ -14,11 +14,11 @@ import com.yp.core.tools.StringTool;
 import com.yp.core.user.IUser;
 
 public class CommonModel extends AModel<Commons> {
-	public static final String Q_COMMONS_PARENT_ID = "Q.COMMONS.PARENT.ID";
-	public static final String Q_ORTKOD1 = "SRGORTKOD1";
+	public static final String Q_COMMONS_PARENT_ID1 = "Q.COMMONS.PARENT.ID1";
+	public static final String Q_COMMONS1 = "Q.COMMONS1";
 
 	public List<Commons> findByParent(final Integer pParentId) {
-		final DbCommand query = new DbCommand(Q_COMMONS_PARENT_ID, new FnParam("parent_id", pParentId));
+		final DbCommand query = new DbCommand(Q_COMMONS_PARENT_ID1, new FnParam("parent_id", pParentId));
 		query.setQuery(Constants.getSgl(query.getName()));
 		return this.findAny(query);
 	}
@@ -44,16 +44,17 @@ public class CommonModel extends AModel<Commons> {
 		mString = pCommon.getAbrv();
 		if (StringTool.isNull(mString) || mString.length() < 3) {
 			res.setSuccess(false);
-			dSb.append(BaseConstants.getString("FrmProjectAUL.Warning.Name"));			
+			dSb.append(BaseConstants.getString("FrmProjectAUL.Warning.Name"));
 			dSb.append(BaseConstants.EOL);
 		}
 		res.setMessage(dSb.toString());
 		return res;
 	}
 
-	public Integer getCommonsId() {
-		final DbCommand query = new DbCommand(Q_ORTKOD1, new FnParam[0]);
-		query.setQuery(BaseConstants.getSgl(query.getName()));
+	public Integer getCommonsId(Integer pGroupCode, Integer pParentId) {
+		final DbCommand query = new DbCommand(Q_COMMONS1, new FnParam("parent_id", pGroupCode),
+				new FnParam("parent_id", pParentId), new FnParam("parent_id", pParentId));
+		query.setQuery(Constants.getSgl(query.getName()));
 		final Commons de = this.findOne(query);
 		Integer res = null;
 		if (de != null) {

@@ -25,13 +25,8 @@ import com.yp.core.tools.StringTool;
 import com.yp.core.user.IUser;
 
 public class ProjectModel extends AModel<Projects> {
-	public static final String Q_PRJKOD0 = "SRGPRJKOD0";
-	public static final String Q_PRJKOD1 = "SRGPRJKOD1";
-	public static final String Q_PRJKOD2 = "SRGPRJKOD2";
-	public static final String Q_PROJECTS4 = "Q_PROJECTS4";
-//	public static final String Q_PROJECTFUNCS5 = "Q.PROJECTFUNCS5";
+	public static final String Q_PROJECT1 = "SRGPRJKOD1";
 	public static final String Q_PROJECTS6 = "Q.PROJECTS6";
-	public static final String Q_PRJKOD7 = "SRGPRJKOD7";
 	public static final String Q_VERSION_NOTES = "Version.Notes";
 	public static final String Q_VERSIONS = "Versions";
 
@@ -58,8 +53,8 @@ public class ProjectModel extends AModel<Projects> {
 	}
 
 	public List<Projects> findAll() {
-		DbCommand query = new DbCommand(Q_PRJKOD1, new FnParam[] {});
-		query.setQuery(BaseConstants.getSgl(query.getName()));
+		DbCommand query = new DbCommand(Q_PROJECT1, new FnParam[] {});
+		query.setQuery(Constants.getSgl(query.getName()));
 
 		return findAny(query);
 	}
@@ -71,30 +66,16 @@ public class ProjectModel extends AModel<Projects> {
 		return findAny(query);
 	}
 
-//	public List<Projects> findUserProjectTree(final Integer pUserId, final String pProjectId) {
-//		final DbCommand query = new DbCommand(Q_PROJECTFUNCS5, new FnParam("project_id", pProjectId),
-//				new FnParam("project_id", pProjectId), new FnParam("user_id", pUserId));
-//		query.setQuery(BaseConstants.getSgl(query.getName()));
-//		return this.findAny(query);
-//	}
-
-//	public List<Projects> findGroupProjectTree(final Integer pGroupId, final String pProjectId) {
-//		final DbCommand query = new DbCommand(Q_PROJECTS4, new FnParam("project_id", pProjectId),
-//				new FnParam("groupid", pGroupId));
-//		query.setQuery(Constants.getSgl(query.getName()));
-//		return this.findAny(query);
-//	}
-
 	public List<Projects> findProjectVersionNotes(final String pProjectId, final String pVersion) {
-		final DbCommand query = new DbCommand(Q_VERSION_NOTES, new FnParam("prjkod", pProjectId),
+		final DbCommand query = new DbCommand(Q_VERSION_NOTES, new FnParam("projectid", pProjectId),
 				new FnParam("version", pVersion));
-		query.setQuery(BaseConstants.getSgl(query.getName()));
+		query.setQuery(Constants.getSgl(query.getName()));
 		return this.findAny(query);
 	}
 
 	public List<Projects> findProjectVersions(final String pProjectId) {
-		final DbCommand query = new DbCommand(Q_VERSIONS, new FnParam("prjkod", pProjectId));
-		query.setQuery(BaseConstants.getSgl(query.getName()));
+		final DbCommand query = new DbCommand(Q_VERSIONS, new FnParam("projectid", pProjectId));
+		query.setQuery(Constants.getSgl(query.getName()));
 		return this.findAny(query);
 	}
 

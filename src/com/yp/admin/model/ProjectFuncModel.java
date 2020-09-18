@@ -24,19 +24,11 @@ import com.yp.core.tools.StringTool;
 import com.yp.core.user.IUser;
 
 public class ProjectFuncModel extends AModel<ProjectFuncs> {
-	public static final String Q_PRJKOD0 = "SRGPRJKOD0";
-	public static final String Q_PRJKOD1 = "SRGPRJKOD1";
-	public static final String Q_PRJKOD2 = "SRGPRJKOD2";
 	
 	public static final String Q_PROJECTFUNCS1 = "Q.PROJECTFUNCS1";
 	public static final String Q_PROJECTFUNCS4 = "Q.PROJECTFUNCS4";	
 	public static final String Q_PROJECTFUNCS5 = "Q.PROJECTFUNCS5";
 	public static final String Q_PROJECTFUNCS6 = "Q.PROJECTFUNCS6";
-	
-	
-	public static final String Q_PRJKOD5 = "SRGPRJKOD5";
-	public static final String Q_PRJKOD6 = "SRGPRJKOD6";
-	public static final String Q_PRJKOD7 = "SRGPRJKOD7";
 	public static final String Q_VERSION_NOTES = "Version.Notes";
 	public static final String Q_VERSIONS = "Versions";
 
