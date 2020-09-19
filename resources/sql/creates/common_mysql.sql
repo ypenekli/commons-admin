@@ -294,8 +294,8 @@ create table common.commons(
 		id 
 	)
 );	
-drop table if exists common.transfers;
-create table common.transfers(
+drop table if exists common.exports;
+create table common.exports(
 	source_schema varchar(50) not null,
 	source_table varchar(50) not null,
 	target_schema varchar(50) not null,
@@ -310,7 +310,7 @@ create table common.transfers(
 	idx int not null default 0,    
     messages varchar(150),    
 	error_code int not null default 0,
-	constraint pk_common_transfers primary key  
+	constraint pk_common_exports primary key  
 	(
 		source_schema, source_table, target_schema, target_table 
 	)

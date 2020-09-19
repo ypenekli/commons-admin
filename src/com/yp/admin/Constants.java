@@ -6,12 +6,11 @@ import java.util.ResourceBundle;
 public class Constants {
 
 	private Constants() {
-	}
-
+	}	
 	private static final ResourceBundle bundleSql;
 	public static final ResourceBundle bundleMessage;
 
-	static {
+	static {		
 		bundleSql = ResourceBundle.getBundle("admin.Queries");
 		bundleMessage = ResourceBundle.getBundle("admin.Messages");
 	}
