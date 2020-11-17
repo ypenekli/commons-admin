@@ -1,5 +1,6 @@
 package com.yp.admin.model;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,6 +25,7 @@ import com.yp.core.sec.PasswordGenerator;
 import com.yp.core.tools.DateTime;
 import com.yp.core.tools.StringTool;
 import com.yp.core.user.IUser;
+import com.yp.core.web.JsonHandler;
 
 public class UserModel extends AModel<Users> {
 
@@ -184,11 +186,21 @@ public class UserModel extends AModel<Users> {
 		return checkUser(user, pPassword, pProjectId, pClientIP);
 	}
 
-	public synchronized IResult<IUser> logIn(String pEMail, String pPassword, String pProjectId, String pClientIP) {
-		Users user = null;
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public synchronized IResult<IUser> logIn(String pEMail, String pPassword, String pProjectId, String pClientIP) throws IOException {
+		IResult<IUser> res;
+		if(isRemotingEnabled()) {			
+			FnParam eposta = new FnParam("email", pEMail);
+			FnParam parola = new FnParam("pwd", pPassword);
+			FnParam prjkod = new FnParam("projectid", pProjectId);
+			FnParam remadres = new FnParam("remadres", pClientIP);			
+			res = ((JsonHandler)handler).executeAtServer("login", Users.class, eposta, parola, prjkod, remadres);				
+		}else {
+			Users user =findByEMail(pEMail);
+			res = checkUser(user, pPassword, pProjectId, pClientIP);
+		}
 
-		user = findByEMail(pEMail);
-		return checkUser(user, pPassword, pProjectId, pClientIP);
+		return res;
 	}
 
 	private IResult<IUser> validateFields(Users pNewUser) {
@@ -311,7 +323,7 @@ public class UserModel extends AModel<Users> {
 	}
 
 	public synchronized IResult<IUser> changePassword(String pEMail, String pPassword, String pNewPassword,
-			String pNewPasswordConfirm, IUser pUser, String pClientIP) {
+			String pNewPasswordConfirm, IUser pUser, String pClientIP) throws IOException{
 		IResult<IUser> result = new Result<>();
 		if (!StringTool.isNull(pEMail)) {
 			if (pNewPassword.equals(pNewPasswordConfirm)) {
