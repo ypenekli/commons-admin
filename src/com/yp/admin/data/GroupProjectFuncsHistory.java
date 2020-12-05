@@ -29,7 +29,7 @@ public class GroupProjectFuncsHistory extends DataEntity {
 		set(IDX, pIdx);
 	}
 
-	public GroupProjectFuncsHistory(Long pIdx, GroupProjectFuncs pGroupProjectFunc){
+	public GroupProjectFuncsHistory(Long pIdx, GroupProjectFunc pGroupProjectFunc){
 		this(pIdx);
 		setGroupId(pGroupProjectFunc.getGroupId());
 		setProjectFuncsId(pGroupProjectFunc.getProjectFuncsId());
@@ -183,7 +183,7 @@ public class GroupProjectFuncsHistory extends DataEntity {
 
 	// ***************
 
-	public void setUpdateUser(Users pUser, String pUpdateMode) {
+	public void setUpdateUser(User pUser, String pUpdateMode) {
 		if (pUser != null) {
 			setUpdateUserId(pUser.getId());
 			setUpdateUserName(pUser.getFullName());

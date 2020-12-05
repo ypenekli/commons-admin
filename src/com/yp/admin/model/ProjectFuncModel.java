@@ -6,10 +6,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.yp.admin.Constants;
-import com.yp.admin.data.GroupProjectFuncs;
+import com.yp.admin.data.GroupProjectFunc;
 import com.yp.admin.data.GroupProjectFuncsHistory;
-import com.yp.admin.data.ProjectFuncs;
-import com.yp.admin.data.Users;
+import com.yp.admin.data.ProjectFunc;
+import com.yp.admin.data.User;
 import com.yp.core.AModel;
 import com.yp.core.BaseConstants;
 import com.yp.core.FnParam;
@@ -23,7 +23,7 @@ import com.yp.core.ref.Reference;
 import com.yp.core.tools.StringTool;
 import com.yp.core.user.IUser;
 
-public class ProjectFuncModel extends AModel<ProjectFuncs> {
+public class ProjectFuncModel extends AModel<ProjectFunc> {
 	
 	public static final String Q_PROJECTFUNCS1 = "Q.PROJECTFUNCS1";
 	public static final String Q_PROJECTFUNCS4 = "Q.PROJECTFUNCS4";	
@@ -63,21 +63,21 @@ public class ProjectFuncModel extends AModel<ProjectFuncs> {
 	}
 
 
-	public List<ProjectFuncs> findProjectFuncs(String pParentId) {
+	public List<ProjectFunc> findProjectFuncs(String pParentId) {
 		DbCommand query = new DbCommand(Q_PROJECTFUNCS1, new FnParam("parent_id", pParentId));
 		query.setQuery(Constants.getSgl(query.getName()));
 
 		return findAny(query);
 	}
 
-	public List<ProjectFuncs> findUserProjectFuncs(final Integer pUserId, final String pProjectId) {
+	public List<ProjectFunc> findUserProjectFuncs(final Integer pUserId, final String pProjectId) {
 		final DbCommand query = new DbCommand(Q_PROJECTFUNCS5, new FnParam("project_id", pProjectId),
 				new FnParam("project_id", pProjectId), new FnParam("user_id", pUserId));
 		query.setQuery(Constants.getSgl(query.getName()));
 		return this.findAny(query);
 	}
 	
-	public List<ProjectFuncs> findGroupProjectFuncs(final Integer pGroupId, final String pProjectId) {
+	public List<ProjectFunc> findGroupProjectFuncs(final Integer pGroupId, final String pProjectId) {
 		final DbCommand query = new DbCommand(Q_PROJECTFUNCS4, new FnParam("project_id", pProjectId),
 				new FnParam("groupid", pGroupId));
 		query.setQuery(Constants.getSgl(query.getName()));
@@ -85,8 +85,8 @@ public class ProjectFuncModel extends AModel<ProjectFuncs> {
 	}
 
 
-	private IResult<ProjectFuncs> validateFields(ProjectFuncs pProject) {
-		IResult<ProjectFuncs> res = new Result<>(true, "");
+	private IResult<ProjectFunc> validateFields(ProjectFunc pProject) {
+		IResult<ProjectFunc> res = new Result<>(true, "");
 		StringBuilder dSb = new StringBuilder();
 		String mString = pProject.getId();
 		if (StringTool.isNull(mString) || mString.length() < 3) {
@@ -105,28 +105,28 @@ public class ProjectFuncModel extends AModel<ProjectFuncs> {
 		return res;
 	}
 
-	public synchronized IResult<ProjectFuncs> save(ProjectFuncs pProjectFunc, Integer pGroupId, IUser pUser) {
-		IResult<ProjectFuncs> result = validateFields(pProjectFunc);
+	public synchronized IResult<ProjectFunc> save(ProjectFunc pProjectFunc, Integer pGroupId, IUser pUser) {
+		IResult<ProjectFunc> result = validateFields(pProjectFunc);
 		if (result.isSuccess()) {
 			try {
 				GroupModel groupModel = new GroupModel();
 				setLastClientInfo(pProjectFunc, pUser);
 
-				ProjectFuncs parent = null;
-				GroupProjectFuncs groupFuncs = null;
+				ProjectFunc parent = null;
+				GroupProjectFunc groupFuncs = null;
 				GroupProjectFuncsHistory history = null;
 
 				if (pProjectFunc.isNew()) {						
-					parent = new ProjectFuncs(pProjectFunc.getParentId());
+					parent = new ProjectFunc(pProjectFunc.getParentId());
 					parent.accept();					
 					parent.setLeaf(false);
 					parent.setName(pProjectFunc.getParentName());					
 					parent.setLastClientInfo(pUser);
-					groupFuncs = new GroupProjectFuncs(pGroupId, pProjectFunc.getId());
+					groupFuncs = new GroupProjectFunc(pGroupId, pProjectFunc.getId());
 					groupFuncs.setLastClientInfo(pUser);
 
 					history = new GroupProjectFuncsHistory(groupModel.findGroupProjectFuncsHistoryId(), groupFuncs);
-					history.setUpdateUser((Users) pUser, GroupProjectFuncsHistory.UPDATE_MODE_ADD);
+					history.setUpdateUser((User) pUser, GroupProjectFuncsHistory.UPDATE_MODE_ADD);
 					history.setClientInfo(pProjectFunc);
 				}
 

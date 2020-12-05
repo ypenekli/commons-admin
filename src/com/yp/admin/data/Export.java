@@ -9,7 +9,7 @@ import com.yp.core.db.OnExportListener.PHASE;
 import com.yp.core.entity.DataEntity;
 import com.yp.core.tools.DateTime;
 
-public class Exports extends DataEntity implements IExport {
+public class Export extends DataEntity implements IExport {
 
 	private static final long serialVersionUID = 783015803424147220L;
 	private static String schemaName = "COMMON";
@@ -17,9 +17,9 @@ public class Exports extends DataEntity implements IExport {
 
 	private boolean deleteTargetTableRows;
 
-	public Exports() {
+	public Export() {
 		super();
-		className = "Exports";
+		className = "Export";
 		setPrimaryKeys(SOURCE_SCHEMA, SOURCE_TABLE, TARGET_SCHEMA, TARGET_TABLE);
 		setMessages("*");
 		setQuery("*");
@@ -29,7 +29,7 @@ public class Exports extends DataEntity implements IExport {
 		deleteTargetTableRows = false;
 	}
 
-	public Exports(String pSourceSchema, String pSourceTable, String pTargetSchema, String pTargetTable) {
+	public Export(String pSourceSchema, String pSourceTable, String pTargetSchema, String pTargetTable) {
 		this();
 		set(SOURCE_SCHEMA, pSourceSchema);
 		set(SOURCE_TABLE, pSourceTable);
@@ -37,11 +37,11 @@ public class Exports extends DataEntity implements IExport {
 		set(TARGET_TABLE, pTargetTable);
 	}
 
-	public Exports(String pSourceSchema, String pTargetSchema, String pSourceTable) {
+	public Export(String pSourceSchema, String pTargetSchema, String pSourceTable) {
 		this(pSourceSchema, pSourceTable, pTargetSchema, pSourceTable);
 	}
 
-	public Exports(String pSourceSchema, String pSourceTable) {
+	public Export(String pSourceSchema, String pSourceTable) {
 		this(pSourceSchema, pSourceTable, pSourceSchema, pSourceTable);
 	}
 
@@ -295,8 +295,8 @@ public class Exports extends DataEntity implements IExport {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof Exports) {
-			Exports vs = (Exports) obj;
+		if (obj instanceof Export) {
+			Export vs = (Export) obj;
 			String dSS1 = vs.getSourceSchema().toLowerCase(BaseConstants.LOCALE_EN);
 			String dST1 = vs.getSourceTable().toLowerCase(BaseConstants.LOCALE_EN);
 			String dTS1 = vs.getTargetSchema().toLowerCase(BaseConstants.LOCALE_EN);

@@ -7,20 +7,20 @@ import com.yp.core.entity.DataEntity;
 import com.yp.core.tools.DateTime;
 
 
-public class ProjectVersions extends DataEntity {
+public class ProjectVersion extends DataEntity {
 
 	private static final long serialVersionUID = -5398951249303223864L;
 	private static String schemaName = "COMMON";
 	private static String tableName = "PROJECT_VERSIONS";
 
 
-	public ProjectVersions(){
+	public ProjectVersion(){
 		super();
-		className = "ProjectVersions";
+		className = "ProjectVersion";
 		setPrimaryKeys(PROJECT_ID, VERSION, IDX);
 	}
 
-	public ProjectVersions(String pProjectId, Integer pVersion, Integer pIdx){
+	public ProjectVersion(String pProjectId, Integer pVersion, Integer pIdx){
 		this();
 		set(PROJECT_ID, pProjectId);
 		set(VERSION, pVersion);

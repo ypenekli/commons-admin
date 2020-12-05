@@ -3,39 +3,29 @@ package com.yp.admin.data;
 import com.yp.core.BaseConstants;
 import com.yp.core.entity.DataEntity;
 import com.yp.core.entity.IDataEntity;
-import com.yp.core.ref.IReference;
+import com.yp.core.tools.ITree;
+import com.yp.core.tools.StringTool;
 
-public class Commons extends DataEntity implements IReference<Integer> {
+public class ProjectFunc extends DataEntity implements ITree<String> {
 
-	private static final long serialVersionUID = 8655468033821499434L;
+	private static final long serialVersionUID = 3417625341999168302L;
 	private static String schemaName = "COMMON";
-	private static String tableName = "COMMONS";
+	private static String tableName = "PROJECT_FUNCS";
 
-	public Commons() {
+	public ProjectFunc() {
 		super();
-		className = "Commons";
+		className = "ProjectFunc";
 		setPrimaryKeys(ID);
 	}
 
-	public Commons(Integer pId) {
+	public ProjectFunc(String pId) {
 		this();
 		set(ID, pId);
 	}
 
-	public Commons(final Integer pId, final Integer pParentId, final Integer pLevel, final Integer pGroupCode,
-			final String pHierarchy) {
-		this(pId);
-		setParentId(pParentId);
-		setLevel(pLevel);
-		setGroupCode(pGroupCode);
-		setHierarchy(pHierarchy);
-	}
-
-	public Commons(IDataEntity pDe) {
-		this(Double.valueOf(pDe.get(ID).toString()).intValue());
-		setAbrv((String) pDe.get(ABRV));
+	public ProjectFunc(IDataEntity pDe) {
+		this((String) pDe.get(ID));
 		set(DESCRIPTION, pDe.get(DESCRIPTION));
-		set(GROUP_CODE, pDe.get(GROUP_CODE));
 		set(HIERARCHY, pDe.get(HIERARCHY));
 		set(ICON_URL, pDe.get(ICON_URL));
 		set(IDX, pDe.get(IDX));
@@ -43,16 +33,33 @@ public class Commons extends DataEntity implements IReference<Integer> {
 		set(LEVEL, pDe.get(LEVEL));
 		set(NAME, pDe.get(NAME));
 		set(PARENT_ID, pDe.get(PARENT_ID));
+		set(PROJECT_ID, pDe.get(PROJECT_ID));
 		set(STATUS, pDe.get(STATUS));
+		set(TARGET, pDe.get(TARGET));
+		set(URL, pDe.get(URL));
+	}
+
+	protected static final String PROJECT_ID = "project_id";
+
+	public String getProjectId() {
+		return (String) get(PROJECT_ID);
+	}
+
+	public void setProjectId(String pProjectId) {
+		set(PROJECT_ID, pProjectId);
+	}
+
+	public boolean isProjectIdNull() {
+		return isNull(PROJECT_ID);
 	}
 
 	protected static final String ID = "id";
 
-	public Integer getId() {
-		return (Integer) get(ID);
+	public String getId() {
+		return (String) get(ID);
 	}
 
-	public void setId(Integer pId) {
+	public void setId(String pId) {
 		set(ID, pId);
 	}
 
@@ -67,25 +74,16 @@ public class Commons extends DataEntity implements IReference<Integer> {
 	}
 
 	public void setName(String pName) {
-		set(NAME, pName);
+		if (pName == null)
+			pName = "";
+		if (!isLeaf())
+			set(NAME, pName.toUpperCase(BaseConstants.LOCALE_TR));
+		else
+			set(NAME, StringTool.ucaseFirstCharTR(pName));
 	}
 
 	public boolean isNameNull() {
 		return isNull(NAME);
-	}
-
-	protected static final String ABRV = "abrv";
-
-	public String getAbrv() {
-		return (String) get(ABRV);
-	}
-
-	public void setAbrv(String pAbrv) {
-		set(ABRV, pAbrv, 75);
-	}
-
-	public boolean isAbrvNull() {
-		return isNull(ABRV);
 	}
 
 	protected static final String DESCRIPTION = "description";
@@ -102,27 +100,41 @@ public class Commons extends DataEntity implements IReference<Integer> {
 		return isNull(DESCRIPTION);
 	}
 
-	protected static final String GROUP_CODE = "group_code";
+	protected static final String URL = "url";
 
-	public Integer getGroupCode() {
-		return (Integer) get(GROUP_CODE);
+	public String getUrl() {
+		return (String) get(URL);
 	}
 
-	public void setGroupCode(Integer pGroupCode) {
-		set(GROUP_CODE, pGroupCode);
+	public void setUrl(String pUrl) {
+		set(URL, pUrl);
 	}
 
-	public boolean isGroupCodeNull() {
-		return isNull(GROUP_CODE);
+	public boolean isUrlNull() {
+		return isNull(URL);
+	}
+
+	protected static final String TARGET = "target";
+
+	public String getTarget() {
+		return (String) get(TARGET);
+	}
+
+	public void setTarget(String pTarget) {
+		set(TARGET, pTarget);
+	}
+
+	public boolean isTargetNull() {
+		return isNull(TARGET);
 	}
 
 	protected static final String PARENT_ID = "parent_id";
 
-	public Integer getParentId() {
-		return (Integer) get(PARENT_ID);
+	public String getParentId() {
+		return (String) get(PARENT_ID);
 	}
 
-	public void setParentId(Integer pParentId) {
+	public void setParentId(String pParentId) {
 		set(PARENT_ID, pParentId);
 	}
 
@@ -227,44 +239,14 @@ public class Commons extends DataEntity implements IReference<Integer> {
 	@Override
 	public void checkValues() {
 		super.checkValues();
-		checkInteger(ID);
-		checkInteger(GROUP_CODE);
-		checkInteger(PARENT_ID);
 		checkInteger(IDX);
 		checkInteger(LEVEL);
 	}
 
-	// ************
-
-	public static final Integer PARENT_ID_CITY_TR = 1020000000;
-	public static final Integer PARENT_ID_PROFESSION = 1030000000;
-	public static final Integer PARENT_ID_TITLE = 1040000000;
-	public static final Integer PARENT_ID_POSITION = 1050000000;
-	public static final Commons root = new Commons(0, -1, -1, -1, "0");
+	// *************
 
 	public boolean isStatusEnabled() {
 		return BaseConstants.ENABLED.equals(get(STATUS));
-	}
-
-	// ..IReference
-	@Override
-	public Integer getKey() {
-		return (Integer) get(ID);
-	}
-
-	@Override
-	public void setKey(Integer pKey) {
-		set(ID, pKey);
-	}
-
-	@Override
-	public String getValue() {
-		return (String) get(NAME);
-	}
-
-	@Override
-	public void setValue(String pValue) {
-		set(NAME, pValue);
 	}
 
 	public boolean isLeaf() {
@@ -275,47 +257,56 @@ public class Commons extends DataEntity implements IReference<Integer> {
 		set(LEAF, pLeaf ? BaseConstants.TRUE.getKey() : BaseConstants.FALSE.getKey());
 	}
 
-	// ..IReference
-
-	public Commons addSubitem(Integer pSubitemSize, boolean isLeaf) {
+	public ProjectFunc addSubitem(Integer pSubitemSize, boolean isLeaf) {
 		Integer idx = 0;
 		if (pSubitemSize != null) {
 			idx = pSubitemSize + 1;
 		}
-		Integer groupCode = getGroupCode();
-		if (groupCode == null || groupCode == -1) {
-			groupCode = idx;
-		}
-		Integer id = (100 + groupCode) * 10000000;
-		if (getLevel() > 2) {
-			id += 100000;
-		}
-		if (getLevel() > -1) {
-			id += idx;
-		}
-		final Commons aNew = new Commons(id);
-		aNew.setParentId(getId());
-		aNew.setGroupCode(groupCode);
-		aNew.setLeaf(isLeaf);
-		aNew.setLevel(getLevel() + 1);
-		aNew.setHierarchy(String.format("%s.%s", getHierarchy(), id));
-		return aNew;
+		final ProjectFunc de = new ProjectFunc(String.format("%s.%s", getId(), idx));
+		de.setParentId(getId());
+		de.setParentName(getName());
+		de.setProjectId(getProjectId());
+		de.setLevel(getLevel() + 1);
+		de.setIdx(idx);
+		de.setTarget(getTarget());
+		de.setHierarchy(getHierarchy() + StringTool.padLeft(idx.toString(), '0', 4));
+		de.setLeaf(isLeaf);
+		setLeaf(false);
+		return de;
+	}
+
+	protected static final String PARENT_NAME = "parent_name";
+
+	public String getParentName() {
+		return (String) get(PARENT_NAME);
+	}
+
+	public void setParentName(String pParentName) {
+		setField(PARENT_NAME, pParentName, false);
 	}
 
 	@Override
-	public boolean equals(Object pObj) {
-		if (pObj != null) {
-			if (pObj instanceof Commons || pObj instanceof IReference<?>) {
-				return getId() != null && getId().equals(((Commons) pObj).getId());
-			} else if (pObj instanceof Integer) {
-				return getId() != null && getId().equals(pObj);
-			}
-		}
-		return false;
+	public String getValue() {
+		return (String) get(ID);
+	}
+
+	@Override
+	public String getParentValue() {
+		return (String) get(PARENT_ID);
 	}
 
 	@Override
 	public String toString() {
 		return getName();
+	}
+
+	@Override
+	public boolean equals(Object pObj) {
+		if (pObj != null)
+			if (pObj instanceof ProjectFunc)
+				return getId().equals(((ProjectFunc) pObj).getId());
+			else if (pObj instanceof String)
+				return getId().equals(pObj);
+		return false;
 	}
 }

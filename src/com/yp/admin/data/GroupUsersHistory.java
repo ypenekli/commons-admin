@@ -29,7 +29,7 @@ public class GroupUsersHistory extends DataEntity {
 		set(IDX, pIdx);
 	}
 
-	public GroupUsersHistory(Long pIdx, GroupUsers pGroupUsers){
+	public GroupUsersHistory(Long pIdx, GroupUser pGroupUsers){
 		this(pIdx);
 		setGroupId(pGroupUsers.getGroupId());
 		setUserId(pGroupUsers.getUserId());
@@ -183,7 +183,7 @@ public class GroupUsersHistory extends DataEntity {
 
 	// **************
 
-	public void setUpdateUser(Users pUser, String pUpdateMode) {
+	public void setUpdateUser(User pUser, String pUpdateMode) {
 		if (pUser != null) {
 			setUpdateUserId(pUser.getId());
 			setUpdateUserName(pUser.getFullName());

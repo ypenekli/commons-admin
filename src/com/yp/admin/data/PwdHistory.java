@@ -158,7 +158,7 @@ public class PwdHistory extends DataEntity {
 
 	// ************
 
-	public void setUpdateUser(Users pUser) {
+	public void setUpdateUser(User pUser) {
 		setUpdateUserId(pUser.getId());
 		setUpdateDatetimeDb(DateTime.dbNow());
 		setUpdateUserName(pUser.getFullName());

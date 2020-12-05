@@ -9,24 +9,24 @@ import com.yp.core.entity.IDataEntity;
 import com.yp.core.tools.DateTime;
 import com.yp.core.tools.StringTool;
 
-public class Projects extends DataEntity {
+public class Project extends DataEntity {
 
 	private static final long serialVersionUID = 7953203547827878233L;
 	private static String schemaName = "COMMON";
 	private static String tableName = "PROJECTS";
 
-	public Projects() {
+	public Project() {
 		super();
-		className = "Projects";
+		className = "Project";
 		setPrimaryKeys(ID);
 	}
 
-	public Projects(String pId) {
+	public Project(String pId) {
 		this();
 		set(ID, pId);
 	}
 
-	public Projects(IDataEntity pDe) {
+	public Project(IDataEntity pDe) {
 		this((String) pDe.get(ID));
 		set(AUTOR, pDe.get(AUTOR));
 		set(DESCRIPTION, pDe.get(DESCRIPTION));
@@ -231,12 +231,12 @@ public class Projects extends DataEntity {
 		return BaseConstants.ENABLED.equals(get(STATUS));
 	}
 
-	public ProjectFuncs addFuncs(Integer pFuncSize, boolean isLeaf) {
+	public ProjectFunc addFuncs(Integer pFuncSize, boolean isLeaf) {
 		Integer idx = 0;
 		if (pFuncSize != null) {
 			idx = pFuncSize + 1;
 		}
-		final ProjectFuncs de = new ProjectFuncs(String.format("%s.%s", getId(), idx));
+		final ProjectFunc de = new ProjectFunc(String.format("%s.%s", getId(), idx));
 		de.setParentId(getId());
 		de.setProjectId(getId());
 		de.setLevel(1);
@@ -267,8 +267,8 @@ public class Projects extends DataEntity {
 	@Override
 	public boolean equals(Object pObj) {
 		if (pObj != null)
-			if (pObj instanceof Projects)
-				return getId().equals(((Projects) pObj).getId());
+			if (pObj instanceof Project)
+				return getId().equals(((Project) pObj).getId());
 			else if (pObj instanceof String)
 				return getId().equals(pObj);
 		return false;

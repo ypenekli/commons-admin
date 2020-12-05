@@ -10,19 +10,19 @@ import com.yp.core.ref.IReference;
 import com.yp.core.tools.DateTime;
 import com.yp.core.user.IUser;
 
-public class Users extends DataEntity implements IUser {
+public class User extends DataEntity implements IUser {
 
 	private static final long serialVersionUID = 6685001995998534606L;
 	private static String schemaName = "COMMON";
 	private static String tableName = "USERS";
 
-	public Users() {
+	public User() {
 		super();
-		className = "Users";
+		className = "User";
 		setPrimaryKeys(ID);
 	}
 
-	public Users(Integer pId) {
+	public User(Integer pId) {
 		this();
 		set(ID, pId);
 		set(CITIZENSHIP_NU, BigDecimal.ZERO);
@@ -30,7 +30,7 @@ public class Users extends DataEntity implements IUser {
 		setStatusActive(false);
 	}
 
-	public Users(IDataEntity pDe) {
+	public User(IDataEntity pDe) {
 		this(Double.valueOf(pDe.get(ID).toString()).intValue());
 		set(BIRTH_CITY, pDe.get(BIRTH_CITY));
 		set(BIRTH_DATE, pDe.get(BIRTH_DATE));
@@ -623,37 +623,37 @@ public class Users extends DataEntity implements IUser {
 		return (String) get(HOME_CITY_NAME);
 	}
 	
-	private transient Commons homeCityRef;
+	private transient Common homeCityRef;
 	public IReference<Integer>getHomeCityRef(){
 		if(homeCityRef == null) {
-			homeCityRef = new Commons(getHomeCity());
+			homeCityRef = new Common(getHomeCity());
 			homeCityRef.setName(getHomeCityName());
 		}
 		return homeCityRef;
 	}
 	
-	private transient Commons positionRef;
+	private transient Common positionRef;
 	public IReference<Integer>getPositionRef(){
 		if(positionRef == null) {
-			positionRef = new Commons(getPosition());
+			positionRef = new Common(getPosition());
 			positionRef.setName(getPositionName());
 		}
 		return positionRef;
 	}
 	
-	private transient Commons professionRef;
+	private transient Common professionRef;
 	public IReference<Integer>getProfessionRef(){
 		if(professionRef == null) {
-			professionRef = new Commons(getProfession());
+			professionRef = new Common(getProfession());
 			professionRef.setName(getProfessionName());
 		}
 		return professionRef;
 	}
 	
-	private transient Commons titleRef;
+	private transient Common titleRef;
 	public IReference<Integer>getTitleRef(){
 		if(titleRef == null) {
-			titleRef = new Commons(getTitle());
+			titleRef = new Common(getTitle());
 			titleRef.setName(getTitleName());
 		}
 		return titleRef;

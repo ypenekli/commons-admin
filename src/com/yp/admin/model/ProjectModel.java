@@ -6,11 +6,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.yp.admin.Constants;
-import com.yp.admin.data.GroupUsers;
+import com.yp.admin.data.GroupUser;
 import com.yp.admin.data.GroupUsersHistory;
-import com.yp.admin.data.Groups;
-import com.yp.admin.data.Projects;
-import com.yp.admin.data.Users;
+import com.yp.admin.data.Group;
+import com.yp.admin.data.Project;
+import com.yp.admin.data.User;
 import com.yp.core.AModel;
 import com.yp.core.BaseConstants;
 import com.yp.core.FnParam;
@@ -24,7 +24,7 @@ import com.yp.core.ref.Reference;
 import com.yp.core.tools.StringTool;
 import com.yp.core.user.IUser;
 
-public class ProjectModel extends AModel<Projects> {
+public class ProjectModel extends AModel<Project> {
 	public static final String Q_PROJECT1 = "SRGPRJKOD1";
 	public static final String Q_PROJECTS6 = "Q.PROJECTS6";
 	public static final String Q_VERSION_NOTES = "Version.Notes";
@@ -52,35 +52,35 @@ public class ProjectModel extends AModel<Projects> {
 		return targetList;
 	}
 
-	public List<Projects> findAll() {
+	public List<Project> findAll() {
 		DbCommand query = new DbCommand(Q_PROJECT1, new FnParam[] {});
 		query.setQuery(Constants.getSgl(query.getName()));
 
 		return findAny(query);
 	}
 
-	public List<Projects> findProjects(Integer pUserId) {
+	public List<Project> findProjects(Integer pUserId) {
 		DbCommand query = new DbCommand(Q_PROJECTS6,  new FnParam("userid", pUserId));
 		query.setQuery(Constants.getSgl(query.getName()));
 
 		return findAny(query);
 	}
 
-	public List<Projects> findProjectVersionNotes(final String pProjectId, final String pVersion) {
+	public List<Project> findProjectVersionNotes(final String pProjectId, final String pVersion) {
 		final DbCommand query = new DbCommand(Q_VERSION_NOTES, new FnParam("projectid", pProjectId),
 				new FnParam("version", pVersion));
 		query.setQuery(Constants.getSgl(query.getName()));
 		return this.findAny(query);
 	}
 
-	public List<Projects> findProjectVersions(final String pProjectId) {
+	public List<Project> findProjectVersions(final String pProjectId) {
 		final DbCommand query = new DbCommand(Q_VERSIONS, new FnParam("projectid", pProjectId));
 		query.setQuery(Constants.getSgl(query.getName()));
 		return this.findAny(query);
 	}
 
-	private IResult<Projects> validateFields(Projects pProject) {
-		IResult<Projects> res = new Result<>(true, "");
+	private IResult<Project> validateFields(Project pProject) {
+		IResult<Project> res = new Result<>(true, "");
 		StringBuilder dSb = new StringBuilder();
 		String mString = pProject.getId();
 		if (StringTool.isNull(mString) || mString.length() < 3) {
@@ -99,30 +99,30 @@ public class ProjectModel extends AModel<Projects> {
 		return res;
 	}
 
-	public synchronized IResult<Projects> save(Projects pProject, IUser pUser) {
-		IResult<Projects> result = validateFields(pProject);
+	public synchronized IResult<Project> save(Project pProject, IUser pUser) {
+		IResult<Project> result = validateFields(pProject);
 		if (result.isSuccess()) {
 			try {
 				GroupModel groupModel = new GroupModel();
 				setLastClientInfo(pProject, pUser);
 
-				Groups group = null;
-				GroupUsers groupUser = null;
+				Group group = null;
+				GroupUser groupUser = null;
 				GroupUsersHistory history = null;
 
 				if (pProject.isNew()) {					
-					group = new Groups(groupModel.findGroupId());
+					group = new Group(groupModel.findGroupId());
 					group.setProjectId(pProject.getId());
 					group.setName(String.format("%s->%s", Constants.getString("FrmGroup.Admin"), pProject.getName()));
 					group.setHierarchy(group.getId().toString());
-					group.setGroupType(Groups.GROUP_TYPE_ADMIN);
+					group.setGroupType(Group.GROUP_TYPE_ADMIN);
 					group.setLastClientInfo(pProject);
 
-					groupUser = new GroupUsers(group.getId(), pUser.getId());
+					groupUser = new GroupUser(group.getId(), pUser.getId());
 					groupUser.setLastClientInfo(group);
 
 					history = new GroupUsersHistory(groupModel.findGroupUsersHistoryId(), groupUser);
-					history.setUpdateUser((Users) pUser, GroupUsersHistory.UPDATE_MODE_ADD);
+					history.setUpdateUser((User) pUser, GroupUsersHistory.UPDATE_MODE_ADD);
 					history.setClientInfo(pUser);
 				}
 

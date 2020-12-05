@@ -3,25 +3,25 @@ package com.yp.admin.data;
 import com.yp.core.entity.DataEntity;
 import com.yp.core.entity.IDataEntity;
 
-public class GroupUsers extends DataEntity {
+public class GroupUser extends DataEntity {
 
 	private static final long serialVersionUID = 7989574171523810300L;
 	private static String schemaName = "COMMON";
 	private static String tableName = "GROUP_USERS";
 
-	public GroupUsers() {
+	public GroupUser() {
 		super();
-		className = "GroupUsers";
+		className = "GroupUser";
 		setPrimaryKeys(GROUP_ID, USER_ID);
 	}
 
-	public GroupUsers(Integer pGroupId, Integer pUserId) {
+	public GroupUser(Integer pGroupId, Integer pUserId) {
 		this();
 		set(GROUP_ID, pGroupId);
 		set(USER_ID, pUserId);
 	}
 
-	public GroupUsers(IDataEntity pDe) {
+	public GroupUser(IDataEntity pDe) {
 		this(Double.valueOf(pDe.get(GROUP_ID).toString()).intValue(),
 				Double.valueOf(pDe.get(USER_ID).toString()).intValue());
 	}

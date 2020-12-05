@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 import com.yp.admin.Constants;
 import com.yp.admin.data.LoginHistory;
 import com.yp.admin.data.PwdHistory;
-import com.yp.admin.data.Users;
+import com.yp.admin.data.User;
 import com.yp.core.AModel;
 import com.yp.core.BaseConstants;
 import com.yp.core.FnParam;
@@ -27,7 +27,7 @@ import com.yp.core.tools.StringTool;
 import com.yp.core.user.IUser;
 import com.yp.core.web.JsonHandler;
 
-public class UserModel extends AModel<Users> {
+public class UserModel extends AModel<User> {
 
 	public static final String Q_Principles = "Principles";
 	public static final String Q_USERS1 = "Q.USERS1";
@@ -48,7 +48,7 @@ public class UserModel extends AModel<Users> {
 		super(pServer);
 	}
 
-	public Users findByEMail(String pEMail) {
+	public User findByEMail(String pEMail) {
 		if (!StringTool.isNull(pEMail)) {
 			pEMail = pEMail.toLowerCase(BaseConstants.LOCALE_EN);
 
@@ -60,7 +60,7 @@ public class UserModel extends AModel<Users> {
 		return null;
 	}
 
-	public Users findByTelphone(String pTelnu) {
+	public User findByTelphone(String pTelnu) {
 		if (!StringTool.isNull(pTelnu) && StringTool.isNumber(pTelnu)) {
 			DbCommand query = new DbCommand(Q_Telephone, new FnParam("phonenumber", pTelnu));
 			query.setQuery(Constants.getSgl(query.getName()));
@@ -70,7 +70,7 @@ public class UserModel extends AModel<Users> {
 		return null;
 	}
 
-	public Users findByTC(BigDecimal pCitizinShipNu) {
+	public User findByTC(BigDecimal pCitizinShipNu) {
 		if (pCitizinShipNu != null && pCitizinShipNu.intValue() > 100) {
 			DbCommand query = new DbCommand(Q_USERS7, new FnParam("tcnu", pCitizinShipNu));
 			query.setQuery(Constants.getSgl(query.getName()));
@@ -79,7 +79,7 @@ public class UserModel extends AModel<Users> {
 		return null;
 	}
 
-	public Users find(Integer pUserId) {
+	public User find(Integer pUserId) {
 		if (pUserId != null && pUserId > -1) {
 			DbCommand query = new DbCommand(Q_USERS1, new FnParam("userid", pUserId));
 			query.setQuery(Constants.getSgl(query.getName()));
@@ -89,7 +89,7 @@ public class UserModel extends AModel<Users> {
 		return null;
 	}
 
-	public Users find(Integer pUserId, BigDecimal pCitizenShipNu) {
+	public User find(Integer pUserId, BigDecimal pCitizenShipNu) {
 		if (pUserId == null)
 			pUserId = -1;
 		if (pCitizenShipNu == null)
@@ -103,7 +103,7 @@ public class UserModel extends AModel<Users> {
 		return null;
 	}
 
-	public Users find(Integer pUserId, String pEmail) {
+	public User find(Integer pUserId, String pEmail) {
 		if (pUserId == null)
 			pUserId = -1;
 		if (pEmail == null)
@@ -180,7 +180,7 @@ public class UserModel extends AModel<Users> {
 
 	public synchronized IResult<IUser> logIn(BigDecimal pTckmlnmr, String pPassword, String pProjectId,
 			String pClientIP) {
-		Users user = null;
+		User user = null;
 
 		user = findByTC(pTckmlnmr);
 		return checkUser(user, pPassword, pProjectId, pClientIP);
@@ -194,16 +194,16 @@ public class UserModel extends AModel<Users> {
 			FnParam parola = new FnParam("pwd", pPassword);
 			FnParam prjkod = new FnParam("projectid", pProjectId);
 			FnParam remadres = new FnParam("remadres", pClientIP);			
-			res = ((JsonHandler)handler).executeAtServer("login", Users.class, eposta, parola, prjkod, remadres);				
+			res = ((JsonHandler)handler).executeAtServer("login", User.class, eposta, parola, prjkod, remadres);				
 		}else {
-			Users user =findByEMail(pEMail);
+			User user =findByEMail(pEMail);
 			res = checkUser(user, pPassword, pProjectId, pClientIP);
 		}
 
 		return res;
 	}
 
-	private IResult<IUser> validateFields(Users pNewUser) {
+	private IResult<IUser> validateFields(User pNewUser) {
 		IResult<IUser> res = new Result<>(true, "");
 		res.setData((IUser) pNewUser);
 
@@ -250,18 +250,18 @@ public class UserModel extends AModel<Users> {
 	}
 
 	public IUser checkRemoteUser(IUser pNewUser, IUser pUser) {
-		Users user = null;
+		User user = null;
 		try {
 			UserModel model = new UserModel(BaseConstants.REMSERVER);
 			user = model.findByEMail(pNewUser.getEmail());
 
 			if (user == null) {
-				user = new Users(pNewUser);
+				user = new User(pNewUser);
 				user.setId(-1);
 				user.setStatusActive(false);
 				user.setCitizenshipNu(BigDecimal.TEN);
 				AModel.setLastClientInfo(user, pUser);
-				IResult<Users> res = model.save(user);
+				IResult<User> res = model.save(user);
 				if (res.isSuccess()) {
 					user.setId(res.getData().getId());
 				} else
@@ -282,7 +282,7 @@ public class UserModel extends AModel<Users> {
 	}
 
 	public synchronized IResult<IUser> addAccount(String pTitle, IUser pNewUser, IUser pUser) {
-		IResult<IUser> res = validateFields((Users) pNewUser);
+		IResult<IUser> res = validateFields((User) pNewUser);
 		if (res.isSuccess()) {
 			pNewUser.setStatusActive(false);
 			int rand = ThreadLocalRandom.current().nextInt(100, 99999999 + 1);
@@ -298,7 +298,7 @@ public class UserModel extends AModel<Users> {
 					pNewUser.setId(remuser.getId());
 				}
 			}
-			IResult<Users> temp = save((Users) pNewUser);
+			IResult<User> temp = save((User) pNewUser);
 			if (temp != null && temp.isSuccess()) {
 				res.setSuccess(true);
 				pNewUser.setId(temp.getData().getId());
@@ -306,7 +306,7 @@ public class UserModel extends AModel<Users> {
 				res.setData(pNewUser);
 				String message = BaseConstants.getString("AddAccount.Sonuc.Basarili");
 				if (!pNewUser.isStatusActive()) {
-					Users userFrom = new Users();
+					User userFrom = new User();
 					userFrom.setEmail("bilgi@yonetici.web.tr");
 					userFrom.setName("yonetici.web.tr");
 					IResult<String> temp2 = sendActivationMail(pTitle, pNewUser, userFrom);
@@ -380,7 +380,7 @@ public class UserModel extends AModel<Users> {
 			PwdHistory history = new PwdHistory();
 			history.setUserId(pPwdUser.getId());
 			history.setPassword(pPwdUser.getPassword());
-			history.setUpdateUser((Users) pUser);
+			history.setUpdateUser((User) pUser);
 			history.setClientInfo(pUser);
 
 			IResult<String> dGec = saveAtomic(pPwdUser, history);
@@ -400,8 +400,8 @@ public class UserModel extends AModel<Users> {
 		return result;
 	}
 
-	public List<Users> findByName(String pNameSurname) {
-		List<Users> list = null;
+	public List<User> findByName(String pNameSurname) {
+		List<User> list = null;
 		if (!StringTool.isNull(pNameSurname)) {
 			DbCommand query = new DbCommand(Q_USERS6, new FnParam("name", "%" + pNameSurname + "%"),
 					new FnParam("surname", "%" + pNameSurname + "%"));
@@ -413,10 +413,10 @@ public class UserModel extends AModel<Users> {
 	}
 
 	public synchronized IResult<IUser> save(IUser user, IUser pUser) {
-		IResult<IUser> res = validateFields((Users) user);
+		IResult<IUser> res = validateFields((User) user);
 		if (res.isSuccess()) {
 			setLastClientInfo(user, pUser);
-			IResult<Users> temp = save((Users) user);
+			IResult<User> temp = save((User) user);
 			if (temp != null && temp.isSuccess()) {
 				res.setSuccess(true);
 				user.checkValues();
@@ -433,7 +433,7 @@ public class UserModel extends AModel<Users> {
 	}
 
 	public IResult<String> sendActivationMail(String pTitle, IUser pUserTo, IUser pUserFrom) {
-		Users user = (Users) pUserTo;
+		User user = (User) pUserTo;
 		Address from = new Address(pUserFrom.getEmail(), pUserFrom.getName());
 		List<Address> to = new ArrayList<>();
 		to.add(new Address(pUserTo.getEmail(), pUserTo.getName()));
@@ -456,11 +456,11 @@ public class UserModel extends AModel<Users> {
 	}
 
 	public IResult<String> sendPasswordMail(String pTitle, IUser pUserTo, IUser pUserFrom) {
-		Users userfrom = (Users) pUserFrom;
-		Users user = findByEMail(pUserTo.getEmail());
+		User userfrom = (User) pUserFrom;
+		User user = findByEMail(pUserTo.getEmail());
 		if (user != null) {
 			if (userfrom == null) {
-				userfrom = new Users();
+				userfrom = new User();
 				userfrom.setEmail("bilgi@yonetici.web.tr");
 				userfrom.setName("yonetici.web.tr");
 			}

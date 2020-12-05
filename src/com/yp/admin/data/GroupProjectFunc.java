@@ -3,25 +3,25 @@ package com.yp.admin.data;
 import com.yp.core.entity.DataEntity;
 import com.yp.core.entity.IDataEntity;
 
-public class GroupProjectFuncs extends DataEntity {
+public class GroupProjectFunc extends DataEntity {
 
 	private static final long serialVersionUID = 7097405330140651594L;
 	private static String schemaName = "COMMON";
 	private static String tableName = "GROUP_PROJECT_FUNCS";
 
-	public GroupProjectFuncs() {
+	public GroupProjectFunc() {
 		super();
-		className = "GroupProjectFuncs";
+		className = "GroupProjectFunc";
 		setPrimaryKeys(GROUP_ID, PROJECT_FUNCS_ID);
 	}
 
-	public GroupProjectFuncs(Integer pGroupId, String pProjectFuncsId) {
+	public GroupProjectFunc(Integer pGroupId, String pProjectFuncsId) {
 		this();
 		set(GROUP_ID, pGroupId);
 		set(PROJECT_FUNCS_ID, pProjectFuncsId);
 	}
 
-	public GroupProjectFuncs(IDataEntity pDe) {
+	public GroupProjectFunc(IDataEntity pDe) {
 		this(Double.valueOf(pDe.get(GROUP_ID).toString()).intValue(), (String) pDe.get(PROJECT_FUNCS_ID));
 	}
 

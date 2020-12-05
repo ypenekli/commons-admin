@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.yp.admin.Constants;
-import com.yp.admin.data.Exports;
+import com.yp.admin.data.Export;
 import com.yp.core.AModel;
 import com.yp.core.BaseConstants;
 import com.yp.core.FnParam;
@@ -19,12 +19,12 @@ import com.yp.core.ref.IReference;
 import com.yp.core.ref.Reference;
 import com.yp.core.tools.ResourceWalker;
 
-public class ExportModel extends AModel<Exports> {
+public class ExportModel extends AModel<Export> {
 
 	public static final String Q_EXPORT1 = "Q.EXPORT1";
 	public static final String Q_EXPORT2 = "Q.EXPORT2";
 
-	public List<Exports> getExportList(String pSourceSchemaName, String pTargetSchemaName) {
+	public List<Export> getExportList(String pSourceSchemaName, String pTargetSchemaName) {
 		final DbCommand query = new DbCommand(Q_EXPORT2, new FnParam("kynsema", pSourceSchemaName),
 				new FnParam("hdfsema", pTargetSchemaName));
 		query.setQuery(Constants.getSgl(query.getName()));
@@ -128,9 +128,9 @@ public class ExportModel extends AModel<Exports> {
 		return true;
 	}
 
-	public List<Exports> findDbTables(String pSourceSchema) {
+	public List<Export> findDbTables(String pSourceSchema) {
 		List<IDataEntity> list = findDbTables(pSourceSchema, pSourceSchema);
-		List<Exports> tableList = null;
+		List<Export> tableList = null;
 		if (!BaseConstants.isEmpty(list)) {
 			String tableName = "TABLE_NAME";
 			if (list.get(0).isNull(tableName))
@@ -138,7 +138,7 @@ public class ExportModel extends AModel<Exports> {
 			tableList = new ArrayList<>(list.size());
 			int i = 0;
 			for (IDataEntity vs : list) {
-				Exports newVs = new Exports(pSourceSchema, (String) vs.get(tableName));
+				Export newVs = new Export(pSourceSchema, (String) vs.get(tableName));
 				newVs.setIdx(++i);
 				newVs.checkValues();
 				tableList.add(newVs);
@@ -151,7 +151,7 @@ public class ExportModel extends AModel<Exports> {
 		String formatedquery = String.format(Constants.getSgl(Q_EXPORT1), pSchemaName, pTableName);
 		final DbCommand query = new DbCommand(Q_EXPORT1, new FnParam[] {});
 		query.setQuery(formatedquery);
-		Exports res = findOne(query);
+		Export res = findOne(query);
 		if (res != null && !res.isSourceCountNull()) {
 			return res.getSourceCount();
 		}

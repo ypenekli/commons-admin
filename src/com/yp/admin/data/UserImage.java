@@ -5,20 +5,20 @@ import com.yp.core.entity.DataEntity;
 import java.sql.Blob;
 
 
-public class UserImages extends DataEntity {
+public class UserImage extends DataEntity {
 
 	private static final long serialVersionUID = 553319198399236230L;
 	private static String schemaName = "COMMON";
 	private static String tableName = "USER_IMAGES";
 
 
-	public UserImages(){
+	public UserImage(){
 		super();
-		className = "UserImages";
+		className = "UserImage";
 		setPrimaryKeys(USER_ID, IDX);
 	}
 
-	public UserImages(Integer pUserId, Integer pIdx){
+	public UserImage(Integer pUserId, Integer pIdx){
 		this();
 		set(USER_ID, pUserId);
 		set(IDX, pIdx);

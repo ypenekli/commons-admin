@@ -5,12 +5,12 @@ import java.util.Date;
 import java.util.List;
 
 import com.yp.admin.Constants;
-import com.yp.admin.data.GroupProjectFuncs;
+import com.yp.admin.data.GroupProjectFunc;
 import com.yp.admin.data.GroupProjectFuncsHistory;
-import com.yp.admin.data.GroupUsers;
+import com.yp.admin.data.GroupUser;
 import com.yp.admin.data.GroupUsersHistory;
-import com.yp.admin.data.Groups;
-import com.yp.admin.data.Users;
+import com.yp.admin.data.Group;
+import com.yp.admin.data.User;
 import com.yp.core.AModel;
 import com.yp.core.BaseConstants;
 import com.yp.core.FnParam;
@@ -21,7 +21,7 @@ import com.yp.core.entity.Result;
 import com.yp.core.tools.StringTool;
 import com.yp.core.user.IUser;
 
-public class GroupModel extends AModel<Groups> {
+public class GroupModel extends AModel<Group> {
 
 	public static final String Q_GROUPS1 = "Q.GROUPS1";
 	public static final String Q_GROUPS2 = "Q.GROUPS2";
@@ -35,7 +35,7 @@ public class GroupModel extends AModel<Groups> {
 	public synchronized Integer findGroupId() {
 		final DbCommand query = new DbCommand(Q_GROUPS2, new FnParam[0]);
 		query.setQuery(Constants.getSgl(query.getName()));
-		final Groups de = findOne(query);
+		final Group de = findOne(query);
 		Integer res = null;
 		if (de != null) {
 			res = de.getId();
@@ -46,13 +46,13 @@ public class GroupModel extends AModel<Groups> {
 		return 0;
 	}
 
-	public List<Groups> findGroupList(final Integer pUserId) {
+	public List<Group> findGroupList(final Integer pUserId) {
 		final DbCommand query = new DbCommand(Q_GROUPS1, new FnParam("userid", pUserId));
 		query.setQuery(Constants.getSgl(query.getName()));
 		return this.findAny(query);
 	}
 
-	public List<Groups> findGroupList(final Integer pUserId, final String pProjectId) {
+	public List<Group> findGroupList(final Integer pUserId, final String pProjectId) {
 		final DbCommand query = new DbCommand(Q_GROUPS5, new FnParam("procet_id", pProjectId),
 				new FnParam("user_id", pUserId));
 		query.setQuery(Constants.getSgl(query.getName()));
@@ -99,14 +99,14 @@ public class GroupModel extends AModel<Groups> {
 		final List<IDataEntity> addHistoryList = new ArrayList<>();
 		for (int dI = 0; dI < pUserIds.length; ++dI) {
 			if (!self.equals(pUserIds[dI])) {
-				final GroupUsers delete = new GroupUsers(pGroupId, pUserIds[dI]);
+				final GroupUser delete = new GroupUser(pGroupId, pUserIds[dI]);
 				delete.setLastClientInfo(email, pClientIP, datetime);
 				delete.accept();
 				delete.delete();
 				deleteList.add(delete);
 
 				final GroupUsersHistory history = new GroupUsersHistory(idx, delete);
-				history.setUpdateUser((Users) pUser, GroupUsersHistory.UPDATE_MODE_DELETE);
+				history.setUpdateUser((User) pUser, GroupUsersHistory.UPDATE_MODE_DELETE);
 				history.setClientInfo(email, pClientIP, datetime);
 				addHistoryList.add(history);
 				++idx;
@@ -125,20 +125,20 @@ public class GroupModel extends AModel<Groups> {
 		final Integer self = pUser.getId();
 		final String email = pUser.getEmail();
 		if (!self.equals(pUserId)) {
-			final List<Groups> groupList = findGroupList(pUserId, pAppId);
+			final List<Group> groupList = findGroupList(pUserId, pAppId);
 			if (groupList != null && !groupList.isEmpty()) {
 				Long idx = this.findGroupUsersHistoryId();
 				final List<IDataEntity> deleteList = new ArrayList<>();
 				final List<IDataEntity> addHistoryList = new ArrayList<>();
-				for (final Groups v : groupList) {
-					final GroupUsers delete = new GroupUsers(v.getId(), pUserId);
+				for (final Group v : groupList) {
+					final GroupUser delete = new GroupUser(v.getId(), pUserId);
 					delete.setLastClientInfo(email, pClientIP, datetime);
 					delete.accept();
 					delete.delete();
 					deleteList.add(delete);
 
 					final GroupUsersHistory history = new GroupUsersHistory(idx, delete);
-					history.setUpdateUser((Users) pUser, GroupUsersHistory.UPDATE_MODE_DELETE);
+					history.setUpdateUser((User) pUser, GroupUsersHistory.UPDATE_MODE_DELETE);
 					history.setClientInfo(email, pClientIP, datetime);
 					addHistoryList.add(history);
 					++idx;
@@ -162,12 +162,12 @@ public class GroupModel extends AModel<Groups> {
 		final List<IDataEntity> groupUsersList = findGroupUsers(pGroupId);
 		for (int dI = 0; dI < pUserIds.length; ++dI) {
 			if (!containsUserInGroup(groupUsersList, pUserIds[dI])) {
-				final GroupUsers groupuser = new GroupUsers(pGroupId, pUserIds[dI]);
+				final GroupUser groupuser = new GroupUser(pGroupId, pUserIds[dI]);
 				groupuser.setLastClientInfo(email, pClientIP, datetime);
 				addList.add(groupuser);
 
 				final GroupUsersHistory history = new GroupUsersHistory(idx, groupuser);
-				history.setUpdateUser((Users) pUser, GroupUsersHistory.UPDATE_MODE_ADD);
+				history.setUpdateUser((User) pUser, GroupUsersHistory.UPDATE_MODE_ADD);
 				history.setClientInfo(email, pClientIP, datetime);
 				addHistoryList.add(history);
 				++idx;
@@ -179,21 +179,21 @@ public class GroupModel extends AModel<Groups> {
 		return result;
 	}
 
-	public synchronized IResult<Groups> save(final Groups pGroup, final IUser pUser) {
-		final IResult<Groups> result = checkFields(pGroup);
+	public synchronized IResult<Group> save(final Group pGroup, final IUser pUser) {
+		final IResult<Group> result = checkFields(pGroup);
 		if (result.isSuccess()) {
-			GroupUsers groupUser = null;
+			GroupUser groupUser = null;
 			GroupUsersHistory groupUserHistory = null;
 			if (pGroup.isNew()) {
 				final Integer groupId = findGroupId();
 				pGroup.setId(groupId);
 				pGroup.setHierarchy(groupId.toString());
-				pGroup.setGroupType(Groups.GROUP_TYPE_USER);
-				groupUser = new GroupUsers(groupId, pUser.getId());
+				pGroup.setGroupType(Group.GROUP_TYPE_USER);
+				groupUser = new GroupUser(groupId, pUser.getId());
 				setLastClientInfo(groupUser, pUser);
 
 				groupUserHistory = new GroupUsersHistory(findGroupUsersHistoryId(), groupUser);
-				groupUserHistory.setUpdateUser((Users) pUser, GroupUsersHistory.UPDATE_MODE_ADD);
+				groupUserHistory.setUpdateUser((User) pUser, GroupUsersHistory.UPDATE_MODE_ADD);
 				groupUserHistory.setClientInfo(pUser);
 			}
 			setLastClientInfo(pGroup, pUser);
@@ -213,7 +213,7 @@ public class GroupModel extends AModel<Groups> {
 	private boolean containsUserInGroup(final List<IDataEntity> pGroupUsersList, final Integer pUserId) {
 		if (!BaseConstants.isEmpty(pGroupUsersList)) {
 			for (final IDataEntity groupUser : pGroupUsersList) {
-				if (pUserId.equals(((GroupUsers) groupUser).getUserId())) {
+				if (pUserId.equals(((GroupUser) groupUser).getUserId())) {
 					return true;
 				}
 			}
@@ -224,7 +224,7 @@ public class GroupModel extends AModel<Groups> {
 	private boolean containsFnInGroup(final List<IDataEntity> pGroupFnList, final String pFuncId) {
 		if (!BaseConstants.isEmpty(pGroupFnList)) {
 			for (final IDataEntity groupFunc : pGroupFnList) {
-				if (pFuncId.equals(((GroupProjectFuncs) groupFunc).getProjectFuncsId())) {
+				if (pFuncId.equals(((GroupProjectFunc) groupFunc).getProjectFuncsId())) {
 					return true;
 				}
 			}
@@ -235,17 +235,17 @@ public class GroupModel extends AModel<Groups> {
 	public List<IDataEntity> findGroupUsers(final Integer pGroupId) {
 		final DbCommand query = new DbCommand(Q_GROUP_USERS1, new FnParam("groupid", pGroupId));
 		query.setQuery(Constants.getSgl(query.getName()));
-		return this.findAny(query, GroupUsers.class);
+		return this.findAny(query, GroupUser.class);
 	}
 
 	public List<IDataEntity> findGroupFuncs(final Integer pGroupId) {
 		final DbCommand query = new DbCommand(Q_GROUP_FUNCS1, new FnParam("groupid", pGroupId));
 		query.setQuery(Constants.getSgl(query.getName()));
-		return this.findAny(query, GroupProjectFuncs.class);
+		return this.findAny(query, GroupProjectFunc.class);
 	}
 
-	private IResult<Groups> checkFields(final Groups pGroup) {
-		final IResult<Groups> res = new Result<>(true, "");
+	private IResult<Group> checkFields(final Group pGroup) {
+		final IResult<Group> res = new Result<>(true, "");
 		final StringBuilder dSb = new StringBuilder();
 		String mString = pGroup.getName();
 		if (StringTool.isNull(mString) || mString.length() < 3) {
@@ -274,11 +274,11 @@ public class GroupModel extends AModel<Groups> {
 		final List<IDataEntity> groupFnList = findGroupFuncs(pGroupId);
 		for (int dI = 0; dI < pFuncs.length; ++dI) {
 			if (!containsFnInGroup(groupFnList, pFuncs[dI])) {
-				final GroupProjectFuncs groupFuncs = new GroupProjectFuncs(pGroupId, pFuncs[dI]);
+				final GroupProjectFunc groupFuncs = new GroupProjectFunc(pGroupId, pFuncs[dI]);
 				groupFuncs.setLastClientInfo(email, pClientIP, datetime);
 				addList.add(groupFuncs);
 				final GroupProjectFuncsHistory history = new GroupProjectFuncsHistory(idx, groupFuncs);
-				history.setUpdateUser((Users) pUser, GroupProjectFuncsHistory.UPDATE_MODE_ADD);
+				history.setUpdateUser((User) pUser, GroupProjectFuncsHistory.UPDATE_MODE_ADD);
 				history.setClientInfo(email, pClientIP, datetime);
 				addHistoryList.add(history);
 				++idx;
@@ -299,13 +299,13 @@ public class GroupModel extends AModel<Groups> {
 		final List<IDataEntity> deleteList = new ArrayList<>();
 		final List<IDataEntity> addHistoryList = new ArrayList<>();
 		for (int dI = 0; dI < pFuncs.length; ++dI) {
-			final GroupProjectFuncs delete = new GroupProjectFuncs(pGroupId, pFuncs[dI]);
+			final GroupProjectFunc delete = new GroupProjectFunc(pGroupId, pFuncs[dI]);
 			delete.setLastClientInfo(email, pClientIP, datetime);
 			delete.accept();
 			delete.delete();
 			deleteList.add(delete);
 			final GroupProjectFuncsHistory history = new GroupProjectFuncsHistory(idx, delete);
-			history.setUpdateUser((Users) pUser, GroupProjectFuncsHistory.UPDATE_MODE_DELETE);
+			history.setUpdateUser((User) pUser, GroupProjectFuncsHistory.UPDATE_MODE_DELETE);
 			history.setClientInfo(email, pClientIP, datetime);
 			addHistoryList.add(history);
 			++idx;

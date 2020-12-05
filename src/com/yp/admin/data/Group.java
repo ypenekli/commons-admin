@@ -6,7 +6,7 @@ import com.yp.core.entity.DataEntity;
 import com.yp.core.entity.IDataEntity;
 
 
-public class Groups extends DataEntity {
+public class Group extends DataEntity {
 
 	private static final long serialVersionUID = 2760324020608568006L;
 	private static String schemaName = "COMMON";
@@ -16,19 +16,19 @@ public class Groups extends DataEntity {
 	public static final String GROUP_TYPE_USER = "U";
 
 
-	public Groups(){
+	public Group(){
 		super();
-		className = "Groups";
+		className = "Group";
 		setPrimaryKeys(ID);	
 		setProjectId("-1");
 	}
 
-	public Groups(Integer pId){
+	public Group(Integer pId){
 		this();
 		set(ID, pId);
 	}
 
-	public Groups(IDataEntity pDe){
+	public Group(IDataEntity pDe){
 		this(Double.valueOf(pDe.get(ID).toString()).intValue());
 		set(GROUP_TYPE, pDe.get(GROUP_TYPE));
 		set(HIERARCHY, pDe.get(HIERARCHY));
