@@ -7,32 +7,32 @@ import com.yp.core.entity.DataEntity;
 import com.yp.core.tools.DateTime;
 
 
-public class GroupProjectFuncsHistory extends DataEntity {
+public class GroupAppFuncsHistory extends DataEntity {
 
 	private static final long serialVersionUID = 5332682404804031743L;
 	private static String schemaName = "COMMON";
-	private static String tableName = "GROUP_PROJECT_FUNCS_HISTORY";
+	private static String tableName = "GROUP_APP_FUNCS_HISTORY";
 
 	public static final String UPDATE_MODE_ADD = "A";
 	public static final String UPDATE_MODE_DELETE = "D";
 
 
 
-	public GroupProjectFuncsHistory(){
+	public GroupAppFuncsHistory(){
 		super();
-		className = "GroupProjectFuncsHistory";
+		className = "GroupAppFuncsHistory";
 		setPrimaryKeys(IDX);
 	}
 
-	public GroupProjectFuncsHistory(Long pIdx){
+	public GroupAppFuncsHistory(Long pIdx){
 		this();
 		set(IDX, pIdx);
 	}
 
-	public GroupProjectFuncsHistory(Long pIdx, GroupProjectFunc pGroupProjectFunc){
+	public GroupAppFuncsHistory(Long pIdx, GroupAppFunc pGroupAppFunc){
 		this(pIdx);
-		setGroupId(pGroupProjectFunc.getGroupId());
-		setProjectFuncsId(pGroupProjectFunc.getProjectFuncsId());
+		setGroupId(pGroupAppFunc.getGroupId());
+		setAppFuncId(pGroupAppFunc.getAppFuncId());
 	}
 
 
@@ -64,18 +64,18 @@ public class GroupProjectFuncsHistory extends DataEntity {
 		return isNull(GROUP_ID);
 	}
 
-	protected static final String PROJECT_FUNCS_ID = "project_funcs_id";
+	protected static final String APP_FUNC_ID = "app_func_id";
 
-	public String getProjectFuncsId() {
-		return (String) get(PROJECT_FUNCS_ID);
+	public String getAppFuncId() {
+		return (String) get(APP_FUNC_ID);
 	}
 	
-	public void setProjectFuncsId(String pProjectFuncsId){
-		set(PROJECT_FUNCS_ID, pProjectFuncsId);
+	public void setAppFuncId(String pAppFuncId){
+		set(APP_FUNC_ID, pAppFuncId);
 	}
 	
-	public boolean isProjectFuncsIdNull(){
-		return isNull(PROJECT_FUNCS_ID);
+	public boolean isAppFuncIdNull(){
+		return isNull(APP_FUNC_ID);
 	}
 
 	protected static final String UPDATE_DATETIME = "update_datetime";

@@ -9,7 +9,7 @@ import com.yp.admin.Constants;
 import com.yp.admin.data.GroupUser;
 import com.yp.admin.data.GroupUsersHistory;
 import com.yp.admin.data.Group;
-import com.yp.admin.data.Project;
+import com.yp.admin.data.App;
 import com.yp.admin.data.User;
 import com.yp.core.AModel;
 import com.yp.core.BaseConstants;
@@ -24,9 +24,9 @@ import com.yp.core.ref.Reference;
 import com.yp.core.tools.StringTool;
 import com.yp.core.user.IUser;
 
-public class ProjectModel extends AModel<Project> {
-	public static final String Q_PROJECT1 = "SRGPRJKOD1";
-	public static final String Q_PROJECTS6 = "Q.PROJECTS6";
+public class AppModel extends AModel<App> {
+	public static final String Q_APP1 = "SRGPRJKOD1";
+	public static final String Q_APPS6 = "Q.APPS6";
 	public static final String Q_VERSION_NOTES = "Version.Notes";
 	public static final String Q_VERSIONS = "Versions";
 
@@ -36,11 +36,11 @@ public class ProjectModel extends AModel<Project> {
 
 	public static final RefContainer<String> TARGET = new RefContainer<>(TARGET_WEB, TARGET_WIN, TARGET_MOBILE);
 
-	public ProjectModel() {
+	public AppModel() {
 		super();
 	}
 
-	public ProjectModel(String pServer) {
+	public AppModel(String pServer) {
 		super(pServer);
 	}
 
@@ -52,71 +52,71 @@ public class ProjectModel extends AModel<Project> {
 		return targetList;
 	}
 
-	public List<Project> findAll() {
-		DbCommand query = new DbCommand(Q_PROJECT1, new FnParam[] {});
+	public List<App> findAll() {
+		DbCommand query = new DbCommand(Q_APP1, new FnParam[] {});
 		query.setQuery(Constants.getSgl(query.getName()));
 
 		return findAny(query);
 	}
 
-	public List<Project> findProjects(Integer pUserId) {
-		DbCommand query = new DbCommand(Q_PROJECTS6,  new FnParam("userid", pUserId));
+	public List<App> findApps(Integer pUserId) {
+		DbCommand query = new DbCommand(Q_APPS6,  new FnParam("userid", pUserId));
 		query.setQuery(Constants.getSgl(query.getName()));
 
 		return findAny(query);
 	}
 
-	public List<Project> findProjectVersionNotes(final String pProjectId, final String pVersion) {
-		final DbCommand query = new DbCommand(Q_VERSION_NOTES, new FnParam("projectid", pProjectId),
+	public List<App> findAppVersionNotes(final String pAppId, final String pVersion) {
+		final DbCommand query = new DbCommand(Q_VERSION_NOTES, new FnParam("appid", pAppId),
 				new FnParam("version", pVersion));
 		query.setQuery(Constants.getSgl(query.getName()));
 		return this.findAny(query);
 	}
 
-	public List<Project> findProjectVersions(final String pProjectId) {
-		final DbCommand query = new DbCommand(Q_VERSIONS, new FnParam("projectid", pProjectId));
+	public List<App> findAppVersions(final String pAppId) {
+		final DbCommand query = new DbCommand(Q_VERSIONS, new FnParam("appid", pAppId));
 		query.setQuery(Constants.getSgl(query.getName()));
 		return this.findAny(query);
 	}
 
-	private IResult<Project> validateFields(Project pProject) {
-		IResult<Project> res = new Result<>(true, "");
+	private IResult<App> validateFields(App pApp) {
+		IResult<App> res = new Result<>(true, "");
 		StringBuilder dSb = new StringBuilder();
-		String mString = pProject.getId();
+		String mString = pApp.getId();
 		if (StringTool.isNull(mString) || mString.length() < 3) {
 			res.setSuccess(false);
-			dSb.append(BaseConstants.getString("FrmProjectAUL.Warning.Id"));
+			dSb.append(BaseConstants.getString("FrmAppAUL.Warning.Id"));
 			dSb.append(BaseConstants.EOL);
 		}
 
-		mString = pProject.getName();
+		mString = pApp.getName();
 		if (StringTool.isNull(mString) || mString.length() < 3) {
 			res.setSuccess(false);
-			dSb.append(BaseConstants.getString("FrmProjectAUL.Warning.Name"));
+			dSb.append(BaseConstants.getString("FrmAppAUL.Warning.Name"));
 			dSb.append(BaseConstants.EOL);
 		}
 		res.setMessage(dSb.toString());
 		return res;
 	}
 
-	public synchronized IResult<Project> save(Project pProject, IUser pUser) {
-		IResult<Project> result = validateFields(pProject);
+	public synchronized IResult<App> save(App pApp, IUser pUser) {
+		IResult<App> result = validateFields(pApp);
 		if (result.isSuccess()) {
 			try {
 				GroupModel groupModel = new GroupModel();
-				setLastClientInfo(pProject, pUser);
+				setLastClientInfo(pApp, pUser);
 
 				Group group = null;
 				GroupUser groupUser = null;
 				GroupUsersHistory history = null;
 
-				if (pProject.isNew()) {					
+				if (pApp.isNew()) {					
 					group = new Group(groupModel.findGroupId());
-					group.setProjectId(pProject.getId());
-					group.setName(String.format("%s->%s", Constants.getString("FrmGroup.Admin"), pProject.getName()));
+					group.setAppId(pApp.getId());
+					group.setName(String.format("%s->%s", Constants.getString("FrmGroup.Admin"), pApp.getName()));
 					group.setHierarchy(group.getId().toString());
 					group.setGroupType(Group.GROUP_TYPE_ADMIN);
-					group.setLastClientInfo(pProject);
+					group.setLastClientInfo(pApp);
 
 					groupUser = new GroupUser(group.getId(), pUser.getId());
 					groupUser.setLastClientInfo(group);
@@ -126,20 +126,20 @@ public class ProjectModel extends AModel<Project> {
 					history.setClientInfo(pUser);
 				}
 
-				final IResult<String> temp = saveAtomic(pProject, group, groupUser, history);
+				final IResult<String> temp = saveAtomic(pApp, group, groupUser, history);
 				if (temp != null) {
 					if (temp.isSuccess())
-						pProject.accept();
+						pApp.accept();
 					result.setSuccess(temp.isSuccess());
 					result.setMessage(temp.getMessage());
 				} else
 					result.setMessage(BaseConstants.MESSAGE_SAVE_ERROR);
-				result.setData(pProject);
+				result.setData(pApp);
 
 			} catch (Exception e) {
 				result.setSuccess(false);
 				result.setMessage(BaseConstants.MESSAGE_SAVE_ERROR);
-				result.setData(pProject);
+				result.setData(pApp);
 				Logger.getLogger(MyLogger.NAME).log(Level.SEVERE, e.getMessage(), e);
 			}
 

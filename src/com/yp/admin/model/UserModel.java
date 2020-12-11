@@ -147,14 +147,14 @@ public class UserModel extends AModel<User> {
 		return 0L;
 	}
 
-	private IResult<IUser> checkUser(IUser pUser, String pPassword, String pProjectId, String pClientIP) {
+	private IResult<IUser> checkUser(IUser pUser, String pPassword, String pAppId, String pClientIP) {
 		final IResult<IUser> result = new Result<>();
 		if (pUser != null) {
 			LoginHistory history = null;
 			if (pPassword.equals(pUser.getPassword())) {
-				if (pProjectId != null) {
+				if (pAppId != null) {
 					history = new LoginHistory(-1L);
-					history.setProjectId(pProjectId);
+					history.setAppId(pAppId);
 					history.setUserId(pUser.getId());
 					history.setLoginDatetimeDb(DateTime.dbNow());
 					history.setClientInfo(pUser);
@@ -178,26 +178,26 @@ public class UserModel extends AModel<User> {
 		return result;
 	}
 
-	public synchronized IResult<IUser> logIn(BigDecimal pTckmlnmr, String pPassword, String pProjectId,
+	public synchronized IResult<IUser> logIn(BigDecimal pTckmlnmr, String pPassword, String pAppId,
 			String pClientIP) {
 		User user = null;
 
 		user = findByTC(pTckmlnmr);
-		return checkUser(user, pPassword, pProjectId, pClientIP);
+		return checkUser(user, pPassword, pAppId, pClientIP);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public synchronized IResult<IUser> logIn(String pEMail, String pPassword, String pProjectId, String pClientIP) throws IOException {
+	public synchronized IResult<IUser> logIn(String pEMail, String pPassword, String pAppId, String pClientIP) throws IOException {
 		IResult<IUser> res;
 		if(isRemotingEnabled()) {			
 			FnParam eposta = new FnParam("email", pEMail);
 			FnParam parola = new FnParam("pwd", pPassword);
-			FnParam prjkod = new FnParam("projectid", pProjectId);
+			FnParam prjkod = new FnParam("appid", pAppId);
 			FnParam remadres = new FnParam("remadres", pClientIP);			
 			res = ((JsonHandler)handler).executeAtServer("login", User.class, eposta, parola, prjkod, remadres);				
 		}else {
 			User user =findByEMail(pEMail);
-			res = checkUser(user, pPassword, pProjectId, pClientIP);
+			res = checkUser(user, pPassword, pAppId, pClientIP);
 		}
 
 		return res;
@@ -211,7 +211,7 @@ public class UserModel extends AModel<User> {
 
 		if (StringTool.isNull(pNewUser.getEmail())) {
 			res.setSuccess(false);
-			dSb.append(BaseConstants.getString("10041"));
+			dSb.append(BaseConstants.getString("AddAccount.EPostaUyari"));
 			dSb.append(BaseConstants.EOL);
 		}
 		String mString = pNewUser.getPassword();

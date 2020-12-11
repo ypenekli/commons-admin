@@ -20,7 +20,7 @@ public class Group extends DataEntity {
 		super();
 		className = "Group";
 		setPrimaryKeys(ID);	
-		setProjectId("-1");
+		setAppId("-1");
 	}
 
 	public Group(Integer pId){
@@ -33,7 +33,7 @@ public class Group extends DataEntity {
 		set(GROUP_TYPE, pDe.get(GROUP_TYPE));
 		set(HIERARCHY, pDe.get(HIERARCHY));
 		set(NAME, pDe.get(NAME));
-		set(PROJECT_ID, pDe.get(PROJECT_ID));
+		set(APP_ID, pDe.get(APP_ID));
 		set(STATUS, pDe.get(STATUS));		
 	}
 
@@ -65,18 +65,18 @@ public class Group extends DataEntity {
 		return isNull(NAME);
 	}
 
-	protected static final String PROJECT_ID = "project_id";
+	protected static final String APP_ID = "app_id";
 
-	public String getProjectId() {
-		return (String) get(PROJECT_ID);
+	public String getAppId() {
+		return (String) get(APP_ID);
 	}
 	
-	public void setProjectId(String pProjectId){
-		set(PROJECT_ID, pProjectId);
+	public void setAppId(String pAppId){
+		set(APP_ID, pAppId);
 	}
 	
-	public boolean isProjectIdNull(){
-		return isNull(PROJECT_ID);
+	public boolean isAppIdNull(){
+		return isNull(APP_ID);
 	}
 
 	protected static final String HIERARCHY = "hierarchy";
@@ -177,9 +177,9 @@ public class Group extends DataEntity {
 	// for rootMenuList add query below fields
 
 
-	protected static final String PROJECT_NAME = "project_name";
+	protected static final String APP_NAME = "app_name";
 
-	public String getProjectName() {
-		return (String) get(PROJECT_NAME);
+	public String getAppName() {
+		return (String) get(APP_NAME);
 	}
 }

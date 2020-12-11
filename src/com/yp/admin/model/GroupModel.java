@@ -5,8 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 import com.yp.admin.Constants;
-import com.yp.admin.data.GroupProjectFunc;
-import com.yp.admin.data.GroupProjectFuncsHistory;
+import com.yp.admin.data.GroupAppFunc;
+import com.yp.admin.data.GroupAppFuncsHistory;
 import com.yp.admin.data.GroupUser;
 import com.yp.admin.data.GroupUsersHistory;
 import com.yp.admin.data.Group;
@@ -29,7 +29,7 @@ public class GroupModel extends AModel<Group> {
 	public static final String Q_GROUP_USERS1 = "Q.GROUP.USERS1";
 	public static final String Q_GROUP_FUNCS1 = "Q.GROUP.FUNCS1";
 	public static final String Q_GROUP_USERS_HISTORY1= "Q.GROUP.USERS.HISTORY1";
-	public static final String Q_GROUP_PROJECT_FUNCS_HISTORY1= "Q.GROUP.PROJECT.FUNCS.HISTORY1";
+	public static final String Q_GROUP_APP_FUNCS_HISTORY1= "Q.GROUP.APP.FUNCS.HISTORY1";
 	
 
 	public synchronized Integer findGroupId() {
@@ -52,8 +52,8 @@ public class GroupModel extends AModel<Group> {
 		return this.findAny(query);
 	}
 
-	public List<Group> findGroupList(final Integer pUserId, final String pProjectId) {
-		final DbCommand query = new DbCommand(Q_GROUPS5, new FnParam("procet_id", pProjectId),
+	public List<Group> findGroupList(final Integer pUserId, final String pAppId) {
+		final DbCommand query = new DbCommand(Q_GROUPS5, new FnParam("procet_id", pAppId),
 				new FnParam("user_id", pUserId));
 		query.setQuery(Constants.getSgl(query.getName()));
 		return this.findAny(query);
@@ -73,11 +73,11 @@ public class GroupModel extends AModel<Group> {
 		return 0L;
 	}
 
-	public synchronized Long findGroupProjectFuncsHistoryId() {
-		final DbCommand query = new DbCommand(Q_GROUP_PROJECT_FUNCS_HISTORY1, new FnParam[0]);
+	public synchronized Long findGroupAppFuncsHistoryId() {
+		final DbCommand query = new DbCommand(Q_GROUP_APP_FUNCS_HISTORY1, new FnParam[0]);
 		query.setQuery(Constants.getSgl(query.getName()));
-		final GroupProjectFuncsHistory de = (GroupProjectFuncsHistory) this.findOne(query,
-				GroupProjectFuncsHistory.class);
+		final GroupAppFuncsHistory de = (GroupAppFuncsHistory) this.findOne(query,
+				GroupAppFuncsHistory.class);
 		Long idx = null;
 		if (de != null) {
 			idx = de.getIdx();
@@ -224,7 +224,7 @@ public class GroupModel extends AModel<Group> {
 	private boolean containsFnInGroup(final List<IDataEntity> pGroupFnList, final String pFuncId) {
 		if (!BaseConstants.isEmpty(pGroupFnList)) {
 			for (final IDataEntity groupFunc : pGroupFnList) {
-				if (pFuncId.equals(((GroupProjectFunc) groupFunc).getProjectFuncsId())) {
+				if (pFuncId.equals(((GroupAppFunc) groupFunc).getAppFuncId())) {
 					return true;
 				}
 			}
@@ -241,7 +241,7 @@ public class GroupModel extends AModel<Group> {
 	public List<IDataEntity> findGroupFuncs(final Integer pGroupId) {
 		final DbCommand query = new DbCommand(Q_GROUP_FUNCS1, new FnParam("groupid", pGroupId));
 		query.setQuery(Constants.getSgl(query.getName()));
-		return this.findAny(query, GroupProjectFunc.class);
+		return this.findAny(query, GroupAppFunc.class);
 	}
 
 	private IResult<Group> checkFields(final Group pGroup) {
@@ -253,10 +253,10 @@ public class GroupModel extends AModel<Group> {
 			dSb.append(BaseConstants.getString("FrmGroup.Warning.Name"));
 			dSb.append(BaseConstants.EOL);
 		}
-		mString = pGroup.getProjectId();
+		mString = pGroup.getAppId();
 		if (StringTool.isNull(mString) || mString.length() < 3) {
 			res.setSuccess(false);
-			dSb.append(BaseConstants.getString("FrmProjectAUL.Warning.Name"));
+			dSb.append(BaseConstants.getString("FrmAppAUL.Warning.Name"));
 			dSb.append(BaseConstants.EOL);
 		}
 		res.setMessage(dSb.toString());
@@ -266,7 +266,7 @@ public class GroupModel extends AModel<Group> {
 	public IResult<String> addFnToGroup(final Integer pGroupId, final String[] pFuncs, final IUser pUser,
 			final String pClientIP) {
 		IResult<String> result = null;
-		Long idx = findGroupProjectFuncsHistoryId();
+		Long idx = findGroupAppFuncsHistoryId();
 		final Date datetime = new Date();
 		final String email = pUser.getEmail();
 		final List<IDataEntity> addList = new ArrayList<>();
@@ -274,11 +274,11 @@ public class GroupModel extends AModel<Group> {
 		final List<IDataEntity> groupFnList = findGroupFuncs(pGroupId);
 		for (int dI = 0; dI < pFuncs.length; ++dI) {
 			if (!containsFnInGroup(groupFnList, pFuncs[dI])) {
-				final GroupProjectFunc groupFuncs = new GroupProjectFunc(pGroupId, pFuncs[dI]);
+				final GroupAppFunc groupFuncs = new GroupAppFunc(pGroupId, pFuncs[dI]);
 				groupFuncs.setLastClientInfo(email, pClientIP, datetime);
 				addList.add(groupFuncs);
-				final GroupProjectFuncsHistory history = new GroupProjectFuncsHistory(idx, groupFuncs);
-				history.setUpdateUser((User) pUser, GroupProjectFuncsHistory.UPDATE_MODE_ADD);
+				final GroupAppFuncsHistory history = new GroupAppFuncsHistory(idx, groupFuncs);
+				history.setUpdateUser((User) pUser, GroupAppFuncsHistory.UPDATE_MODE_ADD);
 				history.setClientInfo(email, pClientIP, datetime);
 				addHistoryList.add(history);
 				++idx;
@@ -293,19 +293,19 @@ public class GroupModel extends AModel<Group> {
 	public synchronized IResult<String> deleteFnFromGroup(final Integer pGroupId, final String[] pFuncs,
 			final IUser pUser, final String pClientIP) {
 		IResult<String> dSnc = null;
-		Long idx = findGroupProjectFuncsHistoryId();
+		Long idx = findGroupAppFuncsHistoryId();
 		final Date datetime = new Date();
 		final String email = pUser.getEmail();
 		final List<IDataEntity> deleteList = new ArrayList<>();
 		final List<IDataEntity> addHistoryList = new ArrayList<>();
 		for (int dI = 0; dI < pFuncs.length; ++dI) {
-			final GroupProjectFunc delete = new GroupProjectFunc(pGroupId, pFuncs[dI]);
+			final GroupAppFunc delete = new GroupAppFunc(pGroupId, pFuncs[dI]);
 			delete.setLastClientInfo(email, pClientIP, datetime);
 			delete.accept();
 			delete.delete();
 			deleteList.add(delete);
-			final GroupProjectFuncsHistory history = new GroupProjectFuncsHistory(idx, delete);
-			history.setUpdateUser((User) pUser, GroupProjectFuncsHistory.UPDATE_MODE_DELETE);
+			final GroupAppFuncsHistory history = new GroupAppFuncsHistory(idx, delete);
+			history.setUpdateUser((User) pUser, GroupAppFuncsHistory.UPDATE_MODE_DELETE);
 			history.setClientInfo(email, pClientIP, datetime);
 			addHistoryList.add(history);
 			++idx;

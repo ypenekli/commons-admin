@@ -38,13 +38,13 @@ public class CommonModel extends AModel<Common> {
 		String mString = pCommon.getName();
 		if (StringTool.isNull(mString) || mString.length() < 3) {
 			res.setSuccess(false);
-			dSb.append(BaseConstants.getString("FrmProjectAUL.Warning.Id"));
+			dSb.append(BaseConstants.getString("FrmAppAUL.Warning.Id"));
 			dSb.append(BaseConstants.EOL);
 		}
 		mString = pCommon.getAbrv();
 		if (StringTool.isNull(mString) || mString.length() < 3) {
 			res.setSuccess(false);
-			dSb.append(BaseConstants.getString("FrmProjectAUL.Warning.Name"));
+			dSb.append(BaseConstants.getString("FrmAppAUL.Warning.Name"));
 			dSb.append(BaseConstants.EOL);
 		}
 		res.setMessage(dSb.toString());

@@ -7,38 +7,38 @@ import com.yp.core.entity.DataEntity;
 import com.yp.core.tools.DateTime;
 
 
-public class ProjectVersion extends DataEntity {
+public class AppVersion extends DataEntity {
 
 	private static final long serialVersionUID = -5398951249303223864L;
 	private static String schemaName = "COMMON";
-	private static String tableName = "PROJECT_VERSIONS";
+	private static String tableName = "APP_VERSIONS";
 
 
-	public ProjectVersion(){
+	public AppVersion(){
 		super();
-		className = "ProjectVersion";
-		setPrimaryKeys(PROJECT_ID, VERSION, IDX);
+		className = "AppVersion";
+		setPrimaryKeys(APP_ID, VERSION, IDX);
 	}
 
-	public ProjectVersion(String pProjectId, Integer pVersion, Integer pIdx){
+	public AppVersion(String pAppId, Integer pVersion, Integer pIdx){
 		this();
-		set(PROJECT_ID, pProjectId);
+		set(APP_ID, pAppId);
 		set(VERSION, pVersion);
 		set(IDX, pIdx);
 	}
 
-	protected static final String PROJECT_ID = "project_id";
+	protected static final String APP_ID = "app_id";
 
-	public String getProjectId() {
-		return (String) get(PROJECT_ID);
+	public String getAppId() {
+		return (String) get(APP_ID);
 	}
 	
-	public void setProjectId(String pProjectId){
-		set(PROJECT_ID, pProjectId);
+	public void setAppId(String pAppId){
+		set(APP_ID, pAppId);
 	}
 	
-	public boolean isProjectIdNull(){
-		return isNull(PROJECT_ID);
+	public boolean isAppIdNull(){
+		return isNull(APP_ID);
 	}
 
 	protected static final String VERSION = "version";
@@ -83,18 +83,18 @@ public class ProjectVersion extends DataEntity {
 		return isNull(LABEL);
 	}
 
-	protected static final String PROJECT_FUNCS_ID = "project_funcs_id";
+	protected static final String APP_FUNC_ID = "app_func_id";
 
-	public String getProjectFuncsId() {
-		return (String) get(PROJECT_FUNCS_ID);
+	public String getAppFuncId() {
+		return (String) get(APP_FUNC_ID);
 	}
 	
-	public void setProjectFuncsId(String pProjectFuncsId){
-		set(PROJECT_FUNCS_ID, pProjectFuncsId);
+	public void setAppFuncId(String pAppFuncId){
+		set(APP_FUNC_ID, pAppFuncId);
 	}
 	
-	public boolean isProjectFuncsIdNull(){
-		return isNull(PROJECT_FUNCS_ID);
+	public boolean isAppFuncIdNull(){
+		return isNull(APP_FUNC_ID);
 	}
 
 	protected static final String DESCRIPTION = "description";

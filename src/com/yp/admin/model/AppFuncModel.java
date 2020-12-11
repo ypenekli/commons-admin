@@ -6,9 +6,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.yp.admin.Constants;
-import com.yp.admin.data.GroupProjectFunc;
-import com.yp.admin.data.GroupProjectFuncsHistory;
-import com.yp.admin.data.ProjectFunc;
+import com.yp.admin.data.GroupAppFunc;
+import com.yp.admin.data.GroupAppFuncsHistory;
+import com.yp.admin.data.AppFunc;
 import com.yp.admin.data.User;
 import com.yp.core.AModel;
 import com.yp.core.BaseConstants;
@@ -23,12 +23,12 @@ import com.yp.core.ref.Reference;
 import com.yp.core.tools.StringTool;
 import com.yp.core.user.IUser;
 
-public class ProjectFuncModel extends AModel<ProjectFunc> {
+public class AppFuncModel extends AModel<AppFunc> {
 	
-	public static final String Q_PROJECTFUNCS1 = "Q.PROJECTFUNCS1";
-	public static final String Q_PROJECTFUNCS4 = "Q.PROJECTFUNCS4";	
-	public static final String Q_PROJECTFUNCS5 = "Q.PROJECTFUNCS5";
-	public static final String Q_PROJECTFUNCS6 = "Q.PROJECTFUNCS6";
+	public static final String Q_APPFUNCS1 = "Q.APPFUNCS1";
+	public static final String Q_APPFUNCS4 = "Q.APPFUNCS4";	
+	public static final String Q_APPFUNCS5 = "Q.APPFUNCS5";
+	public static final String Q_APPFUNCS6 = "Q.APPFUNCS6";
 	public static final String Q_VERSION_NOTES = "Version.Notes";
 	public static final String Q_VERSIONS = "Versions";
 
@@ -44,11 +44,11 @@ public class ProjectFuncModel extends AModel<ProjectFunc> {
 	public static final RefContainer<String> TARGET = new RefContainer<>(TARGET_UPDATE, TARGET_EDIT, TARGET_LIST,
 			TARGET_VIEW);
 
-	public ProjectFuncModel() {
+	public AppFuncModel() {
 		super();
 	}
 
-	public ProjectFuncModel(String pServer) {
+	public AppFuncModel(String pServer) {
 		super(pServer);
 	}
 
@@ -63,87 +63,87 @@ public class ProjectFuncModel extends AModel<ProjectFunc> {
 	}
 
 
-	public List<ProjectFunc> findProjectFuncs(String pParentId) {
-		DbCommand query = new DbCommand(Q_PROJECTFUNCS1, new FnParam("parent_id", pParentId));
+	public List<AppFunc> findAppFuncs(String pParentId) {
+		DbCommand query = new DbCommand(Q_APPFUNCS1, new FnParam("parent_id", pParentId));
 		query.setQuery(Constants.getSgl(query.getName()));
 
 		return findAny(query);
 	}
 
-	public List<ProjectFunc> findUserProjectFuncs(final Integer pUserId, final String pProjectId) {
-		final DbCommand query = new DbCommand(Q_PROJECTFUNCS5, new FnParam("project_id", pProjectId),
-				new FnParam("project_id", pProjectId), new FnParam("user_id", pUserId));
+	public List<AppFunc> findUserAppFuncs(final Integer pUserId, final String pAppId) {
+		final DbCommand query = new DbCommand(Q_APPFUNCS5, new FnParam("app_id", pAppId),
+				new FnParam("app_id", pAppId), new FnParam("user_id", pUserId));
 		query.setQuery(Constants.getSgl(query.getName()));
 		return this.findAny(query);
 	}
 	
-	public List<ProjectFunc> findGroupProjectFuncs(final Integer pGroupId, final String pProjectId) {
-		final DbCommand query = new DbCommand(Q_PROJECTFUNCS4, new FnParam("project_id", pProjectId),
+	public List<AppFunc> findGroupAppFuncs(final Integer pGroupId, final String pAppId) {
+		final DbCommand query = new DbCommand(Q_APPFUNCS4, new FnParam("app_id", pAppId),
 				new FnParam("groupid", pGroupId));
 		query.setQuery(Constants.getSgl(query.getName()));
 		return this.findAny(query);
 	}
 
 
-	private IResult<ProjectFunc> validateFields(ProjectFunc pProject) {
-		IResult<ProjectFunc> res = new Result<>(true, "");
+	private IResult<AppFunc> validateFields(AppFunc pApp) {
+		IResult<AppFunc> res = new Result<>(true, "");
 		StringBuilder dSb = new StringBuilder();
-		String mString = pProject.getId();
+		String mString = pApp.getId();
 		if (StringTool.isNull(mString) || mString.length() < 3) {
 			res.setSuccess(false);
-			dSb.append(BaseConstants.getString("FrmProjectAUL.Warning.Id"));
+			dSb.append(BaseConstants.getString("FrmAppAUL.Warning.Id"));
 			dSb.append(BaseConstants.EOL);
 		}
 
-		mString = pProject.getName();
+		mString = pApp.getName();
 		if (StringTool.isNull(mString) || mString.length() < 3) {
 			res.setSuccess(false);
-			dSb.append(BaseConstants.getString("FrmProjectAUL.Warning.Name"));
+			dSb.append(BaseConstants.getString("FrmAppAUL.Warning.Name"));
 			dSb.append(BaseConstants.EOL);
 		}
 		res.setMessage(dSb.toString());
 		return res;
 	}
 
-	public synchronized IResult<ProjectFunc> save(ProjectFunc pProjectFunc, Integer pGroupId, IUser pUser) {
-		IResult<ProjectFunc> result = validateFields(pProjectFunc);
+	public synchronized IResult<AppFunc> save(AppFunc pAppFunc, Integer pGroupId, IUser pUser) {
+		IResult<AppFunc> result = validateFields(pAppFunc);
 		if (result.isSuccess()) {
 			try {
 				GroupModel groupModel = new GroupModel();
-				setLastClientInfo(pProjectFunc, pUser);
+				setLastClientInfo(pAppFunc, pUser);
 
-				ProjectFunc parent = null;
-				GroupProjectFunc groupFuncs = null;
-				GroupProjectFuncsHistory history = null;
+				AppFunc parent = null;
+				GroupAppFunc groupFuncs = null;
+				GroupAppFuncsHistory history = null;
 
-				if (pProjectFunc.isNew()) {						
-					parent = new ProjectFunc(pProjectFunc.getParentId());
+				if (pAppFunc.isNew()) {						
+					parent = new AppFunc(pAppFunc.getParentId());
 					parent.accept();					
 					parent.setLeaf(false);
-					parent.setName(pProjectFunc.getParentName());					
+					parent.setName(pAppFunc.getParentName());					
 					parent.setLastClientInfo(pUser);
-					groupFuncs = new GroupProjectFunc(pGroupId, pProjectFunc.getId());
+					groupFuncs = new GroupAppFunc(pGroupId, pAppFunc.getId());
 					groupFuncs.setLastClientInfo(pUser);
 
-					history = new GroupProjectFuncsHistory(groupModel.findGroupProjectFuncsHistoryId(), groupFuncs);
-					history.setUpdateUser((User) pUser, GroupProjectFuncsHistory.UPDATE_MODE_ADD);
-					history.setClientInfo(pProjectFunc);
+					history = new GroupAppFuncsHistory(groupModel.findGroupAppFuncsHistoryId(), groupFuncs);
+					history.setUpdateUser((User) pUser, GroupAppFuncsHistory.UPDATE_MODE_ADD);
+					history.setClientInfo(pAppFunc);
 				}
 
-				final IResult<String> temp = saveAtomic(pProjectFunc, groupFuncs, history, parent);
+				final IResult<String> temp = saveAtomic(pAppFunc, groupFuncs, history, parent);
 				if (temp != null) {
 					if (temp.isSuccess())
-						pProjectFunc.accept();
+						pAppFunc.accept();
 					result.setSuccess(temp.isSuccess());
 					result.setMessage(temp.getMessage());
 				} else
 					result.setMessage(BaseConstants.MESSAGE_SAVE_ERROR);
-				result.setData(pProjectFunc);
+				result.setData(pAppFunc);
 
 			} catch (Exception e) {
 				result.setSuccess(false);
 				result.setMessage(BaseConstants.MESSAGE_SAVE_ERROR);
-				result.setData(pProjectFunc);
+				result.setData(pAppFunc);
 				Logger.getLogger(MyLogger.NAME).log(Level.SEVERE, e.getMessage(), e);
 			}
 

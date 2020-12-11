@@ -6,24 +6,24 @@ import com.yp.core.entity.IDataEntity;
 import com.yp.core.tools.ITree;
 import com.yp.core.tools.StringTool;
 
-public class ProjectFunc extends DataEntity implements ITree<String> {
+public class AppFunc extends DataEntity implements ITree<String> {
 
 	private static final long serialVersionUID = 3417625341999168302L;
 	private static String schemaName = "COMMON";
-	private static String tableName = "PROJECT_FUNCS";
+	private static String tableName = "APP_FUNCS";
 
-	public ProjectFunc() {
+	public AppFunc() {
 		super();
-		className = "ProjectFunc";
+		className = "AppFunc";
 		setPrimaryKeys(ID);
 	}
 
-	public ProjectFunc(String pId) {
+	public AppFunc(String pId) {
 		this();
 		set(ID, pId);
 	}
 
-	public ProjectFunc(IDataEntity pDe) {
+	public AppFunc(IDataEntity pDe) {
 		this((String) pDe.get(ID));
 		set(DESCRIPTION, pDe.get(DESCRIPTION));
 		set(HIERARCHY, pDe.get(HIERARCHY));
@@ -33,24 +33,24 @@ public class ProjectFunc extends DataEntity implements ITree<String> {
 		set(LEVEL, pDe.get(LEVEL));
 		set(NAME, pDe.get(NAME));
 		set(PARENT_ID, pDe.get(PARENT_ID));
-		set(PROJECT_ID, pDe.get(PROJECT_ID));
+		set(APP_ID, pDe.get(APP_ID));
 		set(STATUS, pDe.get(STATUS));
 		set(TARGET, pDe.get(TARGET));
 		set(URL, pDe.get(URL));
 	}
 
-	protected static final String PROJECT_ID = "project_id";
+	protected static final String APP_ID = "app_id";
 
-	public String getProjectId() {
-		return (String) get(PROJECT_ID);
+	public String getAppId() {
+		return (String) get(APP_ID);
 	}
 
-	public void setProjectId(String pProjectId) {
-		set(PROJECT_ID, pProjectId);
+	public void setAppId(String pAppId) {
+		set(APP_ID, pAppId);
 	}
 
-	public boolean isProjectIdNull() {
-		return isNull(PROJECT_ID);
+	public boolean isAppIdNull() {
+		return isNull(APP_ID);
 	}
 
 	protected static final String ID = "id";
@@ -257,15 +257,15 @@ public class ProjectFunc extends DataEntity implements ITree<String> {
 		set(LEAF, pLeaf ? BaseConstants.TRUE.getKey() : BaseConstants.FALSE.getKey());
 	}
 
-	public ProjectFunc addSubitem(Integer pSubitemSize, boolean isLeaf) {
+	public AppFunc addSubitem(Integer pSubitemSize, boolean isLeaf) {
 		Integer idx = 0;
 		if (pSubitemSize != null) {
 			idx = pSubitemSize + 1;
 		}
-		final ProjectFunc de = new ProjectFunc(String.format("%s.%s", getId(), idx));
+		final AppFunc de = new AppFunc(String.format("%s.%s", getId(), idx));
 		de.setParentId(getId());
 		de.setParentName(getName());
-		de.setProjectId(getProjectId());
+		de.setAppId(getAppId());
 		de.setLevel(getLevel() + 1);
 		de.setIdx(idx);
 		de.setTarget(getTarget());
@@ -302,11 +302,13 @@ public class ProjectFunc extends DataEntity implements ITree<String> {
 
 	@Override
 	public boolean equals(Object pObj) {
-		if (pObj != null)
-			if (pObj instanceof ProjectFunc)
-				return getId().equals(((ProjectFunc) pObj).getId());
-			else if (pObj instanceof String)
+		if (pObj != null) {
+			if (pObj instanceof AppFunc) {
+				return getId().equals(((AppFunc) pObj).getId());
+			} else if (pObj instanceof String) {
 				return getId().equals(pObj);
+			}
+		}
 		return false;
 	}
 }

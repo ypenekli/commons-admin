@@ -1,5 +1,5 @@
-drop table common.projects;
-create table common.projects(
+drop table common.apps;
+create table common.apps(
 	id char(5) not null,
 	name varchar(150) not null,
 	description varchar(150) default '',
@@ -18,15 +18,15 @@ create table common.projects(
 	last_client_name varchar(50),
 	last_client_ip varchar(50),
 	last_client_datetime numeric(17,0),
-	constraint pk_common_projects primary key  
+	constraint pk_common_apps primary key  
 	(
 		id 
 	)
 );
-drop table common.project_funcs;
-create table common.project_funcs(
+drop table common.app_funcs;
+create table common.app_funcs(
 	id varchar(50) not null,
-	project_id char(5) not null,
+	app_id char(5) not null,
 	name varchar(150) not null,
 	description varchar(150) default '',
 	url varchar(50) default '',
@@ -46,19 +46,19 @@ create table common.project_funcs(
 	last_client_name varchar(50),
 	last_client_ip varchar(50),
 	last_client_datetime numeric(17,0),
-	constraint pk_common_project_funcs primary key  
+	constraint pk_common_app_funcs primary key  
 	(
 		id 
 	)
 );
 
-drop table common.project_versions;
-create table common.project_versions(
-	project_id char(5) not null,
+drop table common.app_versions;
+create table common.app_versions(
+	app_id char(5) not null,
 	version int not null default 100,
 	idx int not null default 1,
 	label varchar(45) default '',
-	project_funcs_id varchar(50) not null,
+	app_func_id varchar(50) not null,
 	description varchar(150) default '',
 	publish_date numeric(8,0) DEFAULT 0,   
 		
@@ -68,9 +68,9 @@ create table common.project_versions(
 	last_client_name varchar(50),
 	last_client_ip varchar(50),
 	last_client_datetime numeric(17,0),
-	constraint pk_common_project_versions primary key  
+	constraint pk_common_app_versions primary key  
 	(
-		project_id, version, idx 
+		app_id, version, idx 
 	)
 );
 
@@ -79,7 +79,7 @@ drop table common.groups;
 create table common.groups(
 	id integer not null,
 	name varchar(150) not null,
-	project_id char(5) not null,		
+	app_id char(5) not null,		
 	hierarchy varchar(150),
 	group_type char not null default 'U',
 	status char not null default 'A',
@@ -95,10 +95,10 @@ create table common.groups(
 		id 
 	)
 );
-drop table common.group_project_funcs;
-create table common.group_project_funcs(
+drop table common.group_app_funcs;
+create table common.group_app_funcs(
 	group_id integer not null,
-	project_funcs_id varchar(50) not null,	
+	app_func_id varchar(50) not null,	
 	
 	client_name varchar(50),
 	client_ip varchar(50),
@@ -106,16 +106,16 @@ create table common.group_project_funcs(
 	last_client_name varchar(50),
 	last_client_ip varchar(50),
 	last_client_datetime numeric(17,0),
-	constraint pk_common_group_project_funcs primary key  
+	constraint pk_common_group_app_funcs primary key  
 	(
-		group_id, project_funcs_id 
+		group_id, app_func_id 
 	)
 );
-drop table common.group_project_funcs_history;
-create table common.group_project_funcs_history(
+drop table common.group_app_funcs_history;
+create table common.group_app_funcs_history(
 	idx bigint not null,
 	group_id integer not null,
-	project_funcs_id varchar(50) not null,
+	app_func_id varchar(50) not null,
 	
 	update_datetime numeric(17, 0),	
 	update_user_id integer,
@@ -127,7 +127,7 @@ create table common.group_project_funcs_history(
 	client_name varchar(50),
 	client_ip varchar(50),
 	client_datetime numeric(17,0),
-	constraint pk_common_group_project_funcs_history primary key  
+	constraint pk_common_group_app_funcs_history primary key  
 	(
 		idx 
 	)
@@ -198,6 +198,7 @@ create table common.users(
 	invoice_city integer   default -1,
 	invoice_district integer  default -1,
 	invoice_address varchar(150)   default '',
+	image_url varchar(50) not null default '',
 	status char not null default 'A',
 	
 	client_name varchar(50),
@@ -232,7 +233,7 @@ create table common.user_images(
 drop table common.login_history;
 create table common.login_history(
 	idx bigint not null,
-	project_id varchar(50) not null,		
+	app_id varchar(50) not null,		
 	user_id integer not null,
 	login_datetime numeric(17, 0),
 	

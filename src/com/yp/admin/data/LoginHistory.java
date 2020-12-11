@@ -39,18 +39,18 @@ public class LoginHistory extends DataEntity {
 		return isNull(IDX);
 	}
 
-	protected static final String PROJECT_ID = "project_id";
+	protected static final String APP_ID = "app_id";
 
-	public String getProjectId() {
-		return (String) get(PROJECT_ID);
+	public String getAppId() {
+		return (String) get(APP_ID);
 	}
 	
-	public void setProjectId(String pProjectId){
-		set(PROJECT_ID, pProjectId);
+	public void setAppId(String pAppId){
+		set(APP_ID, pAppId);
 	}
 	
-	public boolean isProjectIdNull(){
-		return isNull(PROJECT_ID);
+	public boolean isAppIdNull(){
+		return isNull(APP_ID);
 	}
 
 	protected static final String USER_ID = "user_id";
