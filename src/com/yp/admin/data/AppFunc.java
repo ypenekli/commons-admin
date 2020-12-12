@@ -241,6 +241,9 @@ public class AppFunc extends DataEntity implements ITree<String> {
 		super.checkValues();
 		checkInteger(IDX);
 		checkInteger(LEVEL);
+		checkString(APP_ID);
+		checkString(PARENT_ID);
+		checkString(ID);
 	}
 
 	// *************

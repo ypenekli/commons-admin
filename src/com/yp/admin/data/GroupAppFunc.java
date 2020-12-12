@@ -67,6 +67,7 @@ public class GroupAppFunc extends DataEntity {
 	public void checkValues() {
 		super.checkValues();
 		checkInteger(GROUP_ID);
+		checkString(APP_FUNC_ID);		
 	}
 
 }

@@ -223,6 +223,7 @@ public class App extends DataEntity {
 		super.checkValues();
 		checkBigDecimal(VERSION_UPDATE_DATE);
 		checkInteger(GROUP_ID);
+		checkString(ID);
 	}
 
 	// **************
