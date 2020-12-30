@@ -25,11 +25,11 @@ import com.yp.core.user.IUser;
 
 public class AppFuncModel extends AModel<AppFunc> {
 	
-	public static final String Q_APPFUNCS1 = "Q.APPFUNCS1";
-	public static final String Q_APPFUNCS4 = "Q.APPFUNCS4";	
-	public static final String Q_APPFUNCS5 = "Q.APPFUNCS5";
-	public static final String Q_APPFUNCS6 = "Q.APPFUNCS6";
-	public static final String Q_VERSION_NOTES = "Version.Notes";
+	public static final String Q_APPFUNCS1 = "Q_APPFUNCS1";
+	public static final String Q_APPFUNCS4 = "Q_APPFUNCS4";	
+	public static final String Q_APPFUNCS5 = "Q_APPFUNCS5";
+	public static final String Q_APPFUNCS6 = "Q_APPFUNCS6";
+	public static final String Q_VERSION_NOTES = "Version_Notes";
 	public static final String Q_VERSIONS = "Versions";
 
 	public static final IReference<String> TARGET_UPDATE = new Reference<>("targetAUDL",

@@ -30,15 +30,15 @@ import com.yp.core.web.JsonHandler;
 public class UserModel extends AModel<User> {
 
 	public static final String Q_Principles = "Principles";
-	public static final String Q_USERS1 = "Q.USERS1";
-	public static final String Q_USERS2 = "Q.USERS2";
-	public static final String Q_EMail = "Q.USERS3";	
-	public static final String Q_USERS4 = "Q.USERS4";
-	public static final String Q_Telephone = "Q.USERS5";
-	public static final String Q_USERS6 = "Q.USERS6";
-	public static final String Q_USERS7 = "Q.USERS7";
-	public static final String Q_LOGIN_HISTORY1= "Q.LOGIN.HISTORY1";
-	public static final String Q_PWD_HISTORY1= "Q.PWD.HISTORY1";
+	public static final String Q_USERS1 = "Q_USERS1";
+	public static final String Q_USERS2 = "Q_USERS2";
+	public static final String Q_EMail = "Q_USERS3";	
+	public static final String Q_USERS4 = "Q_USERS4";
+	public static final String Q_Telephone = "Q_USERS5";
+	public static final String Q_USERS6 = "Q_USERS6";
+	public static final String Q_USERS7 = "Q_USERS7";
+	public static final String Q_LOGIN_HISTORY1= "Q_LOGIN_HISTORY1";
+	public static final String Q_PWD_HISTORY1= "Q_PWD_HISTORY1";
 
 	public UserModel() {
 		super();

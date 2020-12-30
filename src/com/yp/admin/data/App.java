@@ -17,7 +17,7 @@ public class App extends DataEntity {
 
 	public App() {
 		super();
-		className = "Application";
+		className = "App";
 		setPrimaryKeys(ID);
 	}
 

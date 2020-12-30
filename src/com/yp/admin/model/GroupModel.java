@@ -23,13 +23,13 @@ import com.yp.core.user.IUser;
 
 public class GroupModel extends AModel<Group> {
 
-	public static final String Q_GROUPS1 = "Q.GROUPS1";
-	public static final String Q_GROUPS2 = "Q.GROUPS2";
-	public static final String Q_GROUPS5 = "Q.GROUPS5";
-	public static final String Q_GROUP_USERS1 = "Q.GROUP.USERS1";
-	public static final String Q_GROUP_FUNCS1 = "Q.GROUP.FUNCS1";
-	public static final String Q_GROUP_USERS_HISTORY1= "Q.GROUP.USERS.HISTORY1";
-	public static final String Q_GROUP_APP_FUNCS_HISTORY1= "Q.GROUP.APP.FUNCS.HISTORY1";
+	public static final String Q_GROUPS1 = "Q_GROUPS1";
+	public static final String Q_GROUPS2 = "Q_GROUPS2";
+	public static final String Q_GROUPS5 = "Q_GROUPS5";
+	public static final String Q_GROUP_USERS1 = "Q_GROUP_USERS1";
+	public static final String Q_GROUP_FUNCS1 = "Q_GROUP_FUNCS1";
+	public static final String Q_GROUP_USERS_HISTORY1= "Q_GROUP_USERS_HISTORY1";
+	public static final String Q_GROUP_APP_FUNCS_HISTORY1= "Q_GROUP_APP_FUNCS_HISTORY1";
 	
 
 	public synchronized Integer findGroupId() {

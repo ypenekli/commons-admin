@@ -21,8 +21,8 @@ import com.yp.core.tools.ResourceWalker;
 
 public class ExportModel extends AModel<Export> {
 
-	public static final String Q_EXPORT1 = "Q.EXPORT1";
-	public static final String Q_EXPORT2 = "Q.EXPORT2";
+	public static final String Q_EXPORT1 = "Q_EXPORT1";
+	public static final String Q_EXPORT2 = "Q_EXPORT2";
 
 	public List<Export> getExportList(String pSourceSchemaName, String pTargetSchemaName) {
 		final DbCommand query = new DbCommand(Q_EXPORT2, new FnParam("kynsema", pSourceSchemaName),

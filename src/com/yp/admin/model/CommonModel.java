@@ -14,8 +14,8 @@ import com.yp.core.tools.StringTool;
 import com.yp.core.user.IUser;
 
 public class CommonModel extends AModel<Common> {
-	public static final String Q_COMMONS_PARENT_ID1 = "Q.COMMONS.PARENT.ID1";
-	public static final String Q_COMMONS1 = "Q.COMMONS1";
+	public static final String Q_COMMONS_PARENT_ID1 = "Q_COMMONS_PARENT_ID1";
+	public static final String Q_COMMONS1 = "Q_COMMONS1";
 
 	public List<Common> findByParent(final Integer pParentId) {
 		final DbCommand query = new DbCommand(Q_COMMONS_PARENT_ID1, new FnParam("parent_id", pParentId));

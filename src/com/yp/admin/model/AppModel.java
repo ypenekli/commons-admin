@@ -26,8 +26,8 @@ import com.yp.core.user.IUser;
 
 public class AppModel extends AModel<App> {
 	public static final String Q_APP1 = "SRGPRJKOD1";
-	public static final String Q_APPS6 = "Q.APPS6";
-	public static final String Q_VERSION_NOTES = "Version.Notes";
+	public static final String Q_APPS6 = "Q_APPS6";
+	public static final String Q_VERSION_NOTES = "Version_Notes";
 	public static final String Q_VERSIONS = "Versions";
 
 	public static final IReference<String> TARGET_WEB = new Reference<>("targetWEB", BaseConstants.getString("TARGET.WEB"));
