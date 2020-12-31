@@ -129,7 +129,7 @@ public class User extends DataEntity implements IUser {
 		set(BIRTH_DATE, pBirthDate);
 	}
 
-	protected Date mBirthDate;
+	protected transient Date mBirthDate;
 
 	public Date getBirthDate() {
 		if (mBirthDate == null)
@@ -227,7 +227,7 @@ public class User extends DataEntity implements IUser {
 		set(CHECKIN_DATE, pCheckinDate);
 	}
 
-	protected Date mCheckinDate;
+	protected transient Date mCheckinDate;
 
 	public Date getCheckinDate() {
 		if (mCheckinDate == null)
@@ -255,7 +255,7 @@ public class User extends DataEntity implements IUser {
 		set(CHECKOUT_DATE, pCheckoutDate);
 	}
 
-	protected Date mCheckoutDate;
+	protected transient Date mCheckoutDate;
 
 	public Date getCheckoutDate() {
 		if (mCheckoutDate == null)
@@ -367,7 +367,7 @@ public class User extends DataEntity implements IUser {
 		set(PWD_UPDATE_DATETIME, pPwdUpdateDatetime);
 	}
 
-	protected Date mPwdUpdateDatetime;
+	protected transient Date mPwdUpdateDatetime;
 
 	public Date getPwdUpdateDatetime() {
 		if (mPwdUpdateDatetime == null)
