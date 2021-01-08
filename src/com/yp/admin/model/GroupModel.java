@@ -46,14 +46,16 @@ public class GroupModel extends AModel<Group> {
 		return 0;
 	}
 
-	public List<Group> findGroupList(final Integer pUserId) {
-		final DbCommand query = new DbCommand(Q_GROUPS1, new FnParam("userid", pUserId));
+	public List<Group> findUserGroupList(final Integer pUserId) {
+		final DbCommand query = new DbCommand(Q_GROUPS1, 
+				new FnParam("user_id", pUserId));
 		query.setQuery(Constants.getSgl(query.getName()));
 		return this.findAny(query);
 	}
 
-	public List<Group> findGroupList(final Integer pUserId, final String pAppId) {
-		final DbCommand query = new DbCommand(Q_GROUPS5, new FnParam("procet_id", pAppId),
+	public List<Group> findAppGroupList(final Integer pUserId, final String pAppId) {
+		final DbCommand query = new DbCommand(Q_GROUPS5, 
+				new FnParam("app_id", pAppId),
 				new FnParam("user_id", pUserId));
 		query.setQuery(Constants.getSgl(query.getName()));
 		return this.findAny(query);
@@ -125,7 +127,7 @@ public class GroupModel extends AModel<Group> {
 		final Integer self = pUser.getId();
 		final String email = pUser.getEmail();
 		if (!self.equals(pUserId)) {
-			final List<Group> groupList = findGroupList(pUserId, pAppId);
+			final List<Group> groupList = findAppGroupList(pUserId, pAppId);
 			if (groupList != null && !groupList.isEmpty()) {
 				Long idx = this.findGroupUsersHistoryId();
 				final List<IDataEntity> deleteList = new ArrayList<>();
