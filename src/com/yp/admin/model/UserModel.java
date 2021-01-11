@@ -36,7 +36,8 @@ public class UserModel extends AModel<User> {
 	public static final String Q_USERS4 = "Q_USERS4";
 	public static final String Q_Telephone = "Q_USERS5";
 	public static final String Q_USERS6 = "Q_USERS6";
-	public static final String Q_USERS7 = "Q_USERS7";
+	public static final String Q_USERS_ALL = "Q_USERS7";
+	public static final String Q_USERS7 = "Q_USERS_ALL";
 	public static final String Q_LOGIN_HISTORY1= "Q_LOGIN_HISTORY1";
 	public static final String Q_PWD_HISTORY1= "Q_PWD_HISTORY1";
 

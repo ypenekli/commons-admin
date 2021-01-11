@@ -40,10 +40,12 @@ public class User extends DataEntity implements IUser {
 		setEmail((String) pDe.get(EMAIL));
 		set(GENDER, pDe.get(GENDER));
 		set(HOME_ADDRESS, pDe.get(HOME_ADDRESS));
+		set(HOME_COUNTRY, pDe.get(HOME_COUNTRY));
 		set(HOME_CITY, pDe.get(HOME_CITY));
 		set(HOME_DISTRICT, pDe.get(HOME_DISTRICT));
 		set(IBAN, pDe.get(IBAN));
 		set(INVOICE_ADDRESS, pDe.get(INVOICE_ADDRESS));
+		set(INVOICE_COUNTRY, pDe.get(INVOICE_COUNTRY));
 		set(INVOICE_CITY, pDe.get(INVOICE_CITY));
 		set(INVOICE_DISTRICT, pDe.get(INVOICE_DISTRICT));
 		set(LOGIN_ERROR_COUNT, pDe.get(LOGIN_ERROR_COUNT));
@@ -440,6 +442,20 @@ public class User extends DataEntity implements IUser {
 		return isNull(HOME_CITY);
 	}
 
+	public static final String HOME_COUNTRY = "home_country";
+
+	public Integer getHomeCountry() {
+		return (Integer) get(HOME_COUNTRY);
+	}
+
+	public void setHomeCountry(Integer pHomeCountry) {
+		set(HOME_COUNTRY, pHomeCountry);
+	}
+
+	public boolean isHomeCountryNull() {
+		return isNull(HOME_COUNTRY);
+	}
+
 	protected static final String HOME_DISTRICT = "home_district";
 
 	public Integer getHomeDistrict() {
@@ -466,6 +482,20 @@ public class User extends DataEntity implements IUser {
 
 	public boolean isHomeAddressNull() {
 		return isNull(HOME_ADDRESS);
+	}
+
+	public static final String INVOICE_COUNTRY = "invoice_country";
+
+	public Integer getInvoiceCountry() {
+		return (Integer) get(INVOICE_COUNTRY);
+	}
+
+	public void setInvoiceCountry(Integer pInvoiceCountry) {
+		set(INVOICE_COUNTRY, pInvoiceCountry);
+	}
+
+	public boolean isInvoiceCountryNull() {
+		return isNull(INVOICE_COUNTRY);
 	}
 
 	protected static final String INVOICE_CITY = "invoice_city";
@@ -510,6 +540,20 @@ public class User extends DataEntity implements IUser {
 		return isNull(INVOICE_ADDRESS);
 	}
 
+	protected static final String LANGUAGE = "language";
+
+	public String getLanguage() {
+		return (String) get(LANGUAGE);
+	}
+
+	public void setLanguage(String pLanguage) {
+		set(LANGUAGE, pLanguage);
+	}
+
+	public boolean isLanguageNull() {
+		return isNull(LANGUAGE);
+	}
+
 	protected static final String STATUS = "status";
 
 	public String getStatus() {
@@ -548,8 +592,10 @@ public class User extends DataEntity implements IUser {
 		checkBigDecimal(CHECKOUT_DATE);
 		checkInteger(LOGIN_ERROR_COUNT);
 		checkBigDecimal(PWD_UPDATE_DATETIME);
+		checkInteger(HOME_COUNTRY);
 		checkInteger(HOME_CITY);
 		checkInteger(HOME_DISTRICT);
+		checkInteger(INVOICE_COUNTRY);
 		checkInteger(INVOICE_CITY);
 		checkInteger(INVOICE_DISTRICT);
 	}
